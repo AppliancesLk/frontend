@@ -1,6 +1,8 @@
 import apiClient from '../api/apiClient';
 import type {
   Product,
+  CreateProductRequest,
+  UpdateProductRequest,
   UpdateProductStockRequest,
 } from '../types/product.types';
 
@@ -22,8 +24,6 @@ export const getProductsByCategory = async (
   return response.data;
 };
 
-// Route and body follow backend issue #13 (PATCH /products/:id/stock).
-// Confirm the final contract once the backend PR is merged.
 export const updateProductStock = async (
   productID: string,
   stockQty: number,
@@ -37,3 +37,15 @@ export const updateProductStock = async (
 
   return response.data;
 };
+
+export const createProduct = async (
+  input: CreateProductRequest,
+): Promise<Product> => (await apiClient.post<Product>('/products', input)).data;
+export const updateProduct = async (
+  id: string,
+  input: UpdateProductRequest,
+): Promise<Product> =>
+  (await apiClient.patch<Product>(`/products/${id}`, input)).data;
+
+export const getAdminProducts = async (): Promise<Product[]> =>
+  (await apiClient.get<Product[]>('/products/admin/all')).data;

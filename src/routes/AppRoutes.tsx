@@ -5,6 +5,9 @@ import LoginPage from '../pages/Auth/Login';
 import RegisterPage from '../pages/Auth/Register';
 import ForbiddenPage from '../pages/Auth/Forbidden';
 import ProfilePage from '../pages/Customer/Profile';
+import AdminProductsPage from '../pages/Admin/Products';
+import CategoriesPage from '../pages/Admin/Categories';
+import InventoryPage from '../pages/Admin/Inventory';
 import DashboardPage from '../pages/Admin/Dashboard';
 import RepairerDashboardPage from '../pages/Repairer/Dashboard';
 import NotFoundPage from '../pages/NotFound';
@@ -40,6 +43,9 @@ function AppRoutes() {
       <Route element={<ProtectedRoute roles={[USER_ROLES.ADMIN]} />}>
         <Route element={<AdminLayout />}>
           <Route path={ROUTES.admin} element={<DashboardPage />} />
+          <Route path={ROUTES.adminProducts} element={<AdminProductsPage />} />
+          <Route path={ROUTES.adminCategories} element={<CategoriesPage />} />
+          <Route path={ROUTES.adminInventory} element={<InventoryPage />} />
         </Route>
       </Route>
     </Routes>
