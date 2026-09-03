@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ProductsPage from '../pages/Products/ProductsPage';
-import ProductDetailPlaceholder from '../pages/Products/ProductDetailPlaceholder';
+import ProductDetailsPage from '../pages/Customer/ProductDetails';
 import LoginPage from '../pages/Auth/Login';
 import RegisterPage from '../pages/Auth/Register';
 import ForbiddenPage from '../pages/Auth/Forbidden';
@@ -25,10 +25,7 @@ function AppRoutes() {
           element={<Navigate to={ROUTES.products} replace />}
         />
         <Route path={ROUTES.products} element={<ProductsPage />} />
-        <Route
-          path={ROUTES.productDetail}
-          element={<ProductDetailPlaceholder />}
-        />
+        <Route path={ROUTES.productDetail} element={<ProductDetailsPage />} />
         <Route path={ROUTES.login} element={<LoginPage />} />
         <Route path={ROUTES.register} element={<RegisterPage />} />
         <Route element={<ProtectedRoute />}>

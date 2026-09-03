@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
+import { ROUTES } from '../../constants/routes';
+import { formatCurrency } from '../../utils/currency';
+import { translations } from '../../utils/translations';
 
 import { getCategories } from '../../services/categoryService';
 import {
@@ -11,8 +14,6 @@ import type { Category } from '../../types/category.types';
 import type { Product } from '../../types/product.types';
 
 function ProductsPage() {
-  const navigate = useNavigate();
-
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -312,13 +313,9 @@ function ProductsPage() {
             products.length > 0 && (
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {products.map((product) => (
-                  <article
+                  <Link
                     key={product.productID}
-                    onClick={() =>
-                      navigate(
-                        `/products/${product.productID}`,
-                      )
-                    }
+                    to={generatePath(ROUTES.productDetail, { id: product.productID })}
                     className="cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
                   >
                     {product.images.length > 0 ? (
@@ -330,7 +327,7 @@ function ProductsPage() {
                     ) : (
                       <div className="flex h-48 items-center justify-center bg-slate-100">
                         <span className="text-sm text-slate-400">
-                          No image available
+                          {translations.productDetails.noImage}
                         </span>
                       </div>
                     )}
@@ -349,19 +346,13 @@ function ProductsPage() {
                           }`}
                         >
                           {product.stockQty > 0
-                            ? 'In Stock'
-                            : 'Out of Stock'}
+                            ? translations.productDetails.inStock
+                            : translations.productDetails.outOfStock}
                         </span>
                       </div>
 
                       <p className="mb-3 text-xl font-bold text-slate-900">
-                        Rs.{' '}
-                        {Number(
-                          product.price,
-                        ).toLocaleString('en-LK', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
+                        {formatCurrency(product.price)}
                       </p>
 
                       <div className="space-y-1 text-sm text-slate-600">
@@ -389,11 +380,11 @@ function ProductsPage() {
 
                       <div className="mt-4 border-t border-slate-100 pt-4">
                         <span className="text-sm font-medium text-slate-700">
-                          View product →
+                          {translations.productDetails.viewProduct} &rarr;
                         </span>
                       </div>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
             )}
