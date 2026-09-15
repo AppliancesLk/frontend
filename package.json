@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "test:checkout": "node --test test/checkout.test.cjs",
+    "test:checkout:e2e": "playwright test --config playwright.checkout.config.cjs",
     "test:cart": "node --test test/cart.test.cjs",
     "test:cart:e2e": "playwright test --config playwright.cart.config.cjs",
     "test:auth": "node --test test/auth-redirect.test.cjs",
