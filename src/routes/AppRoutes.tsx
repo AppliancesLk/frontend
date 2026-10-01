@@ -15,6 +15,8 @@ import AdminProductsPage from '../pages/Admin/Products';
 import CategoriesPage from '../pages/Admin/Categories';
 import InventoryPage from '../pages/Admin/Inventory';
 import DashboardPage from '../pages/Admin/Dashboard';
+import AdminOrdersPage from '../pages/Admin/Orders';
+import AdminOrderDetailsPage from '../pages/Admin/Orders/Details';
 import RepairerDashboardPage from '../pages/Repairer/Dashboard';
 import NotFoundPage from '../pages/NotFound';
 import { CustomerLayout } from '../components/layout/CustomerLayout';
@@ -55,6 +57,11 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.adminProductEdit} element={<ProductEditPage />} />
         <Route path={ROUTES.adminCategories} element={<CategoriesPage />} />
         <Route path={ROUTES.adminInventory} element={<InventoryPage />} />
+        <Route path={ROUTES.adminOrders} element={<AdminOrdersPage />} />
+        <Route
+          path={ROUTES.adminOrderDetail}
+          element={<AdminOrderDetailsPage />}
+        />
       </Route>
     </Route>
   </Route>,

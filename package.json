@@ -15,7 +15,8 @@
     "test:auth": "node --test test/auth-redirect.test.cjs",
     "test:products": "node --test test/product-details.test.cjs",
     "test:product-edit": "node --test test/product-edit.test.cjs",
-    "test:orders:e2e": "playwright test --config playwright.orders.config.cjs"
+    "test:orders:e2e": "playwright test --config playwright.orders.config.cjs",
+    "test:admin-orders:e2e": "playwright test --config playwright.admin-orders.config.cjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
