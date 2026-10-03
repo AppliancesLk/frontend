@@ -21,5 +21,7 @@ export const ROUTES = {
   adminRepairs: '/admin/repairs',
   adminRepairDetail: '/admin/repairs/:id',
   repairer: '/repairer',
+  repairerRepairs: '/repairer/repairs',
+  repairerRepairDetail: '/repairer/repairs/:id',
   forbidden: '/forbidden',
 } as const;
