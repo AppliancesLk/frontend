@@ -1,4 +1,15 @@
 import apiClient from '../api/apiClient';
+import type { CatalogQuery, CatalogResult } from '../types/catalog.types';
+export const getProductCatalog = async (
+  query: CatalogQuery,
+  signal?: AbortSignal,
+): Promise<CatalogResult> =>
+  (
+    await apiClient.get<CatalogResult>('/products/catalog', {
+      params: query,
+      signal,
+    })
+  ).data;
 import type {
   Product,
   CreateProductRequest,
