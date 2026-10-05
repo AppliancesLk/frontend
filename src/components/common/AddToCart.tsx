@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../../../../hooks/useAuth';
-import { USER_ROLES } from '../../../../constants/roles';
-import { ROUTES } from '../../../../constants/routes';
-import { addCartItem } from '../../../../services/cartService';
-import { getApiError } from '../../../../utils/apiErrors';
-import { translations } from '../../../../utils/translations';
+import { useAuth } from '../../hooks/useAuth';
+import { USER_ROLES } from '../../constants/roles';
+import { ROUTES } from '../../constants/routes';
+import { addCartItem } from '../../services/cartService';
+import { getApiError } from '../../utils/apiErrors';
+import { translations } from '../../utils/translations';
 const t = translations.cart;
 export function AddToCart({
   productId,
