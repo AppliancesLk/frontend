@@ -5,6 +5,7 @@ import { AddToCart } from '../../../components/common/AddToCart';
 import { ROUTES } from '../../../constants/routes';
 import { formatCurrency } from '../../../utils/currency';
 import { translations } from '../../../utils/translations';
+import { Rating } from '../../../components/common/Rating';
 const t = translations.catalog;
 export function CatalogProductCard({ product }: { product: Product }) {
   const available = product.isActive && product.stockQty > 0;
@@ -44,6 +45,7 @@ export function CatalogProductCard({ product }: { product: Product }) {
         {product.subtitle || product.category.name}
       </p>
       <div className="mt-auto pt-3">
+      {(product.ratingCount??0)>0&&<div className="mb-2"><Rating average={product.ratingAverage??0} count={product.ratingCount??0}/></div>}
         <p className="break-words text-base font-bold tracking-tight text-blue-700">
           {formatCurrency(product.price)}
         </p>
