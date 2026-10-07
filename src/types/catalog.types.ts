@@ -17,6 +17,7 @@ export interface CatalogQuery {
   limit: number;
 }
 export interface CategoryFacet {
+  imageUrl?:string|null;
   categoryID: string;
   name: string;
   parentId: string | null;
