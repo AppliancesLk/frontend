@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
 import { Icon } from '../../../components/common/Icon';
-import { ProductImage } from '../../../components/common/ProductImage';
 import { translations } from '../../../utils/translations';
 import { useHomePage } from './hooks/useHomePage';
 import { PromotionalBanner } from './components/PromotionalBanner';
 import { HomeProductSection } from './components/HomeProductSection';
+import { HomeCategorySection } from './components/HomeCategorySection';
 const t = translations.storefront;
 export default function HomePage() {
   const { data, retry } = useHomePage();
@@ -72,34 +72,7 @@ export default function HomePage() {
               </button>
             </div>
           )}
-          {data.categories.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-                {t.categories}
-              </h2>
-              <p className="mt-2 text-sm text-slate-500">
-                {t.categoryDescription}
-              </p>
-              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-                {data.categories
-                  .filter((category) => !category.parent)
-                  .map((category) => (
-                    <Link
-                      key={category.categoryID}
-                      to={`${ROUTES.products}?category=${encodeURIComponent(category.categoryID)}`}
-                      className="group rounded-xl border border-slate-200 bg-white p-5 transition-colors hover:border-blue-400 hover:bg-blue-50"
-                    >
-                      <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-600 group-hover:bg-yellow-300">
-                        {category.imageUrl?<ProductImage src={category.imageUrl} alt="" className="h-10 w-10" />:<Icon name="grid" />}
-                      </span>
-                      <span className="text-sm font-semibold text-slate-800">
-                        {category.name}
-                      </span>
-                    </Link>
-                  ))}
-              </div>
-            </section>
-          )}
+          <HomeCategorySection categories={data.categories} />
           <HomeProductSection
             products={data.products.slice(0, 8)}
             title={t.featured}
