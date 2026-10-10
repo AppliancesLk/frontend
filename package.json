@@ -21,7 +21,8 @@
     "test:products": "node --test test/product-details.test.cjs",
     "test:product-edit": "node --test test/product-edit.test.cjs",
     "test:orders:e2e": "playwright test --config playwright.orders.config.cjs",
-    "test:admin-orders:e2e": "playwright test --config playwright.admin-orders.config.cjs"
+    "test:admin-orders:e2e": "playwright test --config playwright.admin-orders.config.cjs",
+    "test:chat:e2e": "playwright test --config playwright.chat.config.cjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -29,6 +30,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4",
+    "socket.io-client": "^4.8.4",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
