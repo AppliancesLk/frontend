@@ -6,6 +6,7 @@ import { translations } from '../../utils/translations';
 import { useAuth } from '../../hooks/useAuth';
 import { getCart } from '../../services/cartService';
 import { Icon } from '../common/Icon';
+import { chatText } from '../../utils/chatText';
 const t = translations.storefront;
 
 export function SiteHeader() {
@@ -154,6 +155,7 @@ export function SiteHeader() {
                   >
                     {t.profile}
                   </Link>
+                  {hasRole(USER_ROLES.CUSTOMER) && <Link className="block rounded-lg p-3 hover:bg-slate-50" to={ROUTES.liveChat}>{chatText.title}</Link>}
                   {hasRole(USER_ROLES.ADMIN) && (
                     <Link
                       className="block rounded-lg p-3 hover:bg-slate-50"

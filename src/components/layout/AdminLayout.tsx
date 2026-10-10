@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { translations } from '../../utils/translations';
+import { chatText } from '../../utils/chatText';
 export function AdminLayout() {
   return (
     <div className="min-h-screen bg-slate-50 md:flex">
@@ -23,6 +24,7 @@ export function AdminLayout() {
             },
             { path: ROUTES.adminOrders, label: translations.adminOrders.title },
             { path: ROUTES.adminRepairs, label: translations.adminRepairs.title },
+            { path: ROUTES.adminChat, label: chatText.adminTitle },
           ].map((item) => (
             <NavLink
               key={item.path}
