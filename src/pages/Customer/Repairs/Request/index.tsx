@@ -56,9 +56,7 @@ function RepairRequestContent() {
         </nav>
 
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-            {t.requestTitle}
-          </h1>
+          <h1 className="ui-page-title text-slate-900">{t.requestTitle}</h1>
           <p className="mt-2 text-sm text-slate-500">{t.requestDescription}</p>
         </div>
 

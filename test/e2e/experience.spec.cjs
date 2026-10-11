@@ -244,8 +244,11 @@ test('customers can submit, edit, and delete real reviews with live ratings', as
     .get(`/products/${fixture.washer.productID}/reviews`)
     .then((response) => response.json());
   expect(saved.summary.average).toBe(3);
-  page.once('dialog', (dialog) => dialog.accept());
   await page
+    .getByRole('button', { name: 'Delete review', exact: true })
+    .click();
+  await page
+    .getByRole('dialog')
     .getByRole('button', { name: 'Delete review', exact: true })
     .click();
   await expect(

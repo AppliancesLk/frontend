@@ -1,3 +1,8 @@
+import { ChatPane } from '../../../components/chat/ChatPane';
+import { Spinner } from '../../../components/ui/Feedback';
+import { Alert } from '../../../components/ui/Feedback';
+import { useState } from 'react';
+import { LoadingState } from '../../../components/ui/Feedback';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSupportChat } from '../../../hooks/useSupportChat';
 import { ChatConversation } from '../../../components/chat/ChatConversation';
@@ -9,15 +14,14 @@ export default function LiveChatPage() {
   return <CustomerChat key={user?.id} />;
 }
 function CustomerChat() {
+  const [showConversation, setShowConversation] = useState(false);
   const chat = useSupportChat('CUSTOMER');
   return (
     <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
       <section className="mx-auto max-w-7xl space-y-6">
         <header className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-              {t.title}
-            </h1>
+            <h1 className="ui-page-title text-slate-900">{t.title}</h1>
             <p className="mt-2 text-sm text-slate-600">
               {t.customerDescription}
             </p>
@@ -27,21 +31,20 @@ function CustomerChat() {
           </div>
           <button
             type="button"
-            onClick={() => void chat.create()}
+            onClick={() => {
+              setShowConversation(true);
+              void chat.create();
+            }}
             disabled={chat.creating}
-            className="h-10 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+            className="ui-button ui-button-primary min-h-11 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           >
+            {chat.creating && <Spinner className="mr-2" />}
             {chat.creating ? t.creating : t.newChat}
           </button>
         </header>
         <ChatConnection state={chat.connection} reconnect={chat.reconnect} />
         {chat.actionError && (
-          <p
-            role="alert"
-            className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800"
-          >
-            {chat.actionError}
-          </p>
+          <Alert severity="warning">{chat.actionError}</Alert>
         )}
         {chat.listError ? (
           <div
@@ -57,10 +60,17 @@ function CustomerChat() {
             </button>
           </div>
         ) : !chat.list ? (
-          <p role="status">{t.loading}</p>
+          <LoadingState label={t.loading} compact={true} />
         ) : (
           <div className="grid items-start gap-5 lg:grid-cols-[20rem_minmax(0,1fr)]">
-            <aside className="min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm">
+            <aside
+              className={
+                (showConversation && chat.selectedId
+                  ? 'hidden lg:block '
+                  : '') +
+                'min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm'
+              }
+            >
               <h2 className="border-b border-slate-200 p-4 font-semibold text-slate-900">
                 {t.sessions} · {chat.list.total}/5
               </h2>
@@ -68,12 +78,21 @@ function CustomerChat() {
                 sessions={chat.list.items}
                 selectedId={chat.selectedId}
                 role="CUSTOMER"
-                select={chat.select}
+                select={(id) => {
+                  chat.select(id);
+                  setShowConversation(true);
+                }}
               />
             </aside>
-            <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-              <ChatConversation chat={chat} />
-            </section>
+            <ChatPane
+              chat={chat}
+              back={() => {
+                chat.deselect();
+                setShowConversation(false);
+              }}
+            >
+              <ChatConversation key={chat.selectedId} chat={chat} />
+            </ChatPane>
           </div>
         )}
       </section>

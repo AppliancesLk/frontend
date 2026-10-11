@@ -31,7 +31,7 @@ function SpecificationValue({
           </label>
           <select
             id={`${id}-type`}
-            className="auth-input"
+            className="ui-field auth-input"
             value={draft.kind}
             onChange={(event) => {
               const selected = kinds.find(
@@ -60,7 +60,7 @@ function SpecificationValue({
               type={draft.kind === 'number' ? 'number' : 'text'}
               step={draft.kind === 'number' ? 'any' : undefined}
               required={draft.kind === 'number'}
-              className="auth-input"
+              className="ui-field auth-input"
               value={draft.text}
               onChange={(event) =>
                 onChange({ ...draft, text: event.target.value })
@@ -75,7 +75,7 @@ function SpecificationValue({
             </label>
             <select
               id={`${id}-value`}
-              className="auth-input"
+              className="ui-field auth-input"
               value={String(draft.value)}
               onChange={(event) =>
                 onChange({
@@ -146,7 +146,7 @@ function SpecificationValue({
           ))}
           <button
             type="button"
-            className="auth-secondary h-auto min-h-10 max-w-full whitespace-normal py-2 text-center"
+            className="auth-secondary h-auto min-min-h-11 max-w-full whitespace-normal py-2 text-center"
             onClick={() =>
               onChange({
                 ...draft,
@@ -184,7 +184,7 @@ export function SpecificationEntries({
               <input
                 id={`${id}-${index}-name`}
                 required
-                className="auth-input"
+                className="ui-field auth-input"
                 value={entry.name}
                 onChange={(event) =>
                   onChange(
@@ -224,7 +224,7 @@ export function SpecificationEntries({
       ))}
       <button
         type="button"
-        className="auth-secondary h-auto min-h-10 max-w-full whitespace-normal py-2 text-center"
+        className="auth-secondary h-auto min-min-h-11 max-w-full whitespace-normal py-2 text-center"
         onClick={() =>
           onChange([
             ...entries,
