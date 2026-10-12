@@ -24,9 +24,9 @@ function DetailsContent({ id }: { id: string }) {
         retry={page.refresh}
       />
       {page.notFound && (
-        <section className="rounded-xl border border-slate-200 bg-white p-8 text-center">
-          <h2 className="text-xl font-semibold text-slate-900">{t.notFound}</h2>
-          <p className="mt-2 text-sm text-slate-500">{t.notFoundDescription}</p>
+        <section className="rounded-md border border-line bg-surface p-8 text-center">
+          <h2 className="text-xl font-semibold text-fg">{t.notFound}</h2>
+          <p className="mt-2 text-sm text-fg-muted">{t.notFoundDescription}</p>
           <Link to={ROUTES.orders} className="auth-primary mt-6">
             {t.back}
           </Link>

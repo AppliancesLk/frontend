@@ -9,8 +9,8 @@ export default function CategoriesPage() {
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="ui-page-title text-slate-900">{t.categories}</h1>
-        <p className="mt-2 text-sm text-slate-500">{t.categoriesDescription}</p>
+        <h1 className="ui-page-title text-fg">{t.categories}</h1>
+        <p className="mt-2 text-sm text-fg-muted">{t.categoriesDescription}</p>
       </header>
       <CatalogFeedback
         loading={page.loading}

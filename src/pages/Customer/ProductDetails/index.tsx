@@ -1,3 +1,4 @@
+import { formatCategoryName } from '../../../utils/category';
 import { useEffect, useCallback, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
@@ -56,17 +57,17 @@ export default function ProductDetailsPage() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [id]);
   return (
-    <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-6">
+    <main className="product-detail-page bg-page px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+      <div className="mx-auto max-w-[1200px] space-y-8">
         <nav
           aria-label={translations.productDetails.breadcrumb}
           className="text-sm"
         >
-          <ol className="flex flex-wrap items-center gap-2 text-slate-500">
+          <ol className="flex flex-wrap items-center gap-2 text-fg-muted">
             <li>
               <Link
                 to={ROUTES.home}
-                className="font-medium text-blue-600 hover:text-blue-700"
+                className="font-medium text-fg-link hover:text-fg-link"
               >
                 {translations.storefront.home}
               </Link>
@@ -77,9 +78,9 @@ export default function ProductDetailsPage() {
                 <li>
                   <Link
                     to={`${ROUTES.products}?category=${product.category.categoryID}`}
-                    className="hover:text-blue-700"
+                    className="hover:text-fg-link"
                   >
-                    {product.category.name}
+                    {formatCategoryName(product.category.name)}
                   </Link>
                 </li>
                 <li aria-hidden="true">/</li>
@@ -92,7 +93,7 @@ export default function ProductDetailsPage() {
         </nav>
         {page.status === 'ready' && product ? (
           <>
-            <div className="grid items-start gap-6 lg:grid-cols-2 xl:grid-cols-[1.25fr_1fr_.85fr]">
+            <div className="product-detail-grid grid items-start gap-6 md:grid-cols-2 xl:grid-cols-[1.3fr_1fr_.9fr]">
               <ProductGallery
                 key={`gallery-${product.productID}`}
                 images={product.images}
