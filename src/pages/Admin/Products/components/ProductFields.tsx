@@ -26,7 +26,7 @@ export function ProductFields({
           <input
             id={field}
             required
-            className="auth-input"
+            className="ui-field auth-input"
             type={field === 'price' ? 'number' : 'text'}
             min={field === 'price' ? 0 : undefined}
             max={field === 'price' ? 9999999999.99 : undefined}
@@ -43,7 +43,7 @@ export function ProductFields({
         <select
           id="categoryID"
           required
-          className="auth-input"
+          className="ui-field auth-input"
           value={draft.categoryID}
           onChange={(event) => onChange('categoryID', event.target.value)}
         >
@@ -69,7 +69,7 @@ export function ProductFields({
           </label>
           <input
             id={field}
-            className="auth-input"
+            className="ui-field auth-input"
             value={draft[field] ?? ''}
             type={field === 'compareAtPrice' ? 'number' : 'text'}
             min={field === 'compareAtPrice' ? 0 : undefined}
@@ -88,7 +88,7 @@ export function ProductFields({
         </label>
         <select
           id="badge"
-          className="auth-input"
+          className="ui-field auth-input"
           value={draft.badge ?? ''}
           onChange={(event) => onChange('badge', event.target.value)}
         >
@@ -115,7 +115,7 @@ export function ProductFields({
         <textarea
           id="imageUrls"
           rows={3}
-          className="auth-input h-auto py-2"
+          className="ui-field auth-input h-auto py-2"
           value={draft.imageUrls}
           onChange={(event) => onChange('imageUrls', event.target.value)}
           aria-describedby="image-hint"
@@ -145,7 +145,7 @@ export function ProductFields({
               }
               value={draft[field] ?? ''}
               onChange={(event) => onChange(field, event.target.value)}
-              className="auth-input h-auto py-2"
+              className="ui-field auth-input h-auto py-2"
             />
             <p className="mt-1 text-xs text-slate-500">
               {field === 'features' || field === 'boxContents'

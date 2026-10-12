@@ -39,6 +39,8 @@ export const chatText = {
   conversation: 'Support conversation',
   limit:
     'This chat has reached the 100-message limit. Start a new chat to continue.',
+  adminLimit:
+    'This chat has reached the 100-message limit. The customer can start a new chat to continue.',
   closedNotice: 'This chat is closed. Its history is still available.',
   close: 'Close chat',
   closing: 'Closing…',

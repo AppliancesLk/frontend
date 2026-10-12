@@ -20,7 +20,7 @@ export function CatalogPagination({
         disabled={page <= 1}
         onClick={() => onChange(page - 1)}
         aria-label={t.previous}
-        className="h-10 w-10 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40"
+        className="min-h-11 w-11 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40"
       >
         ←
       </button>
@@ -45,7 +45,7 @@ export function CatalogPagination({
         disabled={page >= totalPages}
         onClick={() => onChange(page + 1)}
         aria-label={t.next}
-        className="h-10 w-10 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40"
+        className="min-h-11 w-11 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40"
       >
         →
       </button>
