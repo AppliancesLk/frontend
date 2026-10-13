@@ -49,10 +49,10 @@ export default function RepairerRepairDetailsPage() {
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
         <div
           role="alert"
-          className="rounded-xl border border-red-200 bg-red-50 p-8 text-center shadow-sm"
+          className="rounded-md border border-danger/25 bg-danger-bg p-8 text-center "
         >
-          <p className="font-medium text-red-900">Repair Not Found</p>
-          <p className="mt-2 text-sm text-red-700">{page.error}</p>
+          <p className="font-medium text-danger">Repair Not Found</p>
+          <p className="mt-2 text-sm text-danger">{page.error}</p>
           <button
             type="button"
             onClick={() => void page.refresh()}
@@ -80,12 +80,12 @@ export default function RepairerRepairDetailsPage() {
             <button
               type="button"
               onClick={page.goBack}
-              className="mb-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+              className="mb-2 text-sm font-medium text-fg-link hover:text-fg-link"
             >
               ← Back to Repairs
             </button>
-            <h1 className="ui-page-title text-slate-900">Repair Details</h1>
-            <p className="mt-1 tabular-nums text-sm text-slate-500">
+            <h1 className="ui-page-title text-fg">Repair Details</h1>
+            <p className="mt-1 tabular-nums text-sm text-fg-muted">
               {page.repair.reference}
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function RepairerRepairDetailsPage() {
                 type="button"
                 onClick={() => setShowStatusDialog(true)}
                 disabled={page.processing}
-                className="ui-button ui-button-primary rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="ui-button ui-button-primary rounded-sm border border-transparent bg-primary px-4 py-2 text-sm font-medium text-primary-on  hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed "
               >
                 Update Status
               </button>
@@ -114,68 +114,68 @@ export default function RepairerRepairDetailsPage() {
         {page.updateError && (
           <div
             role="alert"
-            className="rounded-lg border border-red-200 bg-red-50 p-4"
+            className="rounded-sm border border-danger/25 bg-danger-bg p-4"
           >
-            <p className="text-sm text-red-700">{page.updateError}</p>
+            <p className="text-sm text-danger">{page.updateError}</p>
           </div>
         )}
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Customer</h2>
+          <div className="rounded-md border border-line bg-surface p-6 ">
+            <h2 className="text-lg font-semibold text-fg">Customer</h2>
             <dl className="mt-4 space-y-3">
               <div>
-                <dt className="text-sm font-medium text-slate-500">Name</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Name</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.customer.username}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-500">Email</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Email</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.customer.email}
                 </dd>
               </div>
             </dl>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Device</h2>
+          <div className="rounded-md border border-line bg-surface p-6 ">
+            <h2 className="text-lg font-semibold text-fg">Device</h2>
             <dl className="mt-4 space-y-3">
               <div>
-                <dt className="text-sm font-medium text-slate-500">Type</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Type</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.deviceType}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-500">Brand</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Brand</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.brand}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-500">Model</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Model</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.model}
                 </dd>
               </div>
               {page.repair.device.serialNumber && (
                 <div>
-                  <dt className="text-sm font-medium text-slate-500">
+                  <dt className="text-sm font-medium text-fg-muted">
                     Serial Number
                   </dt>
-                  <dd className="mt-1 tabular-nums text-sm text-slate-900">
+                  <dd className="mt-1 tabular-nums text-sm text-fg">
                     {page.repair.device.serialNumber}
                   </dd>
                 </div>
               )}
               {page.repair.device.purchaseDate && (
                 <div>
-                  <dt className="text-sm font-medium text-slate-500">
+                  <dt className="text-sm font-medium text-fg-muted">
                     Purchase Date
                   </dt>
-                  <dd className="mt-1 text-sm text-slate-900">
+                  <dd className="mt-1 text-sm text-fg">
                     {new Date(
                       page.repair.device.purchaseDate,
                     ).toLocaleDateString()}
@@ -186,21 +186,19 @@ export default function RepairerRepairDetailsPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Problem Description
-          </h2>
-          <p className="mt-4 whitespace-pre-wrap text-sm text-slate-700">
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">Problem Description</h2>
+          <p className="mt-4 whitespace-pre-wrap text-sm text-fg-secondary">
             {page.repair.problemDescription}
           </p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">Status</h2>
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">Status</h2>
           <div className="mt-4 flex items-center gap-4">
             <RepairStatusBadge status={page.repair.status} />
             {canUpdateStatus && (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-fg-muted">
                 Can be updated to:{' '}
                 {validNextStatuses.map(getStatusLabel).join(', ')}
               </p>
@@ -208,28 +206,28 @@ export default function RepairerRepairDetailsPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">Timeline</h2>
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">Timeline</h2>
           <dl className="mt-4 space-y-3">
             <div>
-              <dt className="text-sm font-medium text-slate-500">Created</dt>
-              <dd className="mt-1 text-sm text-slate-900">
+              <dt className="text-sm font-medium text-fg-muted">Created</dt>
+              <dd className="mt-1 text-sm text-fg">
                 {formatDate(page.repair.createdAt)}
               </dd>
             </div>
             {page.repair.reviewedAt && (
               <div>
-                <dt className="text-sm font-medium text-slate-500">Reviewed</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Reviewed</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {formatDate(page.repair.reviewedAt)}
                 </dd>
               </div>
             )}
             <div>
-              <dt className="text-sm font-medium text-slate-500">
+              <dt className="text-sm font-medium text-fg-muted">
                 Last Updated
               </dt>
-              <dd className="mt-1 text-sm text-slate-900">
+              <dd className="mt-1 text-sm text-fg">
                 {formatDate(page.repair.updatedAt)}
               </dd>
             </div>
@@ -255,14 +253,14 @@ export default function RepairerRepairDetailsPage() {
                 type="button"
                 aria-pressed={selectedStatus === status}
                 onClick={() => setSelectedStatus(status)}
-                className={`w-full rounded-lg border p-3 text-left text-sm font-medium transition-colors ${
+                className={`w-full rounded-sm border p-3 text-left text-sm font-medium transition-colors ${
                   selectedStatus === status
-                    ? 'border-blue-500 bg-blue-50 text-blue-900'
-                    : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'
+                    ? 'border-primary bg-primary-subtle text-fg-link'
+                    : 'border-line bg-surface text-fg hover:bg-page'
                 }`}
               >
                 <RepairStatusBadge status={status} />
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-fg-muted">
                   {getStatusDescription(status)}
                 </p>
               </button>
@@ -285,7 +283,7 @@ export default function RepairerRepairDetailsPage() {
               type="button"
               onClick={() => void handleStatusUpdate()}
               disabled={!selectedStatus || page.processing}
-              className="ui-button ui-button-primary flex-1 rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="ui-button ui-button-primary flex-1 rounded-sm border border-transparent bg-primary px-4 py-2 text-sm font-medium text-primary-on  hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed "
             >
               {page.processing && <Spinner className="mr-2" />}
               {page.processing ? 'Updating...' : 'Update Status'}

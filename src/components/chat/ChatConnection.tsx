@@ -10,7 +10,7 @@ export function ChatConnection({
     <div className="flex flex-wrap items-center gap-3 text-sm">
       <p
         role="status"
-        className={state === 'connected' ? 'text-green-700' : 'text-slate-500'}
+        className={state === 'connected' ? 'text-success' : 'text-fg-muted'}
       >
         {state === 'connected'
           ? t.connected
@@ -22,13 +22,13 @@ export function ChatConnection({
         <button
           type="button"
           onClick={reconnect}
-          className="rounded text-blue-700 underline focus-visible:outline-2 focus-visible:outline-blue-600"
+          className="rounded text-fg-link underline focus-visible:outline-2 focus-visible:outline-primary"
         >
           {t.reconnect}
         </button>
       )}
       {state === 'error' && (
-        <p role="alert" className="text-red-700">
+        <p role="alert" className="text-danger">
           {t.connectionError}
         </p>
       )}

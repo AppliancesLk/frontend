@@ -11,11 +11,11 @@ function InventoryPage() {
       <div className="mx-auto max-w-5xl">
         <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="ui-page-title text-slate-900">
+            <h1 className="ui-page-title text-fg">
               {translations.admin.inventory}
             </h1>
 
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-fg-secondary">
               {translations.admin.inventoryDescription}
             </p>
           </div>
@@ -24,7 +24,7 @@ function InventoryPage() {
             type="button"
             onClick={handleRefresh}
             disabled={loading || Object.values(saving).some(Boolean)}
-            className="ui-button ui-button-secondary rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            className="ui-button ui-button-secondary rounded-sm bg-surface px-4 py-2 text-sm font-medium text-fg-secondary  transition hover:bg-subtle disabled:cursor-not-allowed "
           >
             {translations.admin.refresh}
           </button>
@@ -44,7 +44,7 @@ function InventoryPage() {
 
         {!loading && !loadError && products.length > 0 && (
           <>
-            <p className="mb-3 text-sm text-slate-500">
+            <p className="mb-3 text-sm text-fg-muted">
               {products.length}{' '}
               {products.length === 1
                 ? translations.admin.productSingular

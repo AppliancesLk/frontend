@@ -45,7 +45,7 @@ export function ImageUploader({
   }
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-slate-700">
+      <label className="block text-sm font-medium text-fg-secondary">
         {busy ? t.uploading : t.upload}
         <input
           disabled={busy || value.length >= max}
@@ -56,17 +56,17 @@ export function ImageUploader({
             void upload(Array.from(event.target.files ?? []));
             event.target.value = '';
           }}
-          className="mt-2 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-blue-700 disabled:opacity-50"
+          className="mt-2 block w-full text-sm file:mr-3 file:rounded-sm file:border-0 file:bg-primary-subtle file:px-4 file:py-2 file:text-fg-link "
         />
       </label>
-      <p className="text-xs leading-5 text-slate-500">
+      <p className="text-xs leading-5 text-fg-muted">
         {t.imageHelp} ({value.length}/{max})
       </p>
       <div className="flex flex-wrap gap-3">
         {value.map((src, index) => (
           <div
             key={`${src}:${index}`}
-            className="w-24 rounded-lg border border-slate-200 bg-white p-2"
+            className="w-24 rounded-sm border border-line bg-surface p-2"
           >
             <ProductImage
               src={src}
@@ -86,7 +86,7 @@ export function ImageUploader({
                   ];
                   onChange(next);
                 }}
-                className="px-1 py-2 text-blue-700 disabled:opacity-25"
+                className="px-1 py-2 text-fg-link disabled:text-fg-disabled"
               >
                 ←
               </button>
@@ -95,7 +95,7 @@ export function ImageUploader({
                 disabled={busy}
                 aria-label={`${t.removeImage} ${index + 1}`}
                 onClick={() => onChange(value.filter((_, i) => i !== index))}
-                className="px-1 py-2 text-red-700"
+                className="px-1 py-2 text-danger"
               >
                 ×
               </button>
@@ -111,7 +111,7 @@ export function ImageUploader({
                   ];
                   onChange(next);
                 }}
-                className="px-1 py-2 text-blue-700 disabled:opacity-25"
+                className="px-1 py-2 text-fg-link disabled:text-fg-disabled"
               >
                 →
               </button>
@@ -120,7 +120,7 @@ export function ImageUploader({
         ))}
       </div>
       {error && (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-sm text-danger">
           {error}
         </p>
       )}

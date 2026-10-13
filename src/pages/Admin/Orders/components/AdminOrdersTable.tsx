@@ -19,9 +19,9 @@ export function AdminOrdersTable({ orders }: { orders: AdminOrder[] }) {
       />
     );
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-x-auto rounded-md border border-line bg-surface ">
       <table className="ui-table ui-card-table min-w-full text-left text-sm">
-        <thead className="bg-slate-50 text-slate-600">
+        <thead className="bg-page text-fg-secondary">
           <tr>
             <th className="px-5 py-4 font-medium">{translations.orders.id}</th>
             <th className="px-5 py-4 font-medium">{t.customer}</th>
@@ -40,28 +40,28 @@ export function AdminOrdersTable({ orders }: { orders: AdminOrder[] }) {
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-200">
+        <tbody className="divide-y divide-line">
           {orders.map((order) => (
             <tr key={order.id}>
               <td
                 data-label={translations.orders.id}
-                className="xl:max-w-48 xl:truncate px-5 py-4 tabular-nums text-xs text-slate-600"
+                className="xl:max-w-48 xl:truncate px-5 py-4 tabular-nums text-xs text-fg-secondary"
               >
                 <div className="ui-cell-value">{order.id}</div>
               </td>
               <td data-label={t.customer} className="px-5 py-4">
                 <div className="ui-cell-value">
-                  <p className="font-medium text-slate-900">
+                  <p className="font-medium text-fg">
                     {order.customer.username}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-fg-muted">
                     {order.customer.email}
                   </p>
                 </div>
               </td>
               <td
                 data-label={translations.orders.date}
-                className="xl:whitespace-nowrap px-5 py-4 text-slate-600"
+                className="xl:whitespace-nowrap px-5 py-4 text-fg-secondary"
               >
                 <div className="ui-cell-value">
                   {formatDate(order.createdAt)}
@@ -69,7 +69,7 @@ export function AdminOrdersTable({ orders }: { orders: AdminOrder[] }) {
               </td>
               <td
                 data-label={translations.orders.total}
-                className="xl:whitespace-nowrap px-5 py-4 font-semibold text-slate-900"
+                className="xl:whitespace-nowrap px-5 py-4 font-semibold text-fg"
               >
                 <div className="ui-cell-value">
                   {formatCurrency(order.total)}
@@ -80,7 +80,7 @@ export function AdminOrdersTable({ orders }: { orders: AdminOrder[] }) {
                   {order.payment ? (
                     <PaymentBadge status={order.payment.status} />
                   ) : (
-                    <span className="text-slate-500">{t.noPayment}</span>
+                    <span className="text-fg-muted">{t.noPayment}</span>
                   )}
                 </div>
               </td>
@@ -95,7 +95,7 @@ export function AdminOrdersTable({ orders }: { orders: AdminOrder[] }) {
               >
                 <div className="ui-cell-value">
                   <Link
-                    className="font-medium text-blue-600 hover:text-blue-700"
+                    className="font-medium text-fg-link hover:text-fg-link"
                     to={generatePath(ROUTES.adminOrderDetail, { id: order.id })}
                   >
                     {translations.orders.view}
