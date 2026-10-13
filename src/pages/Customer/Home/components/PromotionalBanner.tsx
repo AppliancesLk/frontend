@@ -12,6 +12,7 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
   const touchStart = useRef<number | null>(null);
   const count = section?.slides.length ?? 0;
   const current = count ? index % count : 0;
+  const isHero = section?.position === 'top';
   useEffect(() => {
     if (
       count < 2 ||
@@ -22,16 +23,16 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
       return;
     const timer = window.setInterval(() => {
       if (!document.hidden) setIndex((value) => (value + 1) % count);
-    }, 7000);
+    }, isHero ? 3500 : 7000);
     return () => window.clearInterval(timer);
-  }, [count, paused, interacting]);
+  }, [count, paused, interacting, isHero]);
   if (!section?.visible || !count) return null;
   const slide = section.slides[current];
   return (
     <section
       aria-label={t.positions[section.position]}
       aria-roledescription={count > 1 ? 'carousel' : undefined}
-      className="overflow-hidden rounded-lg border border-line bg-surface"
+      className={`overflow-hidden rounded-lg border border-line bg-surface ${isHero ? 'campaign-hero' : ''}`}
       onMouseEnter={() => setInteracting(true)}
       onMouseLeave={() => setInteracting(false)}
       onFocusCapture={() => setInteracting(true)}
@@ -41,7 +42,8 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
       }}
       onTouchStart={(event) => {
         touchStart.current = event.touches[0].clientX;
-        setPaused(true);
+        if (isHero) setInteracting(true);
+        else setPaused(true);
       }}
       onTouchEnd={(event) => {
         const start = touchStart.current;
@@ -49,11 +51,16 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
         if (start !== null && Math.abs(end - start) > 50)
           setIndex((value) => (value + (end < start ? 1 : count - 1)) % count);
         touchStart.current = null;
+        if (isHero) setInteracting(false);
+      }}
+      onTouchCancel={() => {
+        touchStart.current = null;
+        if (isHero) setInteracting(false);
       }}
     >
       <div
         key={current}
-        className="campaign-slide motion-safe:animate-fade-in"
+        className={`campaign-slide motion-safe:animate-fade-in ${isHero ? 'campaign-hero-slide' : ''}`}
         role="group"
         aria-roledescription="slide"
         aria-label={`${current + 1} of ${count}`}
@@ -63,19 +70,29 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
           key={slide.imageUrl}
           src={bannerImageUrl(slide.imageUrl)}
           alt={slide.alt}
-          eager={section.position === 'top'}
-          className={`campaign-art w-full ${section.position === 'top' ? 'aspect-[8/3]' : 'aspect-[16/5]'}`}
+          eager={isHero}
+          className={`campaign-art w-full ${isHero ? 'campaign-hero-art object-cover! object-right' : 'aspect-[16/5]'}`}
         />
         {(slide.title || slide.description || slide.buttonText) && (
-          <div className="flex flex-col gap-4 border-t border-line-subtle p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div
+            className={
+              isHero
+                ? 'campaign-hero-copy flex flex-col gap-4'
+                : 'flex flex-col gap-4 border-t border-line-subtle p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8'
+            }
+          >
             <div>
               {slide.title && (
-                <h2 className="text-2xl font-bold tracking-tight text-fg md:text-3xl">
+                <h2
+                  className={`text-2xl font-bold tracking-tight md:text-3xl ${isHero ? 'text-white' : 'text-fg'}`}
+                >
                   {slide.title}
                 </h2>
               )}
               {slide.description && (
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-fg-secondary">
+                <p
+                  className={`mt-2 max-w-2xl text-sm leading-6 ${isHero ? 'text-white/90' : 'text-fg-secondary'}`}
+                >
                   {slide.description}
                 </p>
               )}
@@ -100,7 +117,7 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
           </div>
         )}
       </div>
-      {count > 1 && (
+      {!isHero && count > 1 && (
         <div className="flex items-center justify-center gap-3 border-t border-line-subtle p-3">
           <button
             aria-label={t.previous}

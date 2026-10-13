@@ -205,6 +205,59 @@ async function noOverflow(page) {
   ).toBe(true);
 }
 
+test('hero autoplays without controls and resumes after hover and swipe', async ({
+  page,
+}) => {
+  await mockShop(page);
+  await page.route('http://localhost:3099/banners', (route) =>
+    route.fulfill({
+      json: [{
+        position: 'top',
+        visible: true,
+        slides: ['First promotion', 'Second promotion'].map((title) => ({
+          imageUrl: '/test-product.svg',
+          alt: title,
+          title,
+          description: 'Explore the collection.',
+          buttonText: 'Shop now',
+          href: '/products',
+        })),
+      }],
+    }),
+  );
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.clock.install();
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const hero = page.locator('.campaign-hero');
+    await expect(hero.getByRole('heading', { name: 'First promotion' })).toBeVisible();
+    await expect(hero.getByRole('button')).toHaveCount(0);
+    await page.clock.fastForward(3500);
+    await expect(hero.getByRole('heading', { name: 'Second promotion' })).toBeVisible();
+    await page.clock.fastForward(3500);
+    await expect(hero.getByRole('heading', { name: 'First promotion' })).toBeVisible();
+    await hero.hover();
+    await page.clock.fastForward(7000);
+    await expect(hero.getByRole('heading', { name: 'First promotion' })).toBeVisible();
+    await page.mouse.move(0, 0);
+    await page.clock.fastForward(3500);
+    await expect(hero.getByRole('heading', { name: 'Second promotion' })).toBeVisible();
+    await hero.evaluate((element) => {
+      const start = new Event('touchstart', { bubbles: true });
+      Object.assign(start, { touches: [{ clientX: 250 }] });
+      element.dispatchEvent(start);
+      const end = new Event('touchend', { bubbles: true });
+      Object.assign(end, { changedTouches: [{ clientX: 100 }] });
+      element.dispatchEvent(end);
+    });
+    await expect(hero.getByRole('heading', { name: 'First promotion' })).toBeVisible();
+    await page.clock.fastForward(3500);
+    await expect(hero.getByRole('heading', { name: 'Second promotion' })).toBeVisible();
+    await noOverflow(page);
+  }
+});
+
 test('category navigation stays collapsed after scrolling stops', async ({
   page,
 }) => {
