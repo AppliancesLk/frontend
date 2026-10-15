@@ -13,3 +13,8 @@ export interface LoginInput {
 export interface RegisterInput extends LoginInput {
   email: string;
 }
+export interface RegistrationResult {
+  requiresVerification: true;
+  email: string;
+  message: string;
+}
