@@ -7,9 +7,46 @@ import { formatCurrency } from '../../../../utils/currency';
 import { formatDate } from '../../../../utils/date';
 import { translations } from '../../../../utils/translations';
 import { OrderStatusBadge } from './OrderStatusBadge';
+import { useRef, useState } from 'react';
+import { OrderTimeline } from '../../../../components/common/OrderTimeline';
+import { Button } from '../../../../components/ui/Button';
+import { Dialog } from '../../../../components/ui/Dialog';
+import { cancelOrder } from '../../../../services/orderService';
+import { getApiError } from '../../../../utils/apiErrors';
+import { commerceText as c } from '../../../../utils/commerceText';
 const t = translations.orders;
-export function OrderDetails({ order }: { order: Order }) {
+export function OrderDetails({
+  order,
+  refresh,
+}: {
+  order: Order;
+  refresh: () => void;
+}) {
   const delivery = order.delivery;
+  const [confirmCancel, setConfirmCancel] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const working = useRef(false);
+  const cancellable =
+    order.status === 'PENDING_PAYMENT' ||
+    (order.status === 'CONFIRMED' &&
+      order.paymentMethod === 'CASH_ON_DELIVERY');
+  async function cancel() {
+    if (working.current) return;
+    working.current = true;
+    setBusy(true);
+    setError('');
+    try {
+      await cancelOrder(order.id);
+      setConfirmCancel(false);
+      refresh();
+    } catch (err) {
+      setError(getApiError(err, c.cancelError));
+    } finally {
+      working.current = false;
+      setBusy(false);
+    }
+  }
   return (
     <>
       <RatingPlate
@@ -39,7 +76,69 @@ export function OrderDetails({ order }: { order: Order }) {
           { label: 'Total', value: formatCurrency(order.total) },
         ]}
       />
-      <OrderProgress status={order.status} />
+      <OrderProgress
+        status={order.status}
+        paymentMethod={order.paymentMethod}
+      />
+      {!['DELIVERED', 'CANCELLED'].includes(order.status) && (
+        <p className="text-sm text-fg-muted">{c.tracking}</p>
+      )}
+      <OrderTimeline history={order.history} />
+      <section className="ui-panel flex flex-wrap items-center justify-between gap-4 p-5">
+        <div className="space-y-2 text-sm">
+          <p>
+            {c.method}:{' '}
+            <strong>
+              {order.paymentMethod === 'CASH_ON_DELIVERY'
+                ? c.cod
+                : order.paymentMethod === 'LOYALTY'
+                  ? c.loyalty
+                  : c.payHere}
+            </strong>
+          </p>
+          {order.paymentMethod === 'CASH_ON_DELIVERY' &&
+            order.status !== 'CANCELLED' && (
+              <p>
+                {order.status === 'DELIVERED' ? c.paid : c.cashDue}:{' '}
+                <strong>{formatCurrency(order.total)}</strong>
+              </p>
+            )}
+          <p>
+            {c.earned}:{' '}
+            <strong>{formatCurrency(order.loyaltyEarned ?? '0.00')}</strong>
+          </p>
+        </div>
+        {cancellable && (
+          <Button variant="secondary" onClick={() => setConfirmCancel(true)}>
+            {c.cancelOrder}
+          </Button>
+        )}
+      </section>
+      <Dialog
+        open={confirmCancel}
+        onClose={() => setConfirmCancel(false)}
+        title={c.cancelOrder}
+        description={c.cancelConfirm}
+        busy={busy}
+      >
+        {error && (
+          <p role="alert" className="ui-alert ui-tone-danger">
+            {error}
+          </p>
+        )}
+        <div className="mt-5 flex flex-wrap justify-end gap-3">
+          <Button
+            variant="secondary"
+            disabled={busy}
+            onClick={() => setConfirmCancel(false)}
+          >
+            Keep order
+          </Button>
+          <Button variant="danger" busy={busy} onClick={() => void cancel()}>
+            {c.cancelOrder}
+          </Button>
+        </div>
+      </Dialog>
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <section
           aria-labelledby="order-items"
@@ -97,6 +196,12 @@ export function OrderDetails({ order }: { order: Order }) {
             ))}
           </ul>
           <dl className="space-y-3 border-t border-line p-4 text-sm sm:p-6">
+            {order.loyaltyRedeemed && order.loyaltyRedeemed !== '0.00' && (
+              <div className="flex flex-wrap justify-between gap-2 text-success">
+                <dt>{c.creditUsed}</dt>
+                <dd>−{formatCurrency(order.loyaltyRedeemed)}</dd>
+              </div>
+            )}
             <div className="flex flex-wrap justify-between gap-2 text-fg-secondary">
               <dt>{translations.cart.subtotal}</dt>
               <dd>{formatCurrency(order.subtotal)}</dd>

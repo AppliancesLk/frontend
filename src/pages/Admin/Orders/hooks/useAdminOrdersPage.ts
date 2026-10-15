@@ -50,13 +50,17 @@ export function useAdminOrdersPage(id?: string) {
     return () => controller.abort();
   }, [id, version]);
 
-  async function updateStatus(status: OrderStatus) {
+  async function updateStatus(status: OrderStatus, paymentCollected = false) {
     if (!id || saving) return;
     setSaving(true);
     setUpdateError('');
     setSuccess('');
     try {
-      const updated = await updateAdminOrderStatus(id, status);
+      const updated = await updateAdminOrderStatus(
+        id,
+        status,
+        paymentCollected,
+      );
       setOrders([updated]);
       setSuccess(t.updateSuccess);
     } catch (err: unknown) {

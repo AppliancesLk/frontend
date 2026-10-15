@@ -1,31 +1,42 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { FormEvent } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../../../constants/routes";
-import { getCart } from "../../../../services/cartService";
-import { prepareCheckout } from "../../../../services/checkoutService";
-import { createOrder } from "../../../../services/orderService";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { FormEvent } from 'react';
+import { generatePath, useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../../constants/routes';
+import { getCart } from '../../../../services/cartService';
+import { prepareCheckout } from '../../../../services/checkoutService';
+import { createOrder } from '../../../../services/orderService';
 import {
   getOrderPayment,
   initiatePayment,
-} from "../../../../services/paymentService";
-import type { Cart } from "../../../../types/cart.types";
-import type { CheckoutSummary } from "../../../../types/checkout.types";
-import type { PaymentStatus } from "../../../../types/payment.types";
-import { getApiError } from "../../../../utils/apiErrors";
-import { translations } from "../../../../utils/translations";
+} from '../../../../services/paymentService';
+import type { Cart } from '../../../../types/cart.types';
+import type { CheckoutSummary } from '../../../../types/checkout.types';
+import type { PaymentStatus } from '../../../../types/payment.types';
+import { getApiError } from '../../../../utils/apiErrors';
+import { translations } from '../../../../utils/translations';
 import {
   checkoutChanges,
   initialDelivery,
   normalizeDelivery,
   validateDelivery,
-} from "../helpers/checkout.helpers";
-import { loadPayHere } from "../helpers/payhere.helpers";
-import type { DeliveryDraft, DeliveryErrors } from "../types/checkout.types";
+} from '../helpers/checkout.helpers';
+import { loadPayHere } from '../helpers/payhere.helpers';
+import type { DeliveryDraft, DeliveryErrors } from '../types/checkout.types';
+import { getLoyalty } from '../../../../services/loyaltyService';
+import type { LoyaltySummary } from '../../../../types/loyalty.types';
+import { checkoutCredit } from '../helpers/payment.helpers';
+import { commerceText } from '../../../../utils/commerceText';
 const t = translations.checkout;
 
 export function useCheckoutPage(email: string) {
   const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState<
+    'CASH_ON_DELIVERY' | 'PAYHERE'
+  >('CASH_ON_DELIVERY');
+  const [loyalty, setLoyalty] = useState<LoyaltySummary | null>(null);
+  const [loyaltyError, setLoyaltyError] = useState('');
+  const [useCredit, setUseCredit] = useState(false);
+  const [creditAmount, setCreditAmount] = useState('');
   const [cart, setCart] = useState<Cart | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -34,8 +45,8 @@ export function useCheckoutPage(email: string) {
     null,
   );
   const [orderCreated, setOrderCreated] = useState(false);
-  const [paymentMessage, setPaymentMessage] = useState("");
-  const [error, setError] = useState("");
+  const [paymentMessage, setPaymentMessage] = useState('');
+  const [error, setError] = useState('');
   const [draft, setDraft] = useState(() => initialDelivery(email));
   const [errors, setErrors] = useState<DeliveryErrors>({});
   const [summary, setSummary] = useState<CheckoutSummary | null>(null);
@@ -55,16 +66,25 @@ export function useCheckoutPage(email: string) {
     const controller = new AbortController();
     read.current = controller;
     setLoading(true);
-    setError("");
+    setError('');
     setSummary(null);
     setLatestSummary(null);
+    setUseCredit(false);
+    setCreditAmount('');
     orderId.current = null;
     setOrderCreated(false);
     idempotencyKey.current = crypto.randomUUID();
     setPaymentStatus(null);
-    setPaymentMessage("");
+    setPaymentMessage('');
     try {
-      const result = await getCart(controller.signal);
+      const [result, balance] = await Promise.all([
+        getCart(controller.signal),
+        getLoyalty(controller.signal).catch(() => null),
+      ]);
+      if (alive.current && !controller.signal.aborted) {
+        setLoyalty(balance);
+        setLoyaltyError(balance ? '' : commerceText.creditError);
+      }
       if (alive.current && !controller.signal.aborted) setCart(result);
     } catch (err: unknown) {
       if (alive.current && !controller.signal.aborted)
@@ -93,8 +113,8 @@ export function useCheckoutPage(email: string) {
     setOrderCreated(false);
     idempotencyKey.current = crypto.randomUUID();
     setPaymentStatus(null);
-    setPaymentMessage("");
-    setError("");
+    setPaymentMessage('');
+    setError('');
   }
 
   const checkPayment = useCallback(
@@ -105,11 +125,11 @@ export function useCheckoutPage(email: string) {
       const payment = await getOrderPayment(id, controller.signal);
       if (!alive.current || controller.signal.aborted) return payment.status;
       setPaymentStatus(payment.status);
-      if (payment.status === "SUCCESS") {
+      if (payment.status === 'SUCCESS') {
         navigate(generatePath(ROUTES.orderDetail, { id }), { replace: true });
-      } else if (payment.status === "FAILED") {
+      } else if (payment.status === 'FAILED') {
         setPaymentMessage(t.paymentFailed);
-      } else if (payment.status === "CANCELLED") {
+      } else if (payment.status === 'CANCELLED') {
         setPaymentMessage(t.paymentCancelled);
       } else {
         setPaymentMessage(t.verificationPending);
@@ -124,7 +144,7 @@ export function useCheckoutPage(email: string) {
     for (let attempt = 0; attempt < 8; attempt += 1) {
       try {
         const status = await checkPayment(id);
-        if (status !== "PENDING") return;
+        if (status !== 'PENDING') return;
       } catch (err: unknown) {
         if (attempt === 7 && alive.current)
           setPaymentMessage(getApiError(err, t.verificationError));
@@ -139,8 +159,21 @@ export function useCheckoutPage(email: string) {
     if (busy.current || !summary) return;
     busy.current = true;
     setPaying(true);
-    setError("");
+    setError('');
     setPaymentMessage(t.creatingOrder);
+    const credit = checkoutCredit(
+      useCredit,
+      creditAmount,
+      loyalty?.balance ?? '0.00',
+      summary.subtotal,
+    );
+    if (!credit.valid) {
+      busy.current = false;
+      setPaying(false);
+      setError(commerceText.invalidCredit);
+      setPaymentMessage('');
+      return;
+    }
     let gatewayOpened = false;
     try {
       let id = orderId.current;
@@ -148,10 +181,16 @@ export function useCheckoutPage(email: string) {
         const order = await createOrder({
           idempotencyKey: idempotencyKey.current,
           delivery: normalizeDelivery(draft),
+          paymentMethod,
+          loyaltyAmount: credit.amount,
         });
         id = order.id;
         orderId.current = id;
         setOrderCreated(true);
+        if (order.status === 'CONFIRMED') {
+          navigate(generatePath(ROUTES.orderDetail, { id }), { replace: true });
+          return;
+        }
       }
       setPaymentMessage(t.openingPayHere);
       const [initiation, sdk] = await Promise.all([
@@ -177,7 +216,7 @@ export function useCheckoutPage(email: string) {
     } catch (err: unknown) {
       if (alive.current) {
         setError(getApiError(err, t.paymentStartError));
-        setPaymentMessage("");
+        setPaymentMessage('');
       }
     } finally {
       if (!gatewayOpened) {
@@ -202,7 +241,7 @@ export function useCheckoutPage(email: string) {
     event.preventDefault();
     if (busy.current || loading || !cart?.items.length) return;
     setSummary(null);
-    setError("");
+    setError('');
     const invalid = validateDelivery(draft);
     setErrors(invalid);
     if (Object.keys(invalid).length) {
@@ -240,8 +279,38 @@ export function useCheckoutPage(email: string) {
       if (alive.current) setSaving(false);
     }
   }
+  const credit = checkoutCredit(
+    useCredit,
+    creditAmount,
+    loyalty?.balance ?? '0.00',
+    summary?.subtotal ?? cart?.subtotal ?? '0.00',
+  );
   return {
     cart,
+    paymentMethod,
+    changePaymentMethod: (method: 'CASH_ON_DELIVERY' | 'PAYHERE') => {
+      if (busy.current || orderId.current) return;
+      setPaymentMethod(method);
+      idempotencyKey.current = crypto.randomUUID();
+    },
+    loyalty,
+    loyaltyError,
+    useCredit,
+    creditAmount,
+    changeCredit: (value: string) => {
+      if (!busy.current && !orderId.current) {
+        setCreditAmount(value);
+        idempotencyKey.current = crypto.randomUUID();
+      }
+    },
+    toggleCredit: (value: boolean) => {
+      if (!busy.current && !orderId.current) {
+        setUseCredit(value);
+        idempotencyKey.current = crypto.randomUUID();
+      }
+    },
+    creditPreview: credit.amount,
+    amountDue: credit.remaining,
     loading,
     saving,
     paying,
