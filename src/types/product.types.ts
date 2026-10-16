@@ -11,3 +11,7 @@ export interface Product {
   isActive: boolean;
   category: Category;
 }
+
+export interface UpdateProductStockRequest {
+  stockQty: number;
+}
