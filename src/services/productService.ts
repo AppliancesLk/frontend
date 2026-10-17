@@ -14,8 +14,10 @@ export const getProducts = async (): Promise<Product[]> => {
 
 export const getProductsByCategory = async (
   categoryID: string,
+  signal?: AbortSignal,
 ): Promise<Product[]> => {
   const response = await apiClient.get<Product[]>('/products', {
+    signal,
     params: {
       categoryId: categoryID,
     },
@@ -49,3 +51,13 @@ export const updateProduct = async (
 
 export const getAdminProducts = async (): Promise<Product[]> =>
   (await apiClient.get<Product[]>('/products/admin/all')).data;
+
+export const getProductById = async (
+  productID: string,
+  signal?: AbortSignal,
+): Promise<Product> =>
+  (
+    await apiClient.get<Product>(`/products/${encodeURIComponent(productID)}`, {
+      signal,
+    })
+  ).data;
