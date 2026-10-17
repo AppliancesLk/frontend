@@ -64,13 +64,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signIn(input: LoginInput) {
     generation.current++;
-    setUser(await authService.login(input));
+    const authenticatedUser = await authService.login(input);
+    setUser(authenticatedUser);
     setError(null);
+    return authenticatedUser;
   }
   async function signUp(input: RegisterInput) {
     generation.current++;
-    setUser(await authService.register(input));
+    const authenticatedUser = await authService.register(input);
+    setUser(authenticatedUser);
     setError(null);
+    return authenticatedUser;
   }
   async function signOut() {
     await authService.logout();
