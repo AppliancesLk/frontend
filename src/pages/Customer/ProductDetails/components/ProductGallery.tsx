@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getProductImages } from '../helpers/product-details.helpers';
-import { ProductImage } from './ProductImage';
+import { ProductImage } from '../../../../components/common/ProductImage';
 import { translations } from '../../../../utils/translations';
 const t = translations.productDetails;
 export function ProductGallery({
