@@ -13,6 +13,18 @@ export const createRepairTicket = async (
 ): Promise<RepairTicket> =>
   (await apiClient.post<RepairTicket>('/repairs', input)).data;
 
+// Customer repair functions
+export const getCustomerRepairs = async (
+  signal?: AbortSignal,
+): Promise<RepairTicket[]> =>
+  (await apiClient.get<RepairTicket[]>('/repairs', { signal })).data;
+
+export const getCustomerRepair = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<RepairTicket> =>
+  (await apiClient.get<RepairTicket>(`/repairs/${id}`, { signal })).data;
+
 // Admin repair functions
 export const getAdminRepairs = async (
   signal?: AbortSignal,
