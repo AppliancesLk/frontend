@@ -57,3 +57,25 @@ export interface AdminRepairTicket {
 export interface RejectRepairRequest {
   rejectionReason?: string;
 }
+
+export interface RepairerCustomerInfo {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface RepairerRepairTicket {
+  id: string;
+  reference: string;
+  customer: RepairerCustomerInfo;
+  device: DeviceInformation;
+  problemDescription: string;
+  status: RepairStatus;
+  reviewedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpdateRepairStatusRequest {
+  status: RepairStatus;
+}
