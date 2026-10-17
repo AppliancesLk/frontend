@@ -15,3 +15,16 @@ export interface Product {
 export interface UpdateProductStockRequest {
   stockQty: number;
 }
+export interface CreateProductRequest {
+  name: string;
+  SKU: string;
+  price: number;
+  categoryID: string;
+  stockQty: number;
+  images: string[];
+  specifications?: Record<string, string>;
+  isActive?: boolean;
+}
+export interface UpdateProductRequest {
+  isActive?: boolean;
+}
