@@ -10,8 +10,8 @@ export interface AuthContextValue {
   loading: boolean;
   error: string | null;
   refresh: () => Promise<void>;
-  signIn: (input: LoginInput) => Promise<void>;
-  signUp: (input: RegisterInput) => Promise<void>;
+  signIn: (input: LoginInput) => Promise<AuthUser>;
+  signUp: (input: RegisterInput) => Promise<AuthUser>;
   signOut: () => Promise<void>;
   hasRole: (...roles: UserRole[]) => boolean;
 }
