@@ -34,3 +34,26 @@ export interface RepairTicket {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CustomerInfo {
+  id: string;
+  username: string;
+  email: string;
+}
+
+export interface AdminRepairTicket {
+  id: string;
+  reference: string;
+  customer: CustomerInfo;
+  assignedRepairerId: string | null;
+  device: DeviceInformation;
+  problemDescription: string;
+  status: RepairStatus;
+  reviewedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RejectRepairRequest {
+  rejectionReason?: string;
+}
