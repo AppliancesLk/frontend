@@ -9,6 +9,8 @@ export const ROUTES = {
   checkout: '/checkout',
   orders: '/orders',
   orderDetail: '/orders/:id',
+  repairs: '/repairs',
+  repairRequest: '/repairs/request',
   admin: '/admin',
   adminProducts: '/admin/products',
   adminProductEdit: '/admin/products/:id/edit',
