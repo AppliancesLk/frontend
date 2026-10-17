@@ -35,3 +35,17 @@ refresh, direct-link reload, empty history, unknown/unowned/malformed IDs,
 authentication/role restrictions, delayed reads, safe errors and retry.
 Failure responses are intercepted only for failure-path checks; normal flows use
 the real backend and PostgreSQL. Screenshots are written to ignored test-results.
+
+## Admin order management
+
+ADMIN-only routes `/admin/orders` and `/admin/orders/:id` live under the existing
+AdminLayout. The list shows customer, date, total, payment state, and order state.
+Details show purchase-time items and delivery information, and expose only the
+next backend-supported fulfillment transitions. Updates use
+`PATCH /admin/orders/:id/status` and replace the displayed order with the server
+response. Loading, empty, error, missing-order, failed-update, desktop, and mobile
+states follow the shared Tailwind design system.
+
+```sh
+npm run test:admin-orders:e2e
+```
