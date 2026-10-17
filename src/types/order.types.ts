@@ -1,11 +1,11 @@
-import type { DeliveryInformation } from './checkout.types';
+import type { DeliveryInformation } from "./checkout.types";
 export type OrderStatus =
-  | 'PENDING_PAYMENT'
-  | 'CONFIRMED'
-  | 'PROCESSING'
-  | 'SHIPPED'
-  | 'DELIVERED'
-  | 'CANCELLED';
+  | "PENDING_PAYMENT"
+  | "CONFIRMED"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
 export interface OrderItem {
   id: string;
   productId: string;
@@ -21,7 +21,7 @@ export interface Order {
   customerId: string;
   sourceCartId: string;
   status: OrderStatus;
-  currency: 'LKR';
+  currency: "LKR";
   delivery: DeliveryInformation | null;
   subtotal: string;
   total: string;
@@ -29,4 +29,8 @@ export interface Order {
   createdAt: string;
   updatedAt: string;
   items: OrderItem[];
+}
+export interface CreateOrderRequest {
+  idempotencyKey: string;
+  delivery: DeliveryInformation;
 }

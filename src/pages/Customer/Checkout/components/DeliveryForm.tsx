@@ -1,6 +1,6 @@
-import { translations } from '../../../../utils/translations';
-import type { useCheckoutPage } from '../hooks/useCheckoutPage';
-import type { DeliveryDraft } from '../types/checkout.types';
+import { translations } from "../../../../utils/translations";
+import type { useCheckoutPage } from "../hooks/useCheckoutPage";
+import type { DeliveryDraft } from "../types/checkout.types";
 const t = translations.checkout;
 const fields: {
   name: keyof DeliveryDraft;
@@ -13,63 +13,63 @@ const fields: {
   hint?: string;
 }[] = [
   {
-    name: 'firstName',
+    name: "firstName",
     label: t.firstName,
-    autoComplete: 'given-name',
+    autoComplete: "given-name",
     maxLength: 80,
   },
   {
-    name: 'lastName',
+    name: "lastName",
     label: t.lastName,
-    autoComplete: 'family-name',
+    autoComplete: "family-name",
     maxLength: 80,
   },
   {
-    name: 'email',
+    name: "email",
     label: t.email,
-    autoComplete: 'email',
-    type: 'email',
+    autoComplete: "email",
+    type: "email",
     maxLength: 254,
   },
   {
-    name: 'phone',
+    name: "phone",
     label: t.phone,
-    autoComplete: 'tel',
-    type: 'tel',
+    autoComplete: "tel",
+    type: "tel",
     maxLength: 30,
     hint: t.phoneHint,
   },
   {
-    name: 'addressLine1',
+    name: "addressLine1",
     label: t.addressLine1,
-    autoComplete: 'address-line1',
+    autoComplete: "address-line1",
     maxLength: 200,
     full: true,
   },
   {
-    name: 'addressLine2',
+    name: "addressLine2",
     label: t.addressLine2,
-    autoComplete: 'address-line2',
+    autoComplete: "address-line2",
     maxLength: 200,
     full: true,
     optional: true,
   },
   {
-    name: 'city',
+    name: "city",
     label: t.city,
-    autoComplete: 'address-level2',
+    autoComplete: "address-level2",
     maxLength: 100,
   },
   {
-    name: 'postalCode',
+    name: "postalCode",
     label: t.postalCode,
-    autoComplete: 'postal-code',
+    autoComplete: "postal-code",
     maxLength: 20,
   },
   {
-    name: 'countryCode',
+    name: "countryCode",
     label: t.countryCode,
-    autoComplete: 'country',
+    autoComplete: "country",
     maxLength: 2,
     hint: t.countryHint,
   },
@@ -95,12 +95,12 @@ export function DeliveryForm({
         {t.deliveryDescription}
       </p>
       <fieldset
-        disabled={page.saving}
+        disabled={page.locked}
         className="mt-6 grid min-w-0 gap-5 sm:grid-cols-2"
       >
         <legend className="sr-only">{t.deliveryTitle}</legend>
         {fields.map((field) => (
-          <div key={field.name} className={field.full ? 'sm:col-span-2' : ''}>
+          <div key={field.name} className={field.full ? "sm:col-span-2" : ""}>
             <label htmlFor={`checkout-${field.name}`} className="auth-label">
               {field.label}
               {field.optional && (
@@ -112,7 +112,7 @@ export function DeliveryForm({
             <input
               id={`checkout-${field.name}`}
               name={field.name}
-              type={field.type ?? 'text'}
+              type={field.type ?? "text"}
               autoComplete={field.autoComplete}
               required={!field.optional}
               maxLength={field.maxLength}
@@ -126,7 +126,7 @@ export function DeliveryForm({
                     ? `${field.name}-hint`
                     : undefined
               }
-              className={`auth-input ${page.errors[field.name] ? 'border-red-500' : ''}`}
+              className={`auth-input ${page.errors[field.name] ? "border-red-500" : ""}`}
             />
             {field.hint && (
               <p
@@ -150,7 +150,7 @@ export function DeliveryForm({
       <div className="mt-6 border-t border-slate-200 pt-5">
         <button
           type="submit"
-          disabled={page.saving || blocked}
+          disabled={page.locked || blocked}
           className="auth-primary h-12 w-full"
         >
           {page.saving

@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../../hooks/useAuth';
-import { ROUTES } from '../../../constants/routes';
-import { translations } from '../../../utils/translations';
-import { EmptyCart } from '../../../components/feedback/EmptyCart';
-import { useCheckoutPage } from './hooks/useCheckoutPage';
-import { DeliveryForm } from './components/DeliveryForm';
-import { OrderSummary } from './components/OrderSummary';
-import { PreparedCheckout } from './components/PreparedCheckout';
+import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
+import { ROUTES } from "../../../constants/routes";
+import { translations } from "../../../utils/translations";
+import { EmptyCart } from "../../../components/feedback/EmptyCart";
+import { useCheckoutPage } from "./hooks/useCheckoutPage";
+import { DeliveryForm } from "./components/DeliveryForm";
+import { OrderSummary } from "./components/OrderSummary";
+import { PreparedCheckout } from "./components/PreparedCheckout";
+import { PaymentAction } from "./components/PaymentAction";
 const t = translations.checkout;
 export default function CheckoutPage() {
   const { user } = useAuth();
@@ -135,6 +136,7 @@ function CheckoutContent({ email }: { email: string }) {
                 <div className="min-w-0 space-y-6">
                   <DeliveryForm page={page} />
                   {page.summary && <PreparedCheckout summary={page.summary} />}
+                  {page.summary && <PaymentAction page={page} />}
                 </div>
                 <OrderSummary
                   cart={page.cart}
