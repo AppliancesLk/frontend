@@ -1,4 +1,37 @@
 const sharedTranslations = {
+  orders: {
+    title: 'My orders',
+    detailsTitle: 'Order details',
+    description: 'Your purchases, all in one place.',
+    date: 'Order date',
+    id: 'Order ID',
+    total: 'Order total',
+    status: 'Current status',
+    view: 'View order',
+    back: 'Back to my orders',
+    refresh: 'Refresh orders',
+    refreshDetails: 'Refresh order',
+    empty: 'No orders yet',
+    emptyDescription:
+      'Your purchases will appear here once you place an order.',
+    loadError: 'Unable to load your orders. Please try again.',
+    notFound: 'Order not found',
+    notFoundDescription:
+      'This order is unavailable or does not belong to your account.',
+    items: 'Order items',
+    delivery: 'Delivery information',
+    noDelivery: 'Delivery information is not available.',
+    snapshot: 'Prices and quantities shown are from the time of purchase.',
+    newest: 'Newest first',
+    statuses: {
+      PENDING_PAYMENT: 'Pending payment',
+      CONFIRMED: 'Confirmed',
+      PROCESSING: 'Processing',
+      SHIPPED: 'Shipped',
+      DELIVERED: 'Delivered',
+      CANCELLED: 'Cancelled',
+    },
+  },
   checkout: {
     title: 'Checkout',
     proceed: 'Proceed to checkout',
