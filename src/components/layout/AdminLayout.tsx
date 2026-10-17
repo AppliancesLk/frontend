@@ -10,15 +10,29 @@ export function AdminLayout() {
           {translations.auth.adminWorkspace}
         </p>
         <nav aria-label={translations.auth.adminNavigation}>
-          <NavLink
-            end
-            to={ROUTES.admin}
-            className={({ isActive }) =>
-              `block rounded-lg border-l-2 px-4 py-3 text-sm font-medium ${isActive ? 'border-blue-500 bg-slate-800 text-white' : 'border-transparent hover:bg-slate-800'}`
-            }
-          >
-            {translations.auth.dashboard}
-          </NavLink>
+          {[
+            { path: ROUTES.admin, label: translations.auth.dashboard },
+            { path: ROUTES.adminProducts, label: translations.admin.products },
+            {
+              path: ROUTES.adminCategories,
+              label: translations.admin.categories,
+            },
+            {
+              path: ROUTES.adminInventory,
+              label: translations.admin.inventory,
+            },
+          ].map((item) => (
+            <NavLink
+              key={item.path}
+              end
+              to={item.path}
+              className={({ isActive }) =>
+                `mb-1 block rounded-lg border-l-2 px-4 py-3 text-sm font-medium ${isActive ? 'border-blue-500 bg-slate-800 text-white' : 'border-transparent hover:bg-slate-800'}`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
       </aside>
       <div className="min-w-0 flex-1">
