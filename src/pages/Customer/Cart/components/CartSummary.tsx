@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../../../../constants/routes';
 import type { Cart } from '../../../../types/cart.types';
 import { formatCurrency } from '../../../../utils/currency';
 import { translations } from '../../../../utils/translations';
@@ -23,6 +25,15 @@ export function CartSummary({ cart, busy }: { cart: Cart; busy: boolean }) {
           </dd>
         </div>
       </dl>
+      {busy ? (
+        <button type="button" disabled className="auth-primary mt-5 w-full">
+          {translations.checkout.proceed}
+        </button>
+      ) : (
+        <Link to={ROUTES.checkout} className="auth-primary mt-5 w-full">
+          {translations.checkout.proceed}
+        </Link>
+      )}
       <p className="mt-4 text-sm leading-6 text-slate-500">{t.priceNotice}</p>
       <p className="mt-3 rounded-lg bg-blue-50 p-3 text-sm leading-6 text-blue-800">
         {t.stockNotice}
