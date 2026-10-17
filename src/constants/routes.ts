@@ -7,6 +7,8 @@ export const ROUTES = {
   account: '/account',
   cart: '/cart',
   checkout: '/checkout',
+  orders: '/orders',
+  orderDetail: '/orders/:id',
   admin: '/admin',
   adminProducts: '/admin/products',
   adminProductEdit: '/admin/products/:id/edit',
