@@ -24,7 +24,7 @@ export function AdminLayout() {
           ].map((item) => (
             <NavLink
               key={item.path}
-              end
+              end={item.path === ROUTES.admin}
               to={item.path}
               className={({ isActive }) =>
                 `mb-1 block rounded-lg border-l-2 px-4 py-3 text-sm font-medium ${isActive ? 'border-blue-500 bg-slate-800 text-white' : 'border-transparent hover:bg-slate-800'}`

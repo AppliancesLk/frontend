@@ -1,3 +1,5 @@
+import { generatePath, Link } from 'react-router-dom';
+import { ROUTES } from '../../../../constants/routes';
 import type { useProductsPage } from '../hooks/useProductsPage';
 import { translations } from '../../../../utils/translations';
 import { formatCurrency } from '../../../../utils/currency';
@@ -67,17 +69,28 @@ export function ProductTable({
                   </td>
                   <td className="px-5 py-4">{product.stockQty}</td>
                   <td className="px-5 py-4">
-                    <button
-                      className="auth-secondary"
-                      disabled={page.updating !== null}
-                      onClick={() => void page.toggle(product)}
-                    >
-                      {page.updating === product.productID
-                        ? t.saving
-                        : product.isActive
-                          ? t.deactivate
-                          : t.activate}
-                    </button>
+                    <div className="flex flex-wrap gap-2">
+                      <Link
+                        to={generatePath(ROUTES.adminProductEdit, {
+                          id: product.productID,
+                        })}
+                        className="auth-secondary"
+                        aria-label={`${translations.productEdit.title}: ${product.name}`}
+                      >
+                        {translations.productEdit.editLabel}
+                      </Link>
+                      <button
+                        className="auth-secondary"
+                        disabled={page.updating !== null}
+                        onClick={() => void page.toggle(product)}
+                      >
+                        {page.updating === product.productID
+                          ? t.saving
+                          : product.isActive
+                            ? t.deactivate
+                            : t.activate}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

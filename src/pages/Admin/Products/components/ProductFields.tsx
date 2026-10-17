@@ -1,0 +1,75 @@
+import type { ProductFieldsDraft } from '../types/product-form.types';
+import type { Category } from '../../../../types/category.types';
+import { translations } from '../../../../utils/translations';
+const t = translations.admin;
+export function ProductFields({
+  draft,
+  categories,
+  onChange,
+  editing = false,
+}: {
+  draft: ProductFieldsDraft;
+  categories: Category[];
+  onChange: (field: keyof ProductFieldsDraft, value: string) => void;
+  editing?: boolean;
+}) {
+  return (
+    <>
+      {(['name', 'SKU', 'price'] as const).map((field) => (
+        <div key={field}>
+          <label className="auth-label" htmlFor={field}>
+            {{ name: t.productName, SKU: t.sku, price: t.price }[field]}
+          </label>
+          <input
+            id={field}
+            required
+            className="auth-input"
+            type={field === 'price' ? 'number' : 'text'}
+            min={field === 'price' ? 0 : undefined}
+            max={field === 'price' ? 9999999999.99 : undefined}
+            step={field === 'price' ? '0.01' : undefined}
+            value={draft[field]}
+            onChange={(event) => onChange(field, event.target.value)}
+          />
+        </div>
+      ))}
+      <div>
+        <label htmlFor="categoryID" className="auth-label">
+          {t.category}
+        </label>
+        <select
+          id="categoryID"
+          required
+          className="auth-input"
+          value={draft.categoryID}
+          onChange={(event) => onChange('categoryID', event.target.value)}
+        >
+          <option value="">{t.selectCategory}</option>
+          {categories.map((category) => (
+            <option key={category.categoryID} value={category.categoryID}>
+              {category.parent ? `${category.parent.name} / ` : ''}
+              {category.name}
+              {!category.isActive ? ` (${t.inactive})` : ''}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="sm:col-span-2">
+        <label htmlFor="imageUrls" className="auth-label">
+          {t.imageUrls}
+        </label>
+        <textarea
+          id="imageUrls"
+          rows={3}
+          className="auth-input h-auto py-2"
+          value={draft.imageUrls}
+          onChange={(event) => onChange('imageUrls', event.target.value)}
+          aria-describedby="image-hint"
+        />
+        <p id="image-hint" className="mt-2 text-xs text-slate-500">
+          {t.imageHint} {editing && translations.productEdit.clearImagesHint}
+        </p>
+      </div>
+    </>
+  );
+}

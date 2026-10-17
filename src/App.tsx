@@ -1,10 +1,10 @@
 import './App.css';
-import AppRoutes from './routes/AppRoutes';
+import { Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
 function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <Outlet />
     </AuthProvider>
   );
 }
