@@ -6,6 +6,9 @@ export const ROUTES = {
   register: '/register',
   account: '/account',
   admin: '/admin',
+  adminProducts: '/admin/products',
+  adminCategories: '/admin/categories',
+  adminInventory: '/admin/inventory',
   repairer: '/repairer',
   forbidden: '/forbidden',
 } as const;
