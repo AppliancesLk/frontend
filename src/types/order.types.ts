@@ -34,3 +34,13 @@ export interface CreateOrderRequest {
   idempotencyKey: string;
   delivery: DeliveryInformation;
 }
+export interface AdminOrder extends Order {
+  customer: { id: string; username: string; email: string };
+  payment: {
+    id: string;
+    status: "PENDING" | "SUCCESS" | "FAILED" | "CANCELLED";
+    amount: string;
+    currency: string;
+    updatedAt: string;
+  } | null;
+}

@@ -14,6 +14,8 @@ export const ROUTES = {
   adminProductEdit: '/admin/products/:id/edit',
   adminCategories: '/admin/categories',
   adminInventory: '/admin/inventory',
+  adminOrders: '/admin/orders',
+  adminOrderDetail: '/admin/orders/:id',
   repairer: '/repairer',
   forbidden: '/forbidden',
 } as const;
