@@ -4,6 +4,8 @@ import type {
   RepairTicket,
   AdminRepairTicket,
   RejectRepairRequest,
+  RepairerRepairTicket,
+  UpdateRepairStatusRequest,
 } from '../types/repair.types';
 
 export const createRepairTicket = async (
@@ -35,6 +37,34 @@ export const rejectRepair = async (
   (
     await apiClient.patch<AdminRepairTicket>(
       `/repairs/admin/${id}/reject`,
+      request,
+    )
+  ).data;
+
+// Repairer repair functions
+export const getRepairerRepairs = async (
+  signal?: AbortSignal,
+): Promise<RepairerRepairTicket[]> =>
+  (await apiClient.get<RepairerRepairTicket[]>('/repairs/repairer', { signal }))
+    .data;
+
+export const getRepairerRepair = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<RepairerRepairTicket> =>
+  (
+    await apiClient.get<RepairerRepairTicket>(`/repairs/repairer/${id}`, {
+      signal,
+    })
+  ).data;
+
+export const updateRepairStatus = async (
+  id: string,
+  request: UpdateRepairStatusRequest,
+): Promise<RepairerRepairTicket> =>
+  (
+    await apiClient.patch<RepairerRepairTicket>(
+      `/repairs/repairer/${id}/status`,
       request,
     )
   ).data;
