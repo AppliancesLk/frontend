@@ -28,25 +28,19 @@ function ProductsPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadCategories();
-    loadProducts();
-  }, []);
-
-  const loadCategories = async () => {
-    try {
-      setLoadingCategories(true);
-
-      const data = await getCategories();
-
-      setCategories(data);
-    } catch {
-      setError(
-        'Unable to load categories. Please try again.',
-      );
-    } finally {
+    let active = true;
+    async function load() {
+      const [categoryResult, productResult] = await Promise.allSettled([getCategories(), getProducts()]);
+      if (!active) return;
+      if (categoryResult.status === 'fulfilled') setCategories(categoryResult.value);
+      if (productResult.status === 'fulfilled') setProducts(productResult.value);
+      if (categoryResult.status === 'rejected' || productResult.status === 'rejected') setError('Unable to load the shop. Please try again.');
       setLoadingCategories(false);
+      setLoadingProducts(false);
     }
-  };
+    void load();
+    return () => { active = false; };
+  }, []);
 
   const loadProducts = async () => {
     try {

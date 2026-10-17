@@ -1,37 +1,48 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-
-import AdminRoute from '../components/AdminRoute';
-import InventoryPage from '../pages/Admin/Products/InventoryPage';
 import ProductsPage from '../pages/Products/ProductsPage';
 import ProductDetailPlaceholder from '../pages/Products/ProductDetailPlaceholder';
-
+import LoginPage from '../pages/Auth/Login';
+import RegisterPage from '../pages/Auth/Register';
+import ForbiddenPage from '../pages/Auth/Forbidden';
+import ProfilePage from '../pages/Customer/Profile';
+import DashboardPage from '../pages/Admin/Dashboard';
+import RepairerDashboardPage from '../pages/Repairer/Dashboard';
+import NotFoundPage from '../pages/NotFound';
+import { CustomerLayout } from '../components/layout/CustomerLayout';
+import { AdminLayout } from '../components/layout/AdminLayout';
+import { ProtectedRoute } from '../components/auth/ProtectedRoute';
+import { ROUTES } from '../constants/routes';
+import { USER_ROLES } from '../constants/roles';
 function AppRoutes() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<Navigate to="/products" replace />}
-      />
-
-      <Route
-        path="/products"
-        element={<ProductsPage />}
-      />
-      <Route
-        path="/products/:id"
-        element={<ProductDetailPlaceholder />}
-      />
-
-      <Route
-        path="/admin/inventory"
-        element={
-          <AdminRoute>
-            <InventoryPage />
-          </AdminRoute>
-        }
-      />
+      <Route element={<CustomerLayout />}>
+        <Route
+          path={ROUTES.home}
+          element={<Navigate to={ROUTES.products} replace />}
+        />
+        <Route path={ROUTES.products} element={<ProductsPage />} />
+        <Route
+          path={ROUTES.productDetail}
+          element={<ProductDetailPlaceholder />}
+        />
+        <Route path={ROUTES.login} element={<LoginPage />} />
+        <Route path={ROUTES.register} element={<RegisterPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path={ROUTES.account} element={<ProfilePage />} />
+        </Route>
+        <Route element={<ProtectedRoute roles={[USER_ROLES.REPAIRER]} />}>
+          <Route path={ROUTES.repairer} element={<RepairerDashboardPage />} />
+        </Route>
+        <Route path={ROUTES.forbidden} element={<ForbiddenPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+      <Route element={<ProtectedRoute roles={[USER_ROLES.ADMIN]} />}>
+        <Route element={<AdminLayout />}>
+          <Route path={ROUTES.admin} element={<DashboardPage />} />
+        </Route>
+      </Route>
     </Routes>
   );
 }
-
 export default AppRoutes;
