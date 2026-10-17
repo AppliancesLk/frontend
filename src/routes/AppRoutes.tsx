@@ -1,5 +1,6 @@
 import { createRoutesFromElements, Route, Navigate } from 'react-router-dom';
 import App from '../App';
+import CheckoutPage from '../pages/Customer/Checkout';
 import CartPage from '../pages/Customer/Cart';
 import ProductEditPage from '../pages/Admin/Products/Edit';
 import ProductsPage from '../pages/Products/ProductsPage';
@@ -35,6 +36,7 @@ export const appRoutes = createRoutesFromElements(
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.CUSTOMER]} />}>
         <Route path={ROUTES.cart} element={<CartPage />} />
+        <Route path={ROUTES.checkout} element={<CheckoutPage />} />
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.REPAIRER]} />}>
         <Route path={ROUTES.repairer} element={<RepairerDashboardPage />} />
