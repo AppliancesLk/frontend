@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { ROUTES } from '../../../constants/routes';
 import { translations } from '../../../utils/translations';
+import { CatalogFeedback } from '../../../components/feedback/CatalogFeedback';
+import { useCustomerRepairsPage } from './hooks/useCustomerRepairsPage';
+import { CustomerRepairsTable } from './components/CustomerRepairsTable';
 
 const t = translations.repairs;
 
@@ -12,6 +15,8 @@ export default function RepairsPage() {
 }
 
 function RepairsContent() {
+  const page = useCustomerRepairsPage();
+
   useEffect(() => {
     const previous = document.title;
     document.title = `${t.title} | ${translations.common.storeName}`;
@@ -48,22 +53,49 @@ function RepairsContent() {
             </h1>
             <p className="mt-2 text-sm text-slate-500">{t.description}</p>
           </div>
-          <Link to={ROUTES.repairRequest} className="auth-primary">
-            {t.requestTitle}
-          </Link>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => void page.refresh()}
+              disabled={page.loading}
+              className="auth-secondary"
+            >
+              Refresh
+            </button>
+            <Link to={ROUTES.repairRequest} className="auth-primary">
+              {t.requestTitle}
+            </Link>
+          </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-          <p className="text-sm text-slate-500">
-            Repair tracking functionality will be implemented here.
-          </p>
-          <Link
-            to={ROUTES.repairRequest}
-            className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-          >
-            {t.requestTitle}
-          </Link>
-        </div>
+        <CatalogFeedback
+          loading={page.loading}
+          error={page.error}
+          retry={page.refresh}
+        />
+
+        {!page.loading && !page.error && (
+          <>
+            {page.repairs.length === 0 ? (
+              <div className="rounded-xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+                <p className="text-sm font-medium text-slate-900">
+                  No repair tickets found
+                </p>
+                <p className="mt-2 text-sm text-slate-500">
+                  You haven't submitted any repair requests yet.
+                </p>
+                <Link
+                  to={ROUTES.repairRequest}
+                  className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+                >
+                  {t.requestTitle}
+                </Link>
+              </div>
+            ) : (
+              <CustomerRepairsTable repairs={page.repairs} />
+            )}
+          </>
+        )}
       </div>
     </main>
   );

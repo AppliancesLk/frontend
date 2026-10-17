@@ -11,6 +11,7 @@ export const ROUTES = {
   orderDetail: '/orders/:id',
   repairs: '/repairs',
   repairRequest: '/repairs/request',
+  repairDetail: '/repairs/:id',
   admin: '/admin',
   adminProducts: '/admin/products',
   adminProductEdit: '/admin/products/:id/edit',
