@@ -61,3 +61,13 @@ export const getProductById = async (
       signal,
     })
   ).data;
+
+export const getAdminProductById = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<Product> =>
+  (
+    await apiClient.get<Product>(`/products/admin/${encodeURIComponent(id)}`, {
+      signal,
+    })
+  ).data;

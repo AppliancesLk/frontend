@@ -26,5 +26,11 @@ export interface CreateProductRequest {
   isActive?: boolean;
 }
 export interface UpdateProductRequest {
+  name?: string;
+  SKU?: string;
+  price?: number;
+  categoryID?: string;
+  images?: string[];
+  specifications?: Record<string, unknown> | null;
   isActive?: boolean;
 }
