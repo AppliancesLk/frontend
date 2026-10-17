@@ -91,6 +91,11 @@ export default function DashboardPage() {
                 title: t.viewInventory,
                 detail: t.inventoryDescription,
               },
+              {
+                route: ROUTES.adminOrders,
+                title: translations.adminOrders.title,
+                detail: translations.adminOrders.description,
+              },
             ].map((item) => (
               <Link
                 key={item.route}
