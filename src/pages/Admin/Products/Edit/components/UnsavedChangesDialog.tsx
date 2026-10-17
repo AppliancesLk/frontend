@@ -1,0 +1,55 @@
+import { useEffect, useRef } from 'react';
+import type { useProductEdit } from '../hooks/useProductEdit';
+import { translations } from '../../../../../utils/translations';
+const t = translations.productEdit;
+export function UnsavedChangesDialog({
+  page,
+}: {
+  page: ReturnType<typeof useProductEdit>;
+}) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const blocked = page.blocker.state === 'blocked';
+  useEffect(() => {
+    const element = dialog.current;
+    if (blocked && !element?.open) element?.showModal();
+    else if (!blocked && element?.open) element.close();
+  }, [blocked]);
+  function stay() {
+    if (page.blocker.state === 'blocked') page.blocker.reset();
+  }
+  return (
+    <dialog
+      ref={dialog}
+      aria-labelledby="unsaved-title"
+      aria-describedby="unsaved-description"
+      onCancel={(event) => {
+        event.preventDefault();
+        stay();
+      }}
+      className="fixed inset-0 m-auto w-[calc(100%_-_2rem)] max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-lg backdrop:bg-slate-900/50"
+    >
+      <h2 id="unsaved-title" className="text-xl font-semibold text-slate-900">
+        {page.busy ? t.savingTitle : t.unsavedTitle}
+      </h2>
+      <p
+        id="unsaved-description"
+        className="mt-3 text-sm leading-6 text-slate-500"
+      >
+        {page.busy ? t.savingDescription : t.unsavedDescription}
+      </p>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <button type="button" autoFocus className="auth-primary" onClick={stay}>
+          {t.keepEditing}
+        </button>
+        <button
+          type="button"
+          className="auth-secondary disabled:opacity-50"
+          disabled={page.busy}
+          onClick={page.discard}
+        >
+          {t.discard}
+        </button>
+      </div>
+    </dialog>
+  );
+}
