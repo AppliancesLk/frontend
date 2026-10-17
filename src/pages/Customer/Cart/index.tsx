@@ -6,7 +6,7 @@ import { translations } from '../../../utils/translations';
 import { useCartPage } from './hooks/useCartPage';
 import { CartItemRow } from './components/CartItemRow';
 import { CartSummary } from './components/CartSummary';
-import { EmptyCart } from './components/EmptyCart';
+import { EmptyCart } from '../../../components/feedback/EmptyCart';
 const t = translations.cart;
 
 export default function CartPage() {
