@@ -4,7 +4,7 @@ import { ROUTES } from '../../../../constants/routes';
 import { formatCurrency } from '../../../../utils/currency';
 import { translations } from '../../../../utils/translations';
 import { useRelatedProducts } from '../hooks/useRelatedProducts';
-import { ProductImage } from './ProductImage';
+import { ProductImage } from '../../../../components/common/ProductImage';
 const t = translations.productDetails;
 export function RelatedProducts({ product }: { product: Product }) {
   const related = useRelatedProducts(product);
