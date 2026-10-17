@@ -22,6 +22,8 @@ import AdminOrderDetailsPage from '../pages/Admin/Orders/Details';
 import AdminRepairsPage from '../pages/Admin/Repairs';
 import AdminRepairDetailsPage from '../pages/Admin/Repairs/Details';
 import RepairerDashboardPage from '../pages/Repairer/Dashboard';
+import RepairerRepairsPage from '../pages/Repairer/Repairs';
+import RepairerRepairDetailsPage from '../pages/Repairer/Repairs/Details';
 import NotFoundPage from '../pages/NotFound';
 import { CustomerLayout } from '../components/layout/CustomerLayout';
 import { AdminLayout } from '../components/layout/AdminLayout';
@@ -52,6 +54,11 @@ export const appRoutes = createRoutesFromElements(
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.REPAIRER]} />}>
         <Route path={ROUTES.repairer} element={<RepairerDashboardPage />} />
+        <Route path={ROUTES.repairerRepairs} element={<RepairerRepairsPage />} />
+        <Route
+          path={ROUTES.repairerRepairDetail}
+          element={<RepairerRepairDetailsPage />}
+        />
       </Route>
       <Route path={ROUTES.forbidden} element={<ForbiddenPage />} />
       <Route path="*" element={<NotFoundPage />} />
