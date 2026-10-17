@@ -1,5 +1,6 @@
 import { createRoutesFromElements, Route, Navigate } from 'react-router-dom';
 import App from '../App';
+import CartPage from '../pages/Customer/Cart';
 import ProductEditPage from '../pages/Admin/Products/Edit';
 import ProductsPage from '../pages/Products/ProductsPage';
 import ProductDetailsPage from '../pages/Customer/ProductDetails';
@@ -31,6 +32,9 @@ export const appRoutes = createRoutesFromElements(
       <Route path={ROUTES.register} element={<RegisterPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path={ROUTES.account} element={<ProfilePage />} />
+      </Route>
+      <Route element={<ProtectedRoute roles={[USER_ROLES.CUSTOMER]} />}>
+        <Route path={ROUTES.cart} element={<CartPage />} />
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.REPAIRER]} />}>
         <Route path={ROUTES.repairer} element={<RepairerDashboardPage />} />

@@ -44,6 +44,16 @@ export function SiteHeader() {
             </span>
           ) : user ? (
             <>
+              {hasRole(USER_ROLES.CUSTOMER) && (
+                <NavLink
+                  to={ROUTES.cart}
+                  className={({ isActive }) =>
+                    `rounded-lg px-3 py-2 ${isActive ? 'bg-blue-50 text-blue-700' : 'hover:text-blue-700'}`
+                  }
+                >
+                  {translations.cart.navigation}
+                </NavLink>
+              )}
               {hasRole(USER_ROLES.ADMIN) && (
                 <NavLink to={ROUTES.admin} className="hover:text-blue-700">
                   {translations.auth.admin}

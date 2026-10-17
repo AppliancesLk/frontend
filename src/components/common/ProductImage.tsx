@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { translations } from '../../../../utils/translations';
+import { translations } from '../../utils/translations';
 export function ProductImage({
   src,
   alt,

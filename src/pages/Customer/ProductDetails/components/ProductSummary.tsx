@@ -1,3 +1,4 @@
+import { AddToCart } from './AddToCart';
 import { Link } from 'react-router-dom';
 import type { Product } from '../../../../types/product.types';
 import { ROUTES } from '../../../../constants/routes';
@@ -50,6 +51,11 @@ export function ProductSummary({ product }: { product: Product }) {
           </dd>
         </div>
       </dl>
+      <AddToCart
+        key={product.productID}
+        productId={product.productID}
+        available={available}
+      />
       <div className="flex flex-wrap gap-3">
         <a href="#specifications" className="auth-primary">
           {t.viewSpecifications}
