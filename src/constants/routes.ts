@@ -7,6 +7,7 @@ export const ROUTES = {
   account: '/account',
   admin: '/admin',
   adminProducts: '/admin/products',
+  adminProductEdit: '/admin/products/:id/edit',
   adminCategories: '/admin/categories',
   adminInventory: '/admin/inventory',
   repairer: '/repairer',

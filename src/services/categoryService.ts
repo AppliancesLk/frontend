@@ -20,5 +20,7 @@ export const updateCategory = async (
 ): Promise<Category> =>
   (await apiClient.patch<Category>(`/categories/${id}`, input)).data;
 
-export const getAdminCategories = async (): Promise<Category[]> =>
-  (await apiClient.get<Category[]>('/categories/admin/all')).data;
+export const getAdminCategories = async (
+  signal?: AbortSignal,
+): Promise<Category[]> =>
+  (await apiClient.get<Category[]>('/categories/admin/all', { signal })).data;

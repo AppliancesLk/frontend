@@ -1,8 +1,14 @@
-import type { ProductDraft } from '../types/product-form.types';
+import type {
+  ProductDraft,
+  ProductFieldsDraft,
+} from '../types/product-form.types';
 import type { CreateProductRequest } from '../../../../types/product.types';
 import { validateStockQuantity } from '../../../../utils/stockValidation';
 import { translations } from '../../../../utils/translations';
-export function buildProductInput(draft: ProductDraft): CreateProductRequest {
+export function buildProductFieldsInput(
+  draft: ProductFieldsDraft,
+  validateImages = true,
+) {
   const name = draft.name.trim();
   const SKU = draft.SKU.trim();
   if (!name || !SKU) throw new Error(translations.admin.productNameRequired);
@@ -11,13 +17,11 @@ export function buildProductInput(draft: ProductDraft): CreateProductRequest {
     Number(draft.price) > 9999999999.99
   )
     throw new Error(translations.admin.invalidPrice);
-  const stock = validateStockQuantity(draft.stockQty);
-  if (!stock.valid) throw new Error(stock.message);
   const images = draft.imageUrls
     .split('\n')
     .map((value) => value.trim())
     .filter(Boolean);
-  for (const image of images) {
+  for (const image of validateImages ? images : []) {
     try {
       const url = new URL(image);
       if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
@@ -25,6 +29,19 @@ export function buildProductInput(draft: ProductDraft): CreateProductRequest {
       throw new Error(translations.admin.invalidImages);
     }
   }
+  if (!draft.categoryID) throw new Error(translations.admin.selectCategory);
+  return {
+    name,
+    SKU,
+    price: Number(draft.price),
+    categoryID: draft.categoryID,
+    images,
+  };
+}
+export function buildProductInput(draft: ProductDraft): CreateProductRequest {
+  const fields = buildProductFieldsInput(draft);
+  const stock = validateStockQuantity(draft.stockQty);
+  if (!stock.valid) throw new Error(stock.message);
   const specifications: Record<string, string> = {};
   for (const line of draft.specifications
     .split('\n')
@@ -39,13 +56,5 @@ export function buildProductInput(draft: ProductDraft): CreateProductRequest {
       configurable: true,
     });
   }
-  return {
-    name,
-    SKU,
-    price: Number(draft.price),
-    categoryID: draft.categoryID,
-    stockQty: stock.value,
-    images,
-    specifications,
-  };
+  return { ...fields, stockQty: stock.value, specifications };
 }

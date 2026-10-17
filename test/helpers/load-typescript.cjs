@@ -9,6 +9,7 @@ function loadTypeScript(filename) {
   const module = { exports: {} };
   const evaluate = vm.runInNewContext(
     `(function(require,module,exports){${source}\n})`,
+    { URL, URLSearchParams },
   );
   evaluate(
     (specifier) =>

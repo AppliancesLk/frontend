@@ -1,3 +1,4 @@
+import { ProductFields } from './ProductFields';
 import type { useProductsPage } from '../hooks/useProductsPage';
 import { translations } from '../../../../utils/translations';
 import { ROUTES } from '../../../../constants/routes';
@@ -26,98 +27,30 @@ export function ProductForm({
       ) : (
         <form onSubmit={page.submit}>
           <fieldset disabled={page.busy} className="grid gap-5 sm:grid-cols-2">
-            {(['name', 'SKU', 'price', 'stockQty'] as const).map((field) => (
-              <div key={field}>
-                <label className="auth-label" htmlFor={field}>
-                  {
-                    {
-                      name: t.productName,
-                      SKU: t.sku,
-                      price: t.price,
-                      stockQty: t.initialStock,
-                    }[field]
-                  }
-                </label>
-                <input
-                  id={field}
-                  required
-                  className="auth-input"
-                  type={
-                    field === 'price' || field === 'stockQty'
-                      ? 'number'
-                      : 'text'
-                  }
-                  min={0}
-                  max={
-                    field === 'price'
-                      ? 9999999999.99
-                      : field === 'stockQty'
-                        ? 2147483647
-                        : undefined
-                  }
-                  step={
-                    field === 'price'
-                      ? '0.01'
-                      : field === 'stockQty'
-                        ? '1'
-                        : undefined
-                  }
-                  value={page.draft[field]}
-                  onChange={(event) =>
-                    page.setDraft({
-                      ...page.draft,
-                      [field]: event.target.value,
-                    })
-                  }
-                />
-              </div>
-            ))}
-            <div className="sm:col-span-2">
-              <label htmlFor="categoryID" className="auth-label">
-                {t.category}
+            <ProductFields
+              draft={page.draft}
+              categories={page.categories}
+              onChange={(field, value) =>
+                page.setDraft({ ...page.draft, [field]: value })
+              }
+            />
+            <div>
+              <label htmlFor="stockQty" className="auth-label">
+                {t.initialStock}
               </label>
-              <select
-                id="categoryID"
+              <input
+                id="stockQty"
+                type="number"
+                min={0}
+                max={2147483647}
+                step={1}
                 required
                 className="auth-input"
-                value={page.draft.categoryID}
+                value={page.draft.stockQty}
                 onChange={(event) =>
-                  page.setDraft({
-                    ...page.draft,
-                    categoryID: event.target.value,
-                  })
+                  page.setDraft({ ...page.draft, stockQty: event.target.value })
                 }
-              >
-                <option value="">{t.selectCategory}</option>
-                {page.categories.map((category) => (
-                  <option key={category.categoryID} value={category.categoryID}>
-                    {category.parent ? `${category.parent.name} / ` : ''}
-                    {category.name}
-                    {!category.isActive ? ` (${t.inactive})` : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="imageUrls" className="auth-label">
-                {t.imageUrls}
-              </label>
-              <textarea
-                id="imageUrls"
-                rows={3}
-                className="auth-input h-auto py-2"
-                value={page.draft.imageUrls}
-                onChange={(event) =>
-                  page.setDraft({
-                    ...page.draft,
-                    imageUrls: event.target.value,
-                  })
-                }
-                aria-describedby="image-hint"
               />
-              <p id="image-hint" className="mt-2 text-xs text-slate-500">
-                {t.imageHint}
-              </p>
             </div>
             <div>
               <label htmlFor="specifications" className="auth-label">

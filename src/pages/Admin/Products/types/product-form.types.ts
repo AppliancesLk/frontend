@@ -1,10 +1,12 @@
-export interface ProductDraft {
+export interface ProductFieldsDraft {
   name: string;
   SKU: string;
   price: string;
   categoryID: string;
-  stockQty: string;
   imageUrls: string;
+}
+export interface ProductDraft extends ProductFieldsDraft {
+  stockQty: string;
   specifications: string;
 }
 export const emptyProductDraft: ProductDraft = {
