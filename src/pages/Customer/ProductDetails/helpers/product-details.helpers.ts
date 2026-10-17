@@ -1,7 +1,5 @@
 import { translations } from '../../../../utils/translations';
-export const isProductId = (id?: string): id is string =>
-  !!id &&
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+export { isUuid as isProductId } from '../../../../utils/validation';
 export function getProductImages(images: string[]): string[] {
   return [...new Set(images.map((image) => image.trim()).filter(Boolean))];
 }
