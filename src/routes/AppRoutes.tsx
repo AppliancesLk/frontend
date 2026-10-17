@@ -19,6 +19,8 @@ import InventoryPage from '../pages/Admin/Inventory';
 import DashboardPage from '../pages/Admin/Dashboard';
 import AdminOrdersPage from '../pages/Admin/Orders';
 import AdminOrderDetailsPage from '../pages/Admin/Orders/Details';
+import AdminRepairsPage from '../pages/Admin/Repairs';
+import AdminRepairDetailsPage from '../pages/Admin/Repairs/Details';
 import RepairerDashboardPage from '../pages/Repairer/Dashboard';
 import NotFoundPage from '../pages/NotFound';
 import { CustomerLayout } from '../components/layout/CustomerLayout';
@@ -65,6 +67,11 @@ export const appRoutes = createRoutesFromElements(
         <Route
           path={ROUTES.adminOrderDetail}
           element={<AdminOrderDetailsPage />}
+        />
+        <Route path={ROUTES.adminRepairs} element={<AdminRepairsPage />} />
+        <Route
+          path={ROUTES.adminRepairDetail}
+          element={<AdminRepairDetailsPage />}
         />
       </Route>
     </Route>

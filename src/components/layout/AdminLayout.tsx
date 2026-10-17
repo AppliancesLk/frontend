@@ -22,6 +22,7 @@ export function AdminLayout() {
               label: translations.admin.inventory,
             },
             { path: ROUTES.adminOrders, label: translations.adminOrders.title },
+            { path: ROUTES.adminRepairs, label: translations.adminRepairs.title },
           ].map((item) => (
             <NavLink
               key={item.path}
