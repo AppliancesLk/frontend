@@ -5,6 +5,7 @@ import OrdersPage from '../pages/Customer/Orders';
 import OrderDetailsPage from '../pages/Customer/Orders/Details';
 import RepairRequestPage from '../pages/Customer/Repairs/Request';
 import RepairsPage from '../pages/Customer/Repairs';
+import CustomerRepairDetailsPage from '../pages/Customer/Repairs/Details';
 import CartPage from '../pages/Customer/Cart';
 import ProductEditPage from '../pages/Admin/Products/Edit';
 import ProductsPage from '../pages/Products/ProductsPage';
@@ -51,6 +52,10 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.orderDetail} element={<OrderDetailsPage />} />
         <Route path={ROUTES.repairs} element={<RepairsPage />} />
         <Route path={ROUTES.repairRequest} element={<RepairRequestPage />} />
+        <Route
+          path={ROUTES.repairDetail}
+          element={<CustomerRepairDetailsPage />}
+        />
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.REPAIRER]} />}>
         <Route path={ROUTES.repairer} element={<RepairerDashboardPage />} />
