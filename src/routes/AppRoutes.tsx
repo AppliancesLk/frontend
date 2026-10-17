@@ -3,6 +3,8 @@ import App from '../App';
 import CheckoutPage from '../pages/Customer/Checkout';
 import OrdersPage from '../pages/Customer/Orders';
 import OrderDetailsPage from '../pages/Customer/Orders/Details';
+import RepairRequestPage from '../pages/Customer/Repairs/Request';
+import RepairsPage from '../pages/Customer/Repairs';
 import CartPage from '../pages/Customer/Cart';
 import ProductEditPage from '../pages/Admin/Products/Edit';
 import ProductsPage from '../pages/Products/ProductsPage';
@@ -43,6 +45,8 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.checkout} element={<CheckoutPage />} />
         <Route path={ROUTES.orders} element={<OrdersPage />} />
         <Route path={ROUTES.orderDetail} element={<OrderDetailsPage />} />
+        <Route path={ROUTES.repairs} element={<RepairsPage />} />
+        <Route path={ROUTES.repairRequest} element={<RepairRequestPage />} />
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.REPAIRER]} />}>
         <Route path={ROUTES.repairer} element={<RepairerDashboardPage />} />
