@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { ROUTES } from '../../../../constants/routes';
-import { translations } from '../../../../utils/translations';
+import { ROUTES } from '../../constants/routes';
+import { translations } from '../../utils/translations';
 const t = translations.cart;
 export function EmptyCart() {
   return (

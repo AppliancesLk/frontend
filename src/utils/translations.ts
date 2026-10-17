@@ -1,4 +1,64 @@
 const sharedTranslations = {
+  checkout: {
+    title: 'Checkout',
+    proceed: 'Proceed to checkout',
+    description: 'Review your cart and tell us where to deliver.',
+    deliveryTitle: 'Delivery information',
+    deliveryDescription:
+      'Enter your delivery contact and address. All fields are required unless marked optional.',
+    firstName: 'First name',
+    lastName: 'Last name',
+    email: 'Email address',
+    phone: 'Phone number',
+    addressLine1: 'Address line 1',
+    addressLine2: 'Address line 2',
+    city: 'City',
+    postalCode: 'Postal code',
+    countryCode: 'Country code',
+    optional: '(optional)',
+    phoneHint:
+      'Use a Sri Lankan number, e.g. 0771234567, or an international number with + and country code.',
+    countryHint: 'Two-letter country code, e.g. LK for Sri Lanka.',
+    requiredField: 'This field is required.',
+    fieldTooLong: 'Enter a shorter value for this field.',
+    addressTooLong: 'Use no more than 200 characters.',
+    invalidEmail: 'Enter a valid email address.',
+    invalidPhone: 'Enter a valid Sri Lankan or international phone number.',
+    invalidPostalCode: 'Use 2-20 letters, digits, spaces or hyphens.',
+    invalidCountry: 'Enter a two-letter country code.',
+    prepare: 'Prepare checkout',
+    preparing: 'Preparing checkout...',
+    validateAgain: 'Validate checkout again',
+    prepareHint:
+      'We will check current prices and stock before confirming your checkout amount.',
+    summary: 'Order summary',
+    finalAmount: 'Final amount',
+    each: 'each',
+    awaitingValidation: 'Not yet validated',
+    amountHint:
+      'The final amount will be confirmed by the store when you prepare checkout.',
+    validatedAmount: 'Amount returned by the store after checkout validation.',
+    loading: 'Loading checkout...',
+    loadError: 'Unable to load your checkout. Please try again.',
+    prepareError:
+      'Unable to prepare checkout. Your delivery details are still here. Please try again.',
+    refreshCart: 'Refresh cart',
+    backToCart: 'Back to cart',
+    ready: 'Checkout ready for payment',
+    readyDescription: 'Your cart and delivery details have been validated.',
+    preparationNotice:
+      'No payment has been taken and no order has been placed. Prices and stock will be checked again before payment.',
+    confirmedDelivery: 'Validated delivery details',
+    pricesChanged:
+      'Product prices have changed. Review the updated prices and final amount in your validated summary.',
+    itemsChanged:
+      'Your cart has changed. Review the latest products and quantities in your validated summary.',
+    unavailableItem:
+      'Unavailable at this quantity. Update or remove this item in your cart.',
+    cartBlocked:
+      'Some products are unavailable or exceed current stock. Update your cart before preparing checkout.',
+    fixCart: 'Review and fix cart',
+  },
   cart: {
     title: 'Shopping cart',
     navigation: 'Cart',
