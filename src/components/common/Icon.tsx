@@ -1,4 +1,10 @@
 const paths = {
+  trash: 'M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7',
+  bag: 'M4 7h16l1 14H3ZM8 8V6a4 4 0 0 1 8 0v2',
+  shield: 'M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6ZM8 12l3 3 5-6',
+  truck:
+    'M2 5h12v12H2ZM14 9h4l4 5v3h-8M8 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm12 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z',
+  lock: 'M5 10h14v11H5ZM8 10V6a4 4 0 0 1 8 0v4',
   phone:
     'M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm2 3h4m-3 14h2',
   laptop: 'M5 3h14v13H5ZM2 20h20l-3-4H5Z',
