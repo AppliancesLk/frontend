@@ -6,7 +6,7 @@ import { translations } from '../../../../utils/translations';
 import { nextQuantity } from '../helpers/cart.helpers';
 const t = translations.cart;
 type Pending =
-  { kind: 'quantity' | 'remove'; itemId: string } | { kind: 'clear' };
+  { kind: 'quantity' | 'remove'; itemId: string } | { kind: 'clear' | 'add' };
 
 export function useCartPage() {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -98,6 +98,12 @@ export function useCartPage() {
     notice,
     refresh,
     changeQuantity,
+    add: (productId: string) =>
+      mutate(
+        { kind: 'add' },
+        () => cartService.addCartItem({ productId, quantity: 1 }),
+        t.added,
+      ),
     remove: (item: CartItem) =>
       mutate(
         { kind: 'remove', itemId: item.id },

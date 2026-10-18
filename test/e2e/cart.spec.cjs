@@ -74,7 +74,7 @@ test('customer adds products and manages the cart against the real backend', asy
   await expect(washer).toBeVisible();
   await expect(washer.getByText('LKR 1,234.50', { exact: true })).toBeVisible();
   await expect(
-    summary(page).getByText('LKR 2,469.00', { exact: true }),
+    summary(page).getByText('LKR 2,469.00', { exact: true }).last(),
   ).toBeVisible();
   await noOverflow(page);
   await page.screenshot({
@@ -87,7 +87,7 @@ test('customer adds products and manages the cart against the real backend', asy
     })
     .click();
   await expect(
-    summary(page).getByText('LKR 3,703.50', { exact: true }),
+    summary(page).getByText('LKR 3,703.50', { exact: true }).last(),
   ).toBeVisible();
   await expect(
     washer.getByRole('button', {
@@ -100,7 +100,7 @@ test('customer adds products and manages the cart against the real backend', asy
     })
     .click();
   await expect(
-    summary(page).getByText('LKR 2,469.00', { exact: true }),
+    summary(page).getByText('LKR 2,469.00', { exact: true }).last(),
   ).toBeVisible();
   await washer
     .getByRole('button', {
@@ -115,21 +115,21 @@ test('customer adds products and manages the cart against the real backend', asy
   await addProduct(page, fixture.kettle);
   await page.getByRole('link', { name: 'View cart', exact: true }).click();
   await expect(
-    summary(page).getByText('LKR 1,234.60', { exact: true }),
+    summary(page).getByText('LKR 1,234.60', { exact: true }).last(),
   ).toBeVisible();
   await row(page, fixture.washer)
     .getByRole('button', { name: `Remove ${fixture.washer.name}`, exact: true })
     .click();
   await expect(
-    summary(page).getByText('LKR 0.10', { exact: true }),
+    summary(page).getByText('LKR 0.10', { exact: true }).last(),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Clear cart', exact: true }).click();
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   await expect(row(page, fixture.kettle)).toBeVisible();
   await page.getByRole('button', { name: 'Clear cart', exact: true }).click();
   await page
+    .getByRole('alert')
     .getByRole('button', { name: 'Clear cart', exact: true })
-    .last()
     .click();
   await expect(
     page.getByRole('heading', { name: 'Your cart is empty' }),
@@ -189,7 +189,7 @@ test('loading, saving, API failures and retry keep the page usable', async ({
   ).toBeDisabled();
   releaseWrite();
   await expect(
-    summary(page).getByText('LKR 2,469.00', { exact: true }),
+    summary(page).getByText('LKR 2,469.00', { exact: true }).last(),
   ).toBeVisible();
   await page.unroute(`${backendUrl}/cart/items/*`);
   await page.route(`${backendUrl}/cart/items/*`, (route) =>
@@ -201,7 +201,7 @@ test('loading, saving, API failures and retry keep the page usable', async ({
   );
   await expect(increase).toBeEnabled();
   await expect(
-    summary(page).getByText('LKR 2,469.00', { exact: true }),
+    summary(page).getByText('LKR 2,469.00', { exact: true }).last(),
   ).toBeVisible();
   await page.unroute(`${backendUrl}/cart/items/*`);
   await page.getByRole('button', { name: 'Try again', exact: true }).click();
@@ -242,7 +242,7 @@ test('real stock errors refresh cart availability without changing inventory', a
     }),
   ).toBeDisabled();
   await expect(
-    summary(page).getByText('LKR 1,234.50', { exact: true }),
+    summary(page).getByText('LKR 1,234.50', { exact: true }).last(),
   ).toBeVisible();
 });
 
@@ -251,7 +251,7 @@ test('guest and admin access reuse existing authentication and role handling', a
 }) => {
   await page.goto(`/products/${fixture.washer.productID}`);
   await page
-    .getByRole('link', { name: 'Sign in to add to cart', exact: true })
+    .getByRole('link', { name: 'Sign in to shop', exact: true })
     .click();
   await expect(page).toHaveURL(/\/login$/);
   await page.getByLabel('Username or email').fill(fixture.admin.username);
@@ -263,6 +263,40 @@ test('guest and admin access reuse existing authentication and role handling', a
   await page.goto('/cart');
   await expect(page).toHaveURL(/\/forbidden$/);
   await expect(
-    page.getByRole('link', { name: 'Cart', exact: true }),
+    page
+      .getByRole('navigation', { name: 'Main navigation' })
+      .getByRole('link', { name: 'Cart', exact: true }),
   ).toHaveCount(0);
+});
+
+test('suggested products refresh the cart and allow checkout', async ({
+  page,
+}) => {
+  await fixture.customer.api.post('/cart/items', {
+    data: { productId: fixture.washer.productID, quantity: 1 },
+  });
+  await login(page);
+  const suggestions = page.getByRole('region', { name: 'You Might Also Like' });
+  const add = suggestions
+    .getByRole('button', { name: /^Add to cart:/ })
+    .first();
+  await expect(add).toBeVisible();
+  const productName = (await add.getAttribute('aria-label')).replace(
+    'Add to cart: ',
+    '',
+  );
+  await add.click();
+  await expect(
+    page.getByRole('listitem').filter({
+      has: page.getByRole('heading', { name: productName, exact: true }),
+    }),
+  ).toBeVisible();
+  expect(
+    (await (await fixture.customer.api.get('/cart')).json()).itemCount,
+  ).toBe(2);
+  await noOverflow(page);
+  await summary(page)
+    .getByRole('link', { name: /Proceed to checkout/i })
+    .click();
+  await expect(page).toHaveURL(/\/checkout$/);
 });
