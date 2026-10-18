@@ -5,6 +5,8 @@ import { formatCurrency } from '../../../../utils/currency';
 import { translations } from '../../../../utils/translations';
 import { useRelatedProducts } from '../hooks/useRelatedProducts';
 import { ProductImage } from '../../../../components/common/ProductImage';
+import { AddToCart } from '../../../../components/common/AddToCart';
+import { Rating } from '../../../../components/common/Rating';
 const t = translations.productDetails;
 export function RelatedProducts({ product }: { product: Product }) {
   const related = useRelatedProducts(product);
@@ -38,24 +40,35 @@ export function RelatedProducts({ product }: { product: Product }) {
           {t.relatedEmpty}
         </p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {related.products.map((item) => (
-            <Link
+            <article
               key={item.productID}
-              to={generatePath(ROUTES.productDetail, { id: item.productID })}
-              className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+              className="flex min-w-0 gap-3 rounded-xl border border-slate-200 bg-white p-3"
             >
-              <ProductImage
-                src={item.images[0]}
-                alt={item.name}
-                className="aspect-square w-full bg-white p-5"
-              />
-              <div className="border-t border-slate-100 p-5">
+              <Link
+                key={item.productID}
+                to={generatePath(ROUTES.productDetail, { id: item.productID })}
+                className="block w-24 shrink-0 self-start"
+              >
+                <ProductImage
+                  src={item.images[0]}
+                  alt={item.name}
+                  className="aspect-square w-full rounded-lg bg-slate-50 p-2"
+                />
+              </Link>
+              <div className="min-w-0 flex-1">
                 <p className="text-xs text-slate-500">{item.category.name}</p>
-                <h3 className="mt-2 break-words font-semibold text-slate-900 group-hover:text-blue-700">
-                  {item.name}
+                <h3 className="mt-1 line-clamp-2 break-words text-sm font-semibold text-slate-900 hover:text-blue-700">
+                  <Link
+                    to={generatePath(ROUTES.productDetail, {
+                      id: item.productID,
+                    })}
+                  >
+                    {item.name}
+                  </Link>
                 </h3>
-                <p className="mt-3 font-semibold text-slate-900">
+                <p className="mt-2 text-sm font-semibold text-blue-700">
                   {formatCurrency(item.price)}
                 </p>
                 <p
@@ -63,11 +76,22 @@ export function RelatedProducts({ product }: { product: Product }) {
                 >
                   {item.stockQty > 0 ? t.inStock : t.outOfStock}
                 </p>
-                <span className="mt-4 inline-block text-sm font-medium text-blue-600">
-                  {t.viewProduct} &rarr;
-                </span>
+                {(item.ratingCount ?? 0) > 0 && (
+                  <Rating
+                    average={item.ratingAverage ?? 0}
+                    count={item.ratingCount ?? 0}
+                  />
+                )}
+                <div className="mt-2">
+                  <AddToCart
+                    compact
+                    productId={item.productID}
+                    productName={item.name}
+                    available={item.stockQty > 0 && item.isActive}
+                  />
+                </div>
               </div>
-            </Link>
+            </article>
           ))}
         </div>
       )}

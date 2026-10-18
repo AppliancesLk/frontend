@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
 import { Icon } from '../../../components/common/Icon';
+import { ProductImage } from '../../../components/common/ProductImage';
 import { translations } from '../../../utils/translations';
 import { useHomePage } from './hooks/useHomePage';
 import { PromotionalBanner } from './components/PromotionalBanner';
@@ -89,7 +90,7 @@ export default function HomePage() {
                       className="group rounded-xl border border-slate-200 bg-white p-5 transition-colors hover:border-blue-400 hover:bg-blue-50"
                     >
                       <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-600 group-hover:bg-yellow-300">
-                        <Icon name="grid" />
+                        {category.imageUrl?<ProductImage src={category.imageUrl} alt="" className="h-10 w-10" />:<Icon name="grid" />}
                       </span>
                       <span className="text-sm font-semibold text-slate-800">
                         {category.name}

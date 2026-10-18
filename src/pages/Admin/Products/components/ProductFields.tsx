@@ -1,17 +1,20 @@
 import type { ProductFieldsDraft } from '../types/product-form.types';
 import type { Category } from '../../../../types/category.types';
 import { translations } from '../../../../utils/translations';
+import { ImageUploader } from '../../../../components/forms/ImageUploader';
 const t = translations.admin;
 export function ProductFields({
   draft,
   categories,
   onChange,
   editing = false,
+  onUploadState,
 }: {
   draft: ProductFieldsDraft;
   categories: Category[];
   onChange: (field: keyof ProductFieldsDraft, value: string) => void;
   editing?: boolean;
+  onUploadState?: (busy: boolean) => void;
 }) {
   return (
     <>
@@ -101,6 +104,14 @@ export function ProductFields({
         <label htmlFor="imageUrls" className="auth-label">
           {t.imageUrls}
         </label>
+        <ImageUploader
+          value={draft.imageUrls
+            .split('\n')
+            .map((value) => value.trim())
+            .filter(Boolean)}
+          onChange={(images) => onChange('imageUrls', images.join('\n'))}
+          onBusyChange={onUploadState}
+        />
         <textarea
           id="imageUrls"
           rows={3}
@@ -113,6 +124,37 @@ export function ProductFields({
           {t.imageHint} {editing && translations.productEdit.clearImagesHint}
         </p>
       </div>
+      {(['description', 'features', 'boxContents', 'warranty'] as const).map(
+        (field) => (
+          <div
+            key={field}
+            className={field === 'description' ? 'sm:col-span-2' : ''}
+          >
+            <label className="auth-label" htmlFor={field}>
+              {translations.experience[field]}
+            </label>
+            <textarea
+              id={field}
+              rows={field === 'description' ? 4 : 3}
+              maxLength={
+                field === 'description'
+                  ? 10000
+                  : field === 'warranty'
+                    ? 300
+                    : undefined
+              }
+              value={draft[field] ?? ''}
+              onChange={(event) => onChange(field, event.target.value)}
+              className="auth-input h-auto py-2"
+            />
+            <p className="mt-1 text-xs text-slate-500">
+              {field === 'features' || field === 'boxContents'
+                ? translations.experience.listHint
+                : ''}
+            </p>
+          </div>
+        ),
+      )}
     </>
   );
 }

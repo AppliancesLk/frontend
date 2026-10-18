@@ -1,6 +1,8 @@
 import { storefrontText } from './storefrontText';
+import { productExperienceText } from './productExperienceText';
 import { catalogText } from './catalogText';
 const sharedTranslations = {
+  experience:productExperienceText,
   catalog: catalogText,
   storefront: storefrontText,
   orders: {
