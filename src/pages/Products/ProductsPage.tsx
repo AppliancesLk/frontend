@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { generatePath, Link } from 'react-router-dom';
+import { generatePath, Link, useSearchParams } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { formatCurrency } from '../../utils/currency';
 import { translations } from '../../utils/translations';
@@ -14,72 +14,53 @@ import type { Category } from '../../types/category.types';
 import type { Product } from '../../types/product.types';
 
 function ProductsPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('q')?.trim().toLowerCase() ?? '';
+  const categoryQuery = searchParams.get('category');
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
 
-  const [selectedCategoryID, setSelectedCategoryID] =
-    useState<string | null>(null);
+  const selectedCategoryID = categoryQuery;
+  const [loadedCategory, setLoadedCategory] = useState<string | null | undefined>(undefined);
+  const [revision, setRevision] = useState(0);
 
   const [loadingCategories, setLoadingCategories] =
     useState(true);
 
-  const [loadingProducts, setLoadingProducts] =
-    useState(true);
+  const loadingProducts = loadedCategory !== categoryQuery;
 
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
     async function load() {
-      const [categoryResult, productResult] = await Promise.allSettled([getCategories(), getProducts()]);
+      const [categoryResult, productResult] = await Promise.allSettled([getCategories(), categoryQuery ? getProductsByCategory(categoryQuery) : getProducts()]);
       if (!active) return;
       if (categoryResult.status === 'fulfilled') setCategories(categoryResult.value);
       if (productResult.status === 'fulfilled') setProducts(productResult.value);
+      setError(null);
       if (categoryResult.status === 'rejected' || productResult.status === 'rejected') setError('Unable to load the shop. Please try again.');
       setLoadingCategories(false);
-      setLoadingProducts(false);
+      setLoadedCategory(categoryQuery);
     }
     void load();
     return () => { active = false; };
-  }, []);
+  }, [categoryQuery, revision]);
 
-  const loadProducts = async () => {
-    try {
-      setLoadingProducts(true);
-      setError(null);
+  const visibleProducts = products.filter(product => !search || `${product.name} ${product.SKU} ${product.category.name}`.toLowerCase().includes(search));
 
-      const data = await getProducts();
-
-      setProducts(data);
-      setSelectedCategoryID(null);
-    } catch {
-      setError(
-        'Unable to load products. Please try again.',
-      );
-    } finally {
-      setLoadingProducts(false);
-    }
+  const loadProducts = () => {
+    setLoadedCategory(undefined);
+    setSearchParams({});
+    setRevision(value=>value+1);
   };
 
-  const handleCategorySelect = async (
+  const handleCategorySelect = (
     categoryID: string,
   ) => {
-    try {
-      setLoadingProducts(true);
-      setError(null);
-      setSelectedCategoryID(categoryID);
-
-      const data =
-        await getProductsByCategory(categoryID);
-
-      setProducts(data);
-    } catch {
-      setError(
-        'Unable to load products. Please try again.',
-      );
-    } finally {
-      setLoadingProducts(false);
-    }
+    setLoadedCategory(undefined);
+    setSearchParams({ category: categoryID });
+    setRevision(value=>value+1);
   };
 
   const parentCategories = categories.filter(
@@ -272,8 +253,8 @@ function ProductsPage() {
 
             {!loadingProducts && !error && (
               <span className="text-sm text-slate-500">
-                {products.length}{' '}
-                {products.length === 1
+                {visibleProducts.length}{' '}
+                {visibleProducts.length === 1
                   ? 'product'
                   : 'products'}
               </span>
@@ -298,7 +279,7 @@ function ProductsPage() {
 
           {!loadingProducts &&
             !error &&
-            products.length === 0 && (
+            visibleProducts.length === 0 && (
               <div className="rounded-xl bg-white p-8 text-center shadow-sm">
                 <p className="text-slate-500">
                   {selectedCategoryID
@@ -310,9 +291,9 @@ function ProductsPage() {
 
           {!loadingProducts &&
             !error &&
-            products.length > 0 && (
+            visibleProducts.length > 0 && (
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {products.map((product) => (
+                {visibleProducts.map((product) => (
                   <Link
                     key={product.productID}
                     to={generatePath(ROUTES.productDetail, { id: product.productID })}
