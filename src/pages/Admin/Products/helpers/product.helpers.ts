@@ -23,6 +23,7 @@ export function buildProductFieldsInput(
     .map((value) => value.trim())
     .filter(Boolean);
   for (const image of validateImages ? images : []) {
+    if(/^\/media\/images\/[a-f0-9-]{36}\.(png|jpg|webp)$/.test(image))continue;
     try {
       const url = new URL(image);
       if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
@@ -31,6 +32,10 @@ export function buildProductFieldsInput(
     }
   }
   if (!draft.categoryID) throw new Error(translations.admin.selectCategory);
+  if(images.length>10)throw new Error(translations.experience.uploadError);
+  const description=(draft.description??'').trim(),warranty=(draft.warranty??'').trim();
+  const features=(draft.features??'').split('\n').map(value=>value.trim()).filter(Boolean),boxContents=(draft.boxContents??'').split('\n').map(value=>value.trim()).filter(Boolean);
+  if(description.length>10000||warranty.length>300||features.length>20||boxContents.length>30||[...features,...boxContents].some(value=>value.length>300))throw new Error(translations.catalog.invalidMetadata);
   const brand = (draft.brand ?? '').trim() || null;
   const subtitle = (draft.subtitle ?? '').trim();
   const badge = PRODUCT_BADGES.find((value) => value === draft.badge) ?? null;
@@ -47,6 +52,7 @@ export function buildProductFieldsInput(
   )
     throw new Error(translations.catalog.invalidMetadata);
   return {
+    description,features,boxContents,warranty,
     brand,
     subtitle,
     badge,

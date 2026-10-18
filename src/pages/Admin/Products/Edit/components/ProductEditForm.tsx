@@ -51,6 +51,7 @@ export function ProductEditForm({
         <legend className="sr-only">{t.title}</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <ProductFields
+            onUploadState={page.setUploading}
             editing
             draft={draft}
             categories={options}

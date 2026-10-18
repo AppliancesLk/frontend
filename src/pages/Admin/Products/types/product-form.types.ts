@@ -1,4 +1,5 @@
 export interface ProductFieldsDraft {
+  description:string;features:string;boxContents:string;warranty:string;
   brand: string;
   subtitle: string;
   badge: string;
@@ -14,6 +15,7 @@ export interface ProductDraft extends ProductFieldsDraft {
   specifications: string;
 }
 export const emptyProductDraft: ProductDraft = {
+  description:'',features:'',boxContents:'',warranty:'',
   brand: '',
   subtitle: '',
   badge: '',

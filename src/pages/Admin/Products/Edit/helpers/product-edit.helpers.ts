@@ -93,6 +93,7 @@ export function specificationDraftValue(draft: SpecificationDraft): unknown {
 export function createProductEditDraft(product: Product): ProductEditDraft {
   return {
     name: product.name,
+    description:product.description??'',features:(product.features??[]).join('\n'),boxContents:(product.boxContents??[]).join('\n'),warranty:product.warranty??'',
     brand: product.brand ?? '',
     subtitle: product.subtitle ?? '',
     badge: product.badge ?? '',
@@ -151,6 +152,7 @@ export function isProductEditDirty(
   if (
     (
       [
+        'description','features','boxContents','warranty',
         'name',
         'SKU',
         'price',
@@ -181,6 +183,10 @@ export function buildProductUpdateInput(
     draft.imageUrls !== initial.imageUrls,
   );
   const patch: UpdateProductRequest = {};
+  if((draft.description??'')!==initial.description)patch.description=fields.description;
+  if((draft.features??'')!==initial.features)patch.features=fields.features;
+  if((draft.boxContents??'')!==initial.boxContents)patch.boxContents=fields.boxContents;
+  if((draft.warranty??'')!==initial.warranty)patch.warranty=fields.warranty;
   if ((draft.brand ?? '') !== initial.brand) patch.brand = fields.brand;
   if ((draft.subtitle ?? '') !== initial.subtitle)
     patch.subtitle = fields.subtitle;

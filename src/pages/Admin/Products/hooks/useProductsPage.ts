@@ -17,13 +17,14 @@ export function useProductsPage() {
   const catalog = useCatalog();
   const [draft, setDraft] = useState(emptyProductDraft);
   const [busy, setBusy] = useState(false);
+  const [uploading,setUploading]=useState(false);
   const [updating, setUpdating] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [search, setSearch] = useState('');
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (busy) return;
+    if (busy || uploading) return;
     setError('');
     setSuccess('');
     let input: CreateProductRequest;
@@ -75,7 +76,8 @@ export function useProductsPage() {
     ...catalog,
     draft,
     setDraft,
-    busy,
+    busy:busy||uploading,
+    setUploading,
     updating,
     formError: error,
     success,

@@ -41,6 +41,7 @@ export function useProductEdit(id?: string) {
   const [revision, setRevision] = useState(0);
   const [resource, setResource] = useState<EditorResource | null>(null);
   const [busy, setBusy] = useState(false);
+  const [uploading,setUploading]=useState(false);
   const inFlight = useRef(false);
   const [feedback, setFeedback] = useState({ key: '', error: '', success: '' });
   const cacheKey = `${accountId}:${id}`;
@@ -118,7 +119,7 @@ export function useProductEdit(id?: string) {
   }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!editor || !id || inFlight.current) return;
+    if (!editor || !id || inFlight.current || uploading) return;
     setError('');
     setSuccess('');
     let input: UpdateProductRequest;
@@ -160,7 +161,8 @@ export function useProductEdit(id?: string) {
   return {
     editor,
     status: !validId ? ('not-found' as const) : (current?.status ?? 'loading'),
-    busy,
+    busy:busy||uploading,
+    setUploading,
     dirty,
     error,
     success,
