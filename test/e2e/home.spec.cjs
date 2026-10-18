@@ -25,7 +25,7 @@ test.beforeAll(async ({ playwright }) => {
         name: 'banner.png',
         mimeType: 'image/png',
         buffer: Buffer.from(
-          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jN1sAAAAASUVORK5CYII=',
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWO4/eofAAVnAsTCwYPmAAAAAElFTkSuQmCC',
           'base64',
         ),
       },
@@ -288,7 +288,7 @@ test('admin edits a banner and hides it from the storefront', async ({
       name: 'homepage-upload.png',
       mimeType: 'image/png',
       buffer: Buffer.from(
-        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jN1sAAAAASUVORK5CYII=',
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWO4/eofAAVnAsTCwYPmAAAAAElFTkSuQmCC',
         'base64',
       ),
     });
