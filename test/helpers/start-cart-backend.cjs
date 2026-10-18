@@ -12,6 +12,7 @@ if (fs.existsSync(envFile)) {
 }
 process.env.FRONTEND_URL =
   process.env.CART_FRONTEND_URL || "http://localhost:5174";
+process.env.MEDIA_UPLOAD_DIR ??= path.join(backendPath, 'uploads/media');
 process.env.PAYHERE_MERCHANT_ID = "1238776";
 process.env.PAYHERE_MERCHANT_SECRET = "frontend-e2e-payhere-secret";
 process.env.PAYHERE_MODE = "sandbox";

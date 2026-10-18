@@ -2,6 +2,8 @@ import type { Category } from './category.types';
 export const PRODUCT_BADGES = ['NEW', 'HOT', 'DEAL'] as const;
 export type ProductBadge = (typeof PRODUCT_BADGES)[number];
 export interface ProductCatalogFields {
+  description?:string;features?:string[];boxContents?:string[];warranty?:string;
+  ratingAverage?:string|number;ratingCount?:number;
   brand?: string | null;
   subtitle?: string;
   badge?: ProductBadge | null;
@@ -25,6 +27,7 @@ export interface UpdateProductStockRequest {
   stockQty: number;
 }
 export interface CreateProductRequest {
+  description?:string;features?:string[];boxContents?:string[];warranty?:string;
   brand?: string | null;
   subtitle?: string;
   badge?: ProductBadge | null;
@@ -39,6 +42,7 @@ export interface CreateProductRequest {
   isActive?: boolean;
 }
 export interface UpdateProductRequest {
+  description?:string;features?:string[];boxContents?:string[];warranty?:string;
   brand?: string | null;
   subtitle?: string;
   badge?: ProductBadge | null;

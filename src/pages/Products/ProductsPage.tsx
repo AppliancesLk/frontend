@@ -204,7 +204,7 @@ export default function ProductsPage() {
                     className={`flex min-w-0 items-center gap-3 rounded-xl border p-3 text-left transition-colors ${query.categoryId === category.categoryID ? 'border-blue-500 bg-blue-50' : 'border-slate-200 bg-white hover:border-blue-400'}`}
                   >
                     <span className="rounded-lg border border-blue-100 bg-white p-2 text-blue-600">
-                      <CategoryIcon name={category.name} className="h-6 w-6" />
+                      {category.imageUrl?<ProductImage src={category.imageUrl} alt="" className="h-8 w-8" />:<CategoryIcon name={category.name} className="h-6 w-6" />}
                     </span>
                     <span className="min-w-0">
                       <span className="block truncate text-xs font-semibold text-slate-900">
