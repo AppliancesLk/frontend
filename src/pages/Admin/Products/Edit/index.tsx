@@ -4,6 +4,7 @@ import { translations } from '../../../../utils/translations';
 import { useProductEdit } from './hooks/useProductEdit';
 import { ProductEditForm } from './components/ProductEditForm';
 import { UnsavedChangesDialog } from './components/UnsavedChangesDialog';
+import { ProductReviews } from '../../../../components/reviews/ProductReviews';
 const t = translations.productEdit;
 export default function ProductEditPage() {
   const { id } = useParams();
@@ -24,6 +25,7 @@ export default function ProductEditPage() {
           {page.editor?.product.name ?? t.description}
         </p>
       </header>
+      {page.status==='ready' && id && <div className="rounded-xl border border-slate-200 bg-white p-5"><ProductReviews productId={id}/></div>}
       {page.status === 'loading' && (
         <p
           role="status"
