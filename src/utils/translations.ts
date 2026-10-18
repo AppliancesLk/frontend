@@ -1,5 +1,7 @@
 import { storefrontText } from './storefrontText';
+import { catalogText } from './catalogText';
 const sharedTranslations = {
+  catalog: catalogText,
   storefront: storefrontText,
   orders: {
     title: "My orders",

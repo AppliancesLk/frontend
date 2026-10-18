@@ -5,6 +5,7 @@ import type {
 import type { CreateProductRequest } from '../../../../types/product.types';
 import { validateStockQuantity } from '../../../../utils/stockValidation';
 import { translations } from '../../../../utils/translations';
+import { PRODUCT_BADGES } from '../../../../types/product.types';
 export function buildProductFieldsInput(
   draft: ProductFieldsDraft,
   validateImages = true,
@@ -30,7 +31,26 @@ export function buildProductFieldsInput(
     }
   }
   if (!draft.categoryID) throw new Error(translations.admin.selectCategory);
+  const brand = (draft.brand ?? '').trim() || null;
+  const subtitle = (draft.subtitle ?? '').trim();
+  const badge = PRODUCT_BADGES.find((value) => value === draft.badge) ?? null;
+  const compareText = (draft.compareAtPrice ?? '').trim();
+  const compareAtPrice = compareText ? Number(compareText) : null;
+  if (
+    (brand && (brand.length > 80 || brand.includes(','))) ||
+    subtitle.length > 160 ||
+    (draft.badge && !badge) ||
+    (compareText &&
+      (!/^\d+(?:\.\d{1,2})?$/.test(compareText) ||
+        Number(compareAtPrice) > 9999999999.99 ||
+        Number(compareAtPrice) <= Number(draft.price)))
+  )
+    throw new Error(translations.catalog.invalidMetadata);
   return {
+    brand,
+    subtitle,
+    badge,
+    compareAtPrice,
     name,
     SKU,
     price: Number(draft.price),

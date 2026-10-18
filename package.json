@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "test:catalog": "node --test test/catalog.test.cjs",
+    "test:catalog:e2e": "playwright test --config playwright.catalog.config.cjs",
     "test:home:e2e": "playwright test --config playwright.home.config.cjs",
     "dev": "vite",
     "build": "tsc -b && vite build",

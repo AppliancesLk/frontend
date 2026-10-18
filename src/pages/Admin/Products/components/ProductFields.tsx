@@ -55,6 +55,49 @@ export function ProductFields({
         </select>
       </div>
       <div className="sm:col-span-2">
+        <p className="text-sm text-slate-500">
+          {translations.catalog.metadataHint}
+        </p>
+      </div>
+      {(['brand', 'subtitle', 'compareAtPrice'] as const).map((field) => (
+        <div key={field}>
+          <label className="auth-label" htmlFor={field}>
+            {translations.catalog[field]}
+          </label>
+          <input
+            id={field}
+            className="auth-input"
+            value={draft[field] ?? ''}
+            type={field === 'compareAtPrice' ? 'number' : 'text'}
+            min={field === 'compareAtPrice' ? 0 : undefined}
+            step={field === 'compareAtPrice' ? '0.01' : undefined}
+            max={field === 'compareAtPrice' ? 9999999999.99 : undefined}
+            maxLength={
+              field === 'brand' ? 80 : field === 'subtitle' ? 160 : undefined
+            }
+            onChange={(event) => onChange(field, event.target.value)}
+          />
+        </div>
+      ))}
+      <div>
+        <label className="auth-label" htmlFor="badge">
+          {translations.catalog.badge}
+        </label>
+        <select
+          id="badge"
+          className="auth-input"
+          value={draft.badge ?? ''}
+          onChange={(event) => onChange('badge', event.target.value)}
+        >
+          <option value="">{translations.catalog.noBadge}</option>
+          {Object.entries(translations.catalog.badges).map(([key, label]) => (
+            <option key={key} value={key}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="sm:col-span-2">
         <label htmlFor="imageUrls" className="auth-label">
           {t.imageUrls}
         </label>

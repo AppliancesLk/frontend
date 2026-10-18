@@ -93,6 +93,11 @@ export function specificationDraftValue(draft: SpecificationDraft): unknown {
 export function createProductEditDraft(product: Product): ProductEditDraft {
   return {
     name: product.name,
+    brand: product.brand ?? '',
+    subtitle: product.subtitle ?? '',
+    badge: product.badge ?? '',
+    compareAtPrice:
+      product.compareAtPrice != null ? String(product.compareAtPrice) : '',
     SKU: product.SKU,
     price: String(product.price),
     categoryID: product.category.categoryID,
@@ -145,7 +150,18 @@ export function isProductEditDirty(
   const initial = createProductEditDraft(original);
   if (
     (
-      ['name', 'SKU', 'price', 'categoryID', 'imageUrls', 'isActive'] as const
+      [
+        'name',
+        'SKU',
+        'price',
+        'categoryID',
+        'imageUrls',
+        'isActive',
+        'brand',
+        'subtitle',
+        'badge',
+        'compareAtPrice',
+      ] as const
     ).some((field) => draft[field] !== initial[field])
   )
     return true;
@@ -165,6 +181,12 @@ export function buildProductUpdateInput(
     draft.imageUrls !== initial.imageUrls,
   );
   const patch: UpdateProductRequest = {};
+  if ((draft.brand ?? '') !== initial.brand) patch.brand = fields.brand;
+  if ((draft.subtitle ?? '') !== initial.subtitle)
+    patch.subtitle = fields.subtitle;
+  if ((draft.badge ?? '') !== initial.badge) patch.badge = fields.badge;
+  if ((draft.compareAtPrice ?? '') !== initial.compareAtPrice)
+    patch.compareAtPrice = fields.compareAtPrice;
   if (draft.name !== initial.name && fields.name !== original.name)
     patch.name = fields.name;
   if (draft.SKU !== initial.SKU && fields.SKU !== original.SKU)
