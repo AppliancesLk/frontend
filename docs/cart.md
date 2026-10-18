@@ -29,7 +29,7 @@ clear error message and re-read the cart to reconcile changed stock, missing
 items, or an uncertain network result. Mutations are never silently repeated.
 Initial/retry loads, empty carts, unavailable products, and operation progress
 have explicit UI states. The existing authentication interceptor handles expired
-sessions. No checkout or order creation is included.
+sessions. Checkout navigation uses the existing checkout flow.
 
 `ProductImage` is now a shared component because both Product Details and Cart
 use its image fallback behavior.
@@ -75,3 +75,13 @@ redirects, adding/repeated products, quantity bounds, exact subtotal updates,
 removal, clear/cancel, reload persistence, empty/loading/saving states, stock
 errors, API failures/retry, role restrictions, horizontal overflow, and browser
 runtime errors. Populated-cart screenshots are saved under ignored `test-results`.
+
+## Cart design refresh
+
+Desktop uses aligned product, unit price, quantity and total columns with a separate
+order summary; mobile stacks each row. Recommendations come from the live catalog,
+exclude unavailable products and products already in the cart, and add through the
+same serialized cart mutation flow so totals and navigation counts stay current.
+Only real review aggregates are displayed. Delivery fees are confirmed at checkout;
+the cart does not invent free delivery, tax or return policies. Existing header,
+footer, authentication, API contracts and database schema remain unchanged.
