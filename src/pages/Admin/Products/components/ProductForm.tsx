@@ -28,6 +28,7 @@ export function ProductForm({
         <form onSubmit={page.submit}>
           <fieldset disabled={page.busy} className="grid gap-5 sm:grid-cols-2">
             <ProductFields
+              onUploadState={page.setUploading}
               draft={page.draft}
               categories={page.categories}
               onChange={(field, value) =>

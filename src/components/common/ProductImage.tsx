@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { translations } from '../../utils/translations';
+import { imageUrl } from '../../utils/imageUrl';
 export function ProductImage({
   src,
   alt,
@@ -38,7 +39,7 @@ export function ProductImage({
     );
   return (
     <img
-      src={src}
+      src={imageUrl(src)}
       alt={alt}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"

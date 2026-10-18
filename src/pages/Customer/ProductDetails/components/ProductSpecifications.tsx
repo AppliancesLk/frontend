@@ -1,4 +1,8 @@
-import { formatSpecificationValue } from '../helpers/product-details.helpers';
+import {
+  formatSpecificationValue,
+  getSpecificationEntries,
+  formatSpecificationLabel,
+} from '../helpers/product-details.helpers';
 import { translations } from '../../../../utils/translations';
 const t = translations.productDetails;
 export function ProductSpecifications({
@@ -6,7 +10,7 @@ export function ProductSpecifications({
 }: {
   specifications: Record<string, unknown> | null;
 }) {
-  const entries = Object.entries(specifications ?? {});
+  const entries = getSpecificationEntries(specifications);
   return (
     <section
       id="specifications"
@@ -27,7 +31,7 @@ export function ProductSpecifications({
               className="grid gap-2 px-5 py-4 odd:bg-slate-50/60 sm:grid-cols-[minmax(140px,1fr)_2fr] sm:gap-6 sm:px-8"
             >
               <dt className="break-words text-sm font-medium text-slate-600">
-                {label}
+                {formatSpecificationLabel(label)}
               </dt>
               <dd className="min-w-0 whitespace-pre-wrap break-words text-sm leading-6 text-slate-900">
                 {formatSpecificationValue(value)}
