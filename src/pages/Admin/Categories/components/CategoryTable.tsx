@@ -1,5 +1,6 @@
 import type { useCategoriesPage } from '../hooks/useCategoriesPage';
 import { translations } from '../../../../utils/translations';
+import { ProductImage } from '../../../../components/common/ProductImage';
 const t = translations.admin;
 export function CategoryTable({
   page,
@@ -32,6 +33,13 @@ export function CategoryTable({
                   className="border-t border-slate-200"
                 >
                   <td className="px-5 py-4 font-medium text-slate-900">
+                    {category.imageUrl && (
+                      <ProductImage
+                        src={category.imageUrl}
+                        alt={category.name}
+                        className="mb-2 h-14 w-14 rounded-lg"
+                      />
+                    )}
                     {category.name}
                     <span
                       className={`ml-2 rounded-full px-2 py-1 text-xs ${category.isActive ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'}`}
@@ -43,6 +51,13 @@ export function CategoryTable({
                     {category.parent?.name ?? t.topLevel}
                   </td>
                   <td className="px-5 py-4">
+                    <button
+                      disabled={page.busy}
+                      className="auth-secondary mr-2"
+                      onClick={() => page.edit(category)}
+                    >
+                      {translations.experience.editCategory}
+                    </button>
                     <button
                       className="auth-secondary"
                       disabled={page.updating !== null}

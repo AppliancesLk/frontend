@@ -1,5 +1,6 @@
 import type { useCategoriesPage } from '../hooks/useCategoriesPage';
 import { translations } from '../../../../utils/translations';
+import { ImageUploader } from '../../../../components/forms/ImageUploader';
 const t = translations.admin;
 export function CategoryForm({
   page,
@@ -9,7 +10,7 @@ export function CategoryForm({
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
       <h2 className="mb-5 text-xl font-semibold text-slate-900">
-        {t.addCategory}
+        {page.editing ? translations.experience.editCategory : t.addCategory}
       </h2>
       <form onSubmit={page.submit}>
         <fieldset
@@ -41,7 +42,10 @@ export function CategoryForm({
             >
               <option value="">{t.noParent}</option>
               {page.categories
-                .filter((category) => category.isActive)
+                .filter(
+                  (category) =>
+                    category.isActive && category.categoryID !== page.editing,
+                )
                 .map((category) => (
                   <option value={category.categoryID} key={category.categoryID}>
                     {category.name}
@@ -50,8 +54,32 @@ export function CategoryForm({
             </select>
           </div>
           <button type="submit" className="auth-primary">
-            {page.busy ? t.saving : t.addCategory}
+            {page.busy
+              ? t.saving
+              : page.editing
+                ? translations.experience.save
+                : t.addCategory}
           </button>
+          <div className="md:col-span-3">
+            <p className="mb-3 text-sm font-medium text-slate-700">
+              {translations.experience.categoryImage}
+            </p>
+            <ImageUploader
+              max={1}
+              value={page.imageUrl ? [page.imageUrl] : []}
+              onChange={(images) => page.setImageUrl(images[0] ?? '')}
+              onBusyChange={page.setUploading}
+            />
+          </div>
+          {page.editing && (
+            <button
+              type="button"
+              className="auth-secondary"
+              onClick={page.cancelEdit}
+            >
+              {translations.experience.cancel}
+            </button>
+          )}
         </fieldset>
       </form>
       {page.formError && (
