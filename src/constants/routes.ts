@@ -13,6 +13,7 @@ export const ROUTES = {
   repairRequest: '/repairs/request',
   repairDetail: '/repairs/:id',
   admin: '/admin',
+  adminBanners: '/admin/banners',
   adminProducts: '/admin/products',
   adminProductEdit: '/admin/products/:id/edit',
   adminCategories: '/admin/categories',

@@ -1,4 +1,6 @@
-import { createRoutesFromElements, Route, Navigate } from 'react-router-dom';
+import { createRoutesFromElements, Route } from 'react-router-dom';
+import HomePage from '../pages/Customer/Home';
+import BannersPage from '../pages/Admin/Banners';
 import App from '../App';
 import CheckoutPage from '../pages/Customer/Checkout';
 import OrdersPage from '../pages/Customer/Orders';
@@ -36,7 +38,7 @@ export const appRoutes = createRoutesFromElements(
     <Route element={<CustomerLayout />}>
       <Route
         path={ROUTES.home}
-        element={<Navigate to={ROUTES.products} replace />}
+        element={<HomePage />}
       />
       <Route path={ROUTES.products} element={<ProductsPage />} />
       <Route path={ROUTES.productDetail} element={<ProductDetailsPage />} />
@@ -71,6 +73,7 @@ export const appRoutes = createRoutesFromElements(
     <Route element={<ProtectedRoute roles={[USER_ROLES.ADMIN]} />}>
       <Route element={<AdminLayout />}>
         <Route path={ROUTES.admin} element={<DashboardPage />} />
+        <Route path={ROUTES.adminBanners} element={<BannersPage />} />
         <Route path={ROUTES.adminProducts} element={<AdminProductsPage />} />
         <Route path={ROUTES.adminProductEdit} element={<ProductEditPage />} />
         <Route path={ROUTES.adminCategories} element={<CategoriesPage />} />

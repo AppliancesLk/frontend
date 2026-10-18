@@ -1,5 +1,4 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { SiteHeader } from './SiteHeader';
 import { ROUTES } from '../../constants/routes';
 import { translations } from '../../utils/translations';
 export function AdminLayout() {
@@ -12,6 +11,7 @@ export function AdminLayout() {
         <nav aria-label={translations.auth.adminNavigation}>
           {[
             { path: ROUTES.admin, label: translations.auth.dashboard },
+            { path: ROUTES.adminBanners, label: translations.storefront.banners },
             { path: ROUTES.adminProducts, label: translations.admin.products },
             {
               path: ROUTES.adminCategories,
@@ -38,7 +38,6 @@ export function AdminLayout() {
         </nav>
       </aside>
       <div className="min-w-0 flex-1">
-        <SiteHeader />
         <main className="px-4 py-6 sm:px-6 md:py-8 lg:px-8">
           <Outlet />
         </main>
