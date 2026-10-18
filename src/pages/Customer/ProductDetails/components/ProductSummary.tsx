@@ -1,4 +1,4 @@
-import { AddToCart } from './AddToCart';
+import { AddToCart } from '../../../../components/common/AddToCart';
 import { Link } from 'react-router-dom';
 import type { Product } from '../../../../types/product.types';
 import { ROUTES } from '../../../../constants/routes';
