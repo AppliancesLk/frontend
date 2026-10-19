@@ -26,6 +26,7 @@ backendRequire("reflect-metadata");
   const { configureApp } = backendRequire("./dist/app.setup");
   const app = await NestFactory.create(AppModule, { logger: ["error"] });
   configureApp(app);
+  backendRequire('./test/helpers/mock-email.cjs').mockEmail(app);
   await app.listen(Number(apiUrl.port), apiUrl.hostname);
   app.enableShutdownHooks();
 })().catch(() => {
