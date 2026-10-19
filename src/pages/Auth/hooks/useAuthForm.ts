@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { getAuthDestination } from '../helpers/auth.helpers';
 import { translations } from '../../../utils/translations';
+import { ROUTES } from '../../../constants/routes';
 
 export function useAuthForm(mode: 'login' | 'register') {
   const registering = mode === 'register';
@@ -30,12 +31,9 @@ export function useAuthForm(mode: 'login' | 'register') {
     }
     setBusy(true);
     try {
-      const authenticatedUser = registering
-        ? await signUp({ username, email, password })
-        : await signIn({ username, password });
-      navigate(getAuthDestination(authenticatedUser, requested), {
-        replace: true,
-      });
+      if (registering) await signUp({ username, email, password });
+      else await signIn({ username, password });
+      navigate(ROUTES.home, { replace: true });
     } catch (err) {
       const message = axios.isAxiosError(err)
         ? err.response?.data?.message
