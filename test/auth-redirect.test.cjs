@@ -13,7 +13,7 @@ const user = (role) => ({
 });
 const scenarios = [
   ['admin lands on dashboard', 'ADMIN', undefined, '/admin'],
-  ['customer lands on account', 'CUSTOMER', undefined, '/account'],
+  ['customer lands on home', 'CUSTOMER', undefined, '/'],
   ['repairer lands on workspace', 'REPAIRER', undefined, '/repairer'],
   [
     'admin preserves management destination',
@@ -26,13 +26,13 @@ const scenarios = [
     'customer cannot redirect into admin',
     'CUSTOMER',
     '/admin/products',
-    '/account',
+    '/',
   ],
   [
     'customer cannot redirect into repairer workspace',
     'CUSTOMER',
     '/repairer',
-    '/account',
+    '/',
   ],
   [
     'customer preserves shopping destination',
@@ -42,7 +42,7 @@ const scenarios = [
   ],
   ['external redirects rejected', 'ADMIN', '//attacker.example', '/admin'],
   ['backslash redirects rejected', 'ADMIN', '/\\attacker.example', '/admin'],
-  ['login loops rejected', 'CUSTOMER', '/login?next=one', '/account'],
+  ['login loops rejected', 'CUSTOMER', '/login?next=one', '/'],
 ];
 for (const [title, role, requested, expected] of scenarios)
   test(title, () =>
