@@ -1,5 +1,7 @@
 import { createRoutesFromElements, Route } from 'react-router-dom';
 import HomePage from '../pages/Customer/Home';
+import LiveChatPage from '../pages/Customer/LiveChat';
+import AdminChatPage from '../pages/Admin/LiveChat';
 import BannersPage from '../pages/Admin/Banners';
 import App from '../App';
 import CheckoutPage from '../pages/Customer/Checkout';
@@ -48,6 +50,7 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.account} element={<ProfilePage />} />
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.CUSTOMER]} />}>
+        <Route path={ROUTES.liveChat} element={<LiveChatPage />} />
         <Route path={ROUTES.cart} element={<CartPage />} />
         <Route path={ROUTES.checkout} element={<CheckoutPage />} />
         <Route path={ROUTES.orders} element={<OrdersPage />} />
@@ -72,6 +75,7 @@ export const appRoutes = createRoutesFromElements(
     </Route>
     <Route element={<ProtectedRoute roles={[USER_ROLES.ADMIN]} />}>
       <Route element={<AdminLayout />}>
+        <Route path={ROUTES.adminChat} element={<AdminChatPage />} />
         <Route path={ROUTES.admin} element={<DashboardPage />} />
         <Route path={ROUTES.adminBanners} element={<BannersPage />} />
         <Route path={ROUTES.adminProducts} element={<AdminProductsPage />} />
