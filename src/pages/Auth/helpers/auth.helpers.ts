@@ -1,6 +1,7 @@
 import type { AuthUser } from '../../../types/auth.types';
 import { ROUTES } from '../../../constants/routes';
 import { USER_ROLES } from '../../../constants/roles';
+
 export function getAuthDestination(
   user: AuthUser | null,
   requested?: string,
@@ -10,7 +11,7 @@ export function getAuthDestination(
       ? ROUTES.admin
       : user?.role === USER_ROLES.REPAIRER
         ? ROUTES.repairer
-        : ROUTES.account;
+        : ROUTES.home;
   if (
     !requested ||
     !requested.startsWith('/') ||
