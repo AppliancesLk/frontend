@@ -1,5 +1,7 @@
 export const ROUTES = {
   home: '/',
+  liveChat: '/support/chat',
+  adminChat: '/admin/chats',
   products: '/products',
   productDetail: '/products/:id',
   login: '/login',
