@@ -11,6 +11,7 @@ import type { ProductTab } from './components/ProductContent';
 import type { ReviewSummary } from '../../../types/review.types';
 import { RelatedProducts } from './components/RelatedProducts';
 import { ProductDetailsState } from './components/ProductDetailsState';
+import { ProductAiAssistant } from './components/ProductAiAssistant/ProductAiAssistant';
 export default function ProductDetailsPage() {
   const { id } = useParams();
   const page = useProductDetails(id);
@@ -122,6 +123,7 @@ export default function ProductDetailsPage() {
               onSummary={updateSummary}
             />
             <RelatedProducts product={product} />
+            <ProductAiAssistant productId={product.productID} productName={product.name} />
           </>
         ) : (
           <ProductDetailsState
