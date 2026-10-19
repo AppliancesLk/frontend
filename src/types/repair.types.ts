@@ -46,6 +46,7 @@ export interface AdminRepairTicket {
   reference: string;
   customer: CustomerInfo;
   assignedRepairerId: string | null;
+  assignedRepairer: CustomerInfo | null;
   device: DeviceInformation;
   problemDescription: string;
   status: RepairStatus;
