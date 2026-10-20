@@ -105,6 +105,13 @@ export function ProductTable({
                               ? t.deactivate
                               : t.activate}
                         </button>
+                        <button
+                          className="auth-secondary text-danger"
+                          disabled={page.updating !== null}
+                          onClick={() => void page.remove(product)}
+                        >
+                          Delete
+                        </button>
                       </div>
                     </div>
                   </td>
