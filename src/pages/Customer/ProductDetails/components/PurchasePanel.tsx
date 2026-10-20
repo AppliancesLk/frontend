@@ -1,3 +1,5 @@
+import { StatusBadge } from '../../../../components/ui/StatusBadge';
+import { LoadingState } from '../../../../components/ui/Feedback';
 import { useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { Product } from '../../../../types/product.types';
@@ -49,13 +51,11 @@ export function PurchasePanel({ product }: { product: Product }) {
       className="rounded-xl border border-slate-200 bg-white p-5 xl:p-6"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span
-          className={`rounded-lg px-3 py-1 text-xs font-semibold ${available ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'}`}
-        >
+        <StatusBadge status={available ? 'IN_STOCK' : 'OUT_OF_STOCK'}>
           {available
             ? translations.productDetails.inStock
             : translations.productDetails.outOfStock}
-        </span>
+        </StatusBadge>
         <span className="break-all text-xs text-slate-500">
           {translations.productDetails.sku}: {product.SKU}
         </span>
@@ -83,7 +83,7 @@ export function PurchasePanel({ product }: { product: Product }) {
           aria-label={t.decrease}
           disabled={busy || quantity <= 1}
           onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-          className="h-10 w-10 bg-slate-50 text-blue-700 disabled:opacity-30"
+          className="min-h-11 w-11 bg-slate-50 text-blue-700 disabled:opacity-30"
         >
           −
         </button>
@@ -104,7 +104,7 @@ export function PurchasePanel({ product }: { product: Product }) {
                 : 1,
             );
           }}
-          className="h-10 w-16 border-x border-slate-200 bg-white text-center text-sm outline-none focus:ring-2 focus:ring-blue-500/20"
+          className="ui-field min-h-11 w-16 border-x border-slate-200 bg-white text-center text-sm outline-none focus:ring-2 focus:ring-blue-500/20"
         />
         <button
           aria-label={t.increase}
@@ -112,15 +112,13 @@ export function PurchasePanel({ product }: { product: Product }) {
           onClick={() =>
             setQuantity((value) => Math.min(product.stockQty, value + 1))
           }
-          className="h-10 w-10 bg-slate-50 text-blue-700 disabled:opacity-30"
+          className="min-h-11 w-11 bg-slate-50 text-blue-700 disabled:opacity-30"
         >
           +
         </button>
       </div>
       {loading ? (
-        <p role="status" className="text-sm text-slate-500">
-          {t.loading}
-        </p>
+        <LoadingState label={t.loading} compact={true} />
       ) : !user ? (
         <Link
           to={ROUTES.login}
@@ -134,7 +132,7 @@ export function PurchasePanel({ product }: { product: Product }) {
           <button
             disabled={busy || !available}
             onClick={() => void purchase(false)}
-            className="flex min-h-12 w-full items-center justify-center gap-3 rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-40"
+            className="ui-button ui-button-primary flex min-h-12 w-full items-center justify-center gap-3 rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-40"
           >
             <Icon name="cart" />
             {busy ? t.adding : t.addToCart}
@@ -142,7 +140,7 @@ export function PurchasePanel({ product }: { product: Product }) {
           <button
             disabled={busy || !available}
             onClick={() => void purchase(true)}
-            className="min-h-12 w-full rounded-lg bg-yellow-400 px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-yellow-300 disabled:opacity-40"
+            className="ui-button ui-button-secondary min-h-12 w-full disabled:opacity-40"
           >
             {t.buyNow} →
           </button>

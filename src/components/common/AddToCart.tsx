@@ -7,6 +7,7 @@ import { addCartItem } from '../../services/cartService';
 import { getApiError } from '../../utils/apiErrors';
 import { translations } from '../../utils/translations';
 import { Icon } from './Icon';
+import { Spinner } from '../ui/Feedback';
 const t = translations.cart;
 export function AddToCart({
   productId,
@@ -48,7 +49,7 @@ export function AddToCart({
         <button
           disabled
           aria-label={translations.productDetails.outOfStock}
-          className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-400"
+          className="flex min-h-11 w-11 items-center justify-center rounded-lg bg-slate-100 text-slate-400"
         >
           <Icon name="cart" />
         </button>
@@ -75,14 +76,21 @@ export function AddToCart({
           }
           className={
             compact
-              ? 'flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50'
+              ? 'flex h-11 w-11 items-center justify-center rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50'
               : 'auth-primary w-full'
           }
         >
           {compact ? (
-            <Icon name={added ? 'check' : 'cart'} />
+            saving ? (
+              <Spinner />
+            ) : (
+              <Icon name={added ? 'check' : 'cart'} />
+            )
           ) : saving ? (
-            t.adding
+            <>
+              <Spinner />
+              {t.adding}
+            </>
           ) : available ? (
             t.add
           ) : (

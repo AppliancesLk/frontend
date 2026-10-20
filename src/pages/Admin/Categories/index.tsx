@@ -9,9 +9,7 @@ export default function CategoriesPage() {
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-          {t.categories}
-        </h1>
+        <h1 className="ui-page-title text-slate-900">{t.categories}</h1>
         <p className="mt-2 text-sm text-slate-500">{t.categoriesDescription}</p>
       </header>
       <CatalogFeedback

@@ -1,3 +1,4 @@
+import { Spinner } from '../../../../components/ui/Feedback';
 import type { useInventoryPage } from '../hooks/useInventoryPage';
 import { translations } from '../../../../utils/translations';
 export function InventoryList({
@@ -66,14 +67,15 @@ export function InventoryList({
                     disabled={isSaving}
                     aria-label={`${translations.admin.newStockLabel} ${product.name}`}
                     aria-invalid={message?.type === 'error'}
-                    className="w-28 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none disabled:bg-slate-100"
+                    className="ui-field w-28 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none disabled:bg-slate-100"
                   />
 
                   <button
                     type="submit"
                     disabled={isSaving || isUnchanged}
-                    className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="ui-button ui-button-primary rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                   >
+                    {isSaving && <Spinner className="mr-2" />}
                     {isSaving
                       ? translations.admin.saving
                       : translations.admin.save}

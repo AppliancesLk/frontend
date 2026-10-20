@@ -25,7 +25,10 @@ export function useCustomerRepairsPage() {
     } catch (err: unknown) {
       if (!controller.signal.aborted && alive.current) {
         setError(
-          getApiError(err, 'Failed to load your repair tickets. Please try again.'),
+          getApiError(
+            err,
+            'Failed to load your repair tickets. Please try again.',
+          ),
         );
       }
     } finally {
@@ -37,8 +40,9 @@ export function useCustomerRepairsPage() {
 
   useEffect(() => {
     alive.current = true;
-    void refresh();
+    const initialLoad = window.setTimeout(() => void refresh(), 0);
     return () => {
+      window.clearTimeout(initialLoad);
       alive.current = false;
       read.current?.abort();
     };

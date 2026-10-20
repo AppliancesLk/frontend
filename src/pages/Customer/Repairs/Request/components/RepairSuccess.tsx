@@ -9,7 +9,7 @@ export function RepairSuccess({ ticket }: { ticket: RepairTicket }) {
   return (
     <div className="rounded-xl border border-green-200 bg-green-50 p-6 shadow-sm">
       <div className="flex items-start gap-4">
-        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-600">
+        <div className="flex min-h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-green-600">
           <svg
             className="h-6 w-6 text-white"
             fill="none"
@@ -46,7 +46,7 @@ export function RepairSuccess({ ticket }: { ticket: RepairTicket }) {
                 {t.ticketStatus}
               </dt>
               <dd className="mt-1">
-                <span className="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-800">
+                <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-amber-800">
                   {t.statuses[ticket.status] || ticket.status}
                 </span>
               </dd>

@@ -1,3 +1,6 @@
+import { ChatPane } from '../../../components/chat/ChatPane';
+import { useState } from 'react';
+import { LoadingState } from '../../../components/ui/Feedback';
 import { useAuth } from '../../../hooks/useAuth';
 import { useSupportChat } from '../../../hooks/useSupportChat';
 import { ChatConversation } from '../../../components/chat/ChatConversation';
@@ -9,14 +12,13 @@ export default function AdminChatPage() {
   return <AdminChat key={user?.id} />;
 }
 function AdminChat() {
+  const [showConversation, setShowConversation] = useState(false);
   const chat = useSupportChat('ADMIN');
   return (
     <section className="space-y-6">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-            {t.adminTitle}
-          </h1>
+          <h1 className="ui-page-title text-slate-900">{t.adminTitle}</h1>
           <p className="mt-2 text-sm text-slate-500">{t.adminDescription}</p>
         </div>
         <ChatConnection state={chat.connection} reconnect={chat.reconnect} />
@@ -29,8 +31,13 @@ function AdminChat() {
           {chat.actionError}
         </p>
       )}
-      <div className="grid items-start gap-5 xl:grid-cols-[22rem_minmax(0,1fr)]">
-        <aside className="min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="grid items-start gap-5 lg:grid-cols-[20rem_minmax(0,1fr)]">
+        <aside
+          className={
+            (showConversation && chat.selectedId ? 'hidden lg:block ' : '') +
+            'min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm'
+          }
+        >
           <div className="border-b border-slate-200 p-4">
             <h2 className="font-semibold text-slate-900">{t.sessions}</h2>
             <label
@@ -51,7 +58,7 @@ function AdminChat() {
                       : undefined,
                 )
               }
-              className="mt-1 h-10 w-full rounded-lg border border-slate-300 px-3 text-sm focus:outline-blue-500"
+              className="ui-field mt-1 min-h-11 w-full rounded-lg border border-slate-300 px-3 text-sm focus:outline-blue-500"
             >
               <option value="">{t.all}</option>
               <option value="OPEN">{t.open}</option>
@@ -69,16 +76,17 @@ function AdminChat() {
               </button>
             </div>
           ) : !chat.list ? (
-            <p role="status" className="p-4">
-              {t.loading}
-            </p>
+            <LoadingState label={t.loading} compact={true} />
           ) : (
             <>
               <ChatSessionList
                 sessions={chat.list.items}
                 selectedId={chat.selectedId}
                 role="ADMIN"
-                select={chat.select}
+                select={(id) => {
+                  chat.select(id);
+                  setShowConversation(true);
+                }}
               />
               {chat.list.totalPages > 1 && (
                 <div className="flex items-center justify-between gap-2 border-t border-slate-200 p-3 text-sm">
@@ -86,7 +94,7 @@ function AdminChat() {
                     type="button"
                     disabled={chat.list.page <= 1}
                     onClick={() => chat.setPage(chat.list!.page - 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-2 disabled:opacity-50"
+                    className="ui-button ui-button-secondary rounded-lg border border-slate-300 px-3 py-2 disabled:opacity-50"
                   >
                     {t.previous}
                   </button>
@@ -97,7 +105,7 @@ function AdminChat() {
                     type="button"
                     disabled={chat.list.page >= chat.list.totalPages}
                     onClick={() => chat.setPage(chat.list!.page + 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-2 disabled:opacity-50"
+                    className="ui-button ui-button-secondary rounded-lg border border-slate-300 px-3 py-2 disabled:opacity-50"
                   >
                     {t.next}
                   </button>
@@ -106,9 +114,15 @@ function AdminChat() {
             </>
           )}
         </aside>
-        <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <ChatConversation chat={chat} admin />
-        </section>
+        <ChatPane
+          chat={chat}
+          back={() => {
+            chat.deselect();
+            setShowConversation(false);
+          }}
+        >
+          <ChatConversation key={chat.selectedId} chat={chat} admin />
+        </ChatPane>
       </div>
     </section>
   );
