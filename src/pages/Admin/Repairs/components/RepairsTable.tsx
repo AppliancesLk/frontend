@@ -1,3 +1,4 @@
+import { formatDate } from '../../../../utils/date';
 import { Link } from 'react-router-dom';
 import type { AdminRepairTicket } from '../../../../types/repair.types';
 import { translations } from '../../../../utils/translations';
@@ -6,21 +7,11 @@ import { RepairStatusBadge } from './RepairStatusBadge';
 
 const t = translations.adminRepairs;
 
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
-
 export function RepairsTable({ repairs }: { repairs: AdminRepairTicket[] }) {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-slate-200">
+        <table className="ui-table ui-card-table min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
               <th
@@ -64,40 +55,61 @@ export function RepairsTable({ repairs }: { repairs: AdminRepairTicket[] }) {
                 key={repair.id}
                 className="hover:bg-slate-50 transition-colors"
               >
-                <td className="whitespace-nowrap px-4 py-4">
-                  <div className="font-mono text-sm font-medium text-slate-900">
-                    {repair.reference}
+                <td
+                  data-label={t.reference}
+                  className="xl:whitespace-nowrap px-4 py-4"
+                >
+                  <div className="ui-cell-value">
+                    <div className="tabular-nums text-sm font-medium text-slate-900">
+                      {repair.reference}
+                    </div>
                   </div>
                 </td>
-                <td className="px-4 py-4">
-                  <div className="text-sm text-slate-900">
-                    {repair.customer.username}
-                  </div>
-                  <div className="text-sm text-slate-500">
-                    {repair.customer.email}
-                  </div>
-                </td>
-                <td className="px-4 py-4">
-                  <div className="text-sm text-slate-900">
-                    {repair.device.deviceType}
-                  </div>
-                  <div className="text-sm text-slate-500">
-                    {repair.device.brand} {repair.device.model}
+                <td data-label={t.customer} className="px-4 py-4">
+                  <div className="ui-cell-value">
+                    <div className="text-sm text-slate-900">
+                      {repair.customer.username}
+                    </div>
+                    <div className="text-sm text-slate-500">
+                      {repair.customer.email}
+                    </div>
                   </div>
                 </td>
-                <td className="px-4 py-4">
-                  <RepairStatusBadge status={repair.status} />
+                <td data-label={t.device} className="px-4 py-4">
+                  <div className="ui-cell-value">
+                    <div className="text-sm text-slate-900">
+                      {repair.device.deviceType}
+                    </div>
+                    <div className="text-sm text-slate-500">
+                      {repair.device.brand} {repair.device.model}
+                    </div>
+                  </div>
                 </td>
-                <td className="whitespace-nowrap px-4 py-4 text-sm text-slate-500">
-                  {formatDate(repair.createdAt)}
+                <td data-label={t.status} className="px-4 py-4">
+                  <div className="ui-cell-value">
+                    <RepairStatusBadge status={repair.status} />
+                  </div>
                 </td>
-                <td className="whitespace-nowrap px-4 py-4 text-right text-sm">
-                  <Link
-                    to={ROUTES.adminRepairDetail.replace(':id', repair.id)}
-                    className="font-medium text-blue-600 hover:text-blue-700"
-                  >
-                    {t.viewDetails}
-                  </Link>
+                <td
+                  data-label={t.submittedDate}
+                  className="xl:whitespace-nowrap px-4 py-4 text-sm text-slate-500"
+                >
+                  <div className="ui-cell-value">
+                    {formatDate(repair.createdAt)}
+                  </div>
+                </td>
+                <td
+                  data-label={translations.admin.actions}
+                  className="xl:whitespace-nowrap px-4 py-4 text-right text-sm"
+                >
+                  <div className="ui-cell-value">
+                    <Link
+                      to={ROUTES.adminRepairDetail.replace(':id', repair.id)}
+                      className="font-medium text-blue-600 hover:text-blue-700"
+                    >
+                      {t.viewDetails}
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}

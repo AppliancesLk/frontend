@@ -1,3 +1,4 @@
+import { OrderProgress } from '../../../../components/ui/OrderProgress';
 import type { Order } from '../../../../types/order.types';
 import { ProductImage } from '../../../../components/common/ProductImage';
 import { formatCurrency } from '../../../../utils/currency';
@@ -39,6 +40,7 @@ export function OrderDetails({ order }: { order: Order }) {
           </div>
         </dl>
       </section>
+      <OrderProgress status={order.status} />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <section
           aria-labelledby="order-items"

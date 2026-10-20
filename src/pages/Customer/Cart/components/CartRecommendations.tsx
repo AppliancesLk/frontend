@@ -1,3 +1,4 @@
+import { LoadingState } from '../../../../components/ui/Feedback';
 import { useCartRecommendations } from '../hooks/useCartRecommendations';
 import { generatePath, Link } from 'react-router-dom';
 import type { Cart } from '../../../../types/cart.types';
@@ -62,9 +63,7 @@ export function CartRecommendations({
           </button>
         </div>
       ) : !products ? (
-        <p role="status" className="text-sm text-slate-500">
-          {t.recommendationsLoading}
-        </p>
+        <LoadingState label={t.recommendationsLoading} compact={true} />
       ) : !suggestions?.length ? (
         <p className="text-sm text-slate-500">{t.recommendationsEmpty}</p>
       ) : (
@@ -112,7 +111,7 @@ export function CartRecommendations({
                     disabled={busy}
                     onClick={() => onAdd(product.productID)}
                     aria-label={`${t.add}: ${product.name}`}
-                    className="ml-auto flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="ml-auto flex min-h-11 w-11 items-center justify-center rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
                   >
                     <Icon name="cart" />
                   </button>

@@ -1,17 +1,9 @@
+import { formatDate } from '../../../../utils/date';
+import { LoadingState } from '../../../../components/ui/Feedback';
 import { useEffect } from 'react';
 import { useCustomerRepairDetails } from './hooks/useCustomerRepairDetails';
 import { RepairStatusBadge } from '../../../Admin/Repairs/components/RepairStatusBadge';
 import { getStatusLabel } from '../../../../utils/statusTransitions';
-
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
 
 export default function CustomerRepairDetailsPage() {
   const page = useCustomerRepairDetails();
@@ -28,20 +20,7 @@ export default function CustomerRepairDetailsPage() {
     return (
       <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div
-            role="status"
-            className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm"
-          >
-            <p className="text-sm text-slate-500">Loading repair details...</p>
-            <div
-              aria-hidden="true"
-              className="mt-6 space-y-4 motion-safe:animate-pulse"
-            >
-              {[1, 2, 3].map((key) => (
-                <div key={key} className="h-20 rounded-lg bg-slate-100" />
-              ))}
-            </div>
-          </div>
+          <LoadingState />
         </div>
       </main>
     );
@@ -86,10 +65,8 @@ export default function CustomerRepairDetailsPage() {
             >
               ← Back to My Repairs
             </button>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-              Repair Details
-            </h1>
-            <p className="mt-1 font-mono text-sm text-slate-500">
+            <h1 className="ui-page-title text-slate-900">Repair Details</h1>
+            <p className="mt-1 tabular-nums text-sm text-slate-500">
               {page.repair.reference}
             </p>
           </div>
@@ -143,7 +120,7 @@ export default function CustomerRepairDetailsPage() {
                   <dt className="text-sm font-medium text-slate-500">
                     Serial Number
                   </dt>
-                  <dd className="mt-1 font-mono text-sm text-slate-900">
+                  <dd className="mt-1 tabular-nums text-sm text-slate-900">
                     {page.repair.device.serialNumber}
                   </dd>
                 </div>
@@ -231,16 +208,22 @@ export default function CustomerRepairDetailsPage() {
             <div className="flex gap-4">
               <div
                 className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${
-                  ['IN_PROGRESS', 'AWAITING_PARTS', 'READY_FOR_COLLECTION', 'COMPLETED'].includes(
-                    page.repair.status,
-                  )
+                  [
+                    'IN_PROGRESS',
+                    'AWAITING_PARTS',
+                    'READY_FOR_COLLECTION',
+                    'COMPLETED',
+                  ].includes(page.repair.status)
                     ? 'bg-blue-100'
                     : 'bg-slate-100'
                 }`}
               >
-                {['IN_PROGRESS', 'AWAITING_PARTS', 'READY_FOR_COLLECTION', 'COMPLETED'].includes(
-                  page.repair.status,
-                ) ? (
+                {[
+                  'IN_PROGRESS',
+                  'AWAITING_PARTS',
+                  'READY_FOR_COLLECTION',
+                  'COMPLETED',
+                ].includes(page.repair.status) ? (
                   <svg
                     className="h-4 w-4 text-blue-600"
                     fill="currentColor"
@@ -259,18 +242,24 @@ export default function CustomerRepairDetailsPage() {
               <div className="flex-1">
                 <p
                   className={`text-sm font-medium ${
-                    ['IN_PROGRESS', 'AWAITING_PARTS', 'READY_FOR_COLLECTION', 'COMPLETED'].includes(
-                      page.repair.status,
-                    )
+                    [
+                      'IN_PROGRESS',
+                      'AWAITING_PARTS',
+                      'READY_FOR_COLLECTION',
+                      'COMPLETED',
+                    ].includes(page.repair.status)
                       ? 'text-slate-900'
                       : 'text-slate-500'
                   }`}
                 >
                   Repair In Progress
                 </p>
-                {['IN_PROGRESS', 'AWAITING_PARTS', 'READY_FOR_COLLECTION', 'COMPLETED'].includes(
-                  page.repair.status,
-                ) && (
+                {[
+                  'IN_PROGRESS',
+                  'AWAITING_PARTS',
+                  'READY_FOR_COLLECTION',
+                  'COMPLETED',
+                ].includes(page.repair.status) && (
                   <p className="text-sm text-slate-500">
                     Currently: {getStatusLabel(page.repair.status)}
                   </p>
@@ -329,7 +318,7 @@ export default function CustomerRepairDetailsPage() {
           <div className="mt-4 space-y-3 text-sm text-slate-700">
             <p>
               • Your repair ticket reference is:{' '}
-              <span className="font-mono font-medium">
+              <span className="tabular-nums font-medium">
                 {page.repair.reference}
               </span>
             </p>

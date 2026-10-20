@@ -269,9 +269,7 @@ test('customer add-to-cart updates navigation badge', async ({ page }) => {
   await page.goto(`/products/${fixture.washer.productID}`);
   await page.getByRole('button', { name: 'Add to cart', exact: true }).click();
   await expect(
-    page
-      .getByRole('navigation', { name: 'Main navigation' })
-      .getByRole('link', { name: /Cart/ }),
+    page.getByRole('banner').getByRole('link', { name: /Cart/ }),
   ).toContainText('1');
 });
 test('admin edits a banner and hides it from the storefront', async ({
@@ -282,16 +280,14 @@ test('admin edits a banner and hides it from the storefront', async ({
     has: page.getByRole('heading', { name: 'Middle banner', exact: true }),
   });
   await middle.getByRole('button', { name: /Add image/ }).click();
-  await middle
-    .getByLabel('Upload image', { exact: true })
-    .setInputFiles({
-      name: 'homepage-upload.png',
-      mimeType: 'image/png',
-      buffer: Buffer.from(
-        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWO4/eofAAVnAsTCwYPmAAAAAElFTkSuQmCC',
-        'base64',
-      ),
-    });
+  await middle.getByLabel('Upload image', { exact: true }).setInputFiles({
+    name: 'homepage-upload.png',
+    mimeType: 'image/png',
+    buffer: Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWO4/eofAAVnAsTCwYPmAAAAAElFTkSuQmCC',
+      'base64',
+    ),
+  });
   await expect(middle.getByLabel('Image URL', { exact: true })).toHaveValue(
     /\/banners\/images\/.+\.png$/,
   );

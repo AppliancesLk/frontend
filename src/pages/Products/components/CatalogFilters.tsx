@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import type {
   CatalogQuery,
   CatalogResult,
@@ -60,6 +60,7 @@ function CategoryList({
   );
 }
 export function CatalogFilters({ facets, query, update, clear }: Props) {
+  const id = useId();
   const [brandSearch, setBrandSearch] = useState('');
   const [showAll, setShowAll] = useState(false);
   const [min, setMin] = useState(query.minPrice?.toString() ?? '');
@@ -116,15 +117,15 @@ export function CatalogFilters({ facets, query, update, clear }: Props) {
         <legend className="mb-3 font-semibold text-slate-900">
           {t.brands}
         </legend>
-        <label className="sr-only" htmlFor="brand-search">
+        <label className="sr-only" htmlFor={id + '-brand-search'}>
           {t.searchBrands}
         </label>
         <input
-          id="brand-search"
+          id={id + '-brand-search'}
           value={brandSearch}
           onChange={(event) => setBrandSearch(event.target.value)}
           placeholder={t.searchBrands}
-          className="mb-3 h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          className="ui-field mb-3 min-h-11 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
         />
         <div className="space-y-1">
           {brands.slice(0, showAll ? undefined : 8).map((brand) => (
@@ -167,11 +168,11 @@ export function CatalogFilters({ facets, query, update, clear }: Props) {
         }}
       >
         <h2 className="mb-4 font-semibold text-slate-900">{t.price}</h2>
-        <label className="sr-only" htmlFor="max-price-slider">
+        <label className="sr-only" htmlFor={id + '-max-price-slider'}>
           {t.maxPriceSlider}
         </label>
         <input
-          id="max-price-slider"
+          id={id + '-max-price-slider'}
           type="range"
           min={0}
           max={Math.max(Number(facets.price.max), Number(max) || 0, 1)}
@@ -194,12 +195,12 @@ export function CatalogFilters({ facets, query, update, clear }: Props) {
                 step="0.01"
                 value={field.value}
                 onChange={(event) => field.set(event.target.value)}
-                className="mt-2 h-10 w-full rounded-lg border border-slate-300 px-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                className="ui-field mt-2 min-h-11 w-full rounded-lg border border-slate-300 px-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               />
             </label>
           ))}
         </div>
-        <button className="mt-3 h-10 w-full rounded-lg bg-yellow-400 text-sm font-semibold text-slate-900 hover:bg-yellow-300">
+        <button className="ui-button ui-button-primary mt-3 min-h-11 w-full rounded-lg bg-blue-600 text-sm font-semibold text-white hover:bg-blue-700">
           {t.apply}
         </button>
       </form>
