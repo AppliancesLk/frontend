@@ -169,43 +169,7 @@ export default function ProductsPage() {
             </Dialog>
           </aside>
           <section aria-label={t.title} className="min-w-0">
-            {tiles.length > 0 && (
-              <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-3 2xl:grid-cols-6">
-                {tiles.map((category) => (
-                  <button
-                    key={category.categoryID}
-                    aria-pressed={query.categoryId === category.categoryID}
-                    onClick={() =>
-                      page.update({ category: category.categoryID })
-                    }
-                    className={`flex min-w-0 items-center gap-3 rounded-xl border p-3 text-left transition-colors ${query.categoryId === category.categoryID ? 'border-blue-500 bg-blue-50' : 'border-slate-200 bg-white hover:border-blue-400'}`}
-                  >
-                    <span className="rounded-lg border border-blue-100 bg-white p-2 text-blue-600">
-                      {category.imageUrl ? (
-                        <ProductImage
-                          src={category.imageUrl}
-                          alt=""
-                          className="h-8 w-8"
-                        />
-                      ) : (
-                        <CategoryIcon
-                          name={category.name}
-                          className="h-6 w-6"
-                        />
-                      )}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block truncate text-xs font-semibold text-slate-900">
-                        {category.name}
-                      </span>
-                      <span className="mt-1 block text-xs text-slate-500">
-                        {category.count.toLocaleString()} {t.products}
-                      </span>
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
+            
             {chips.length > 0 && (
               <div
                 aria-label={t.active}
