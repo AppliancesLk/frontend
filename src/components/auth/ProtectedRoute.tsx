@@ -1,3 +1,4 @@
+import { LoadingState } from '../ui/Feedback';
 import { ROUTES } from '../../constants/routes';
 import { translations } from '../../utils/translations';
 import type { ReactNode } from 'react';
@@ -16,9 +17,7 @@ export function ProtectedRoute({
   const location = useLocation();
   if (loading)
     return (
-      <p role="status" className="mx-auto max-w-5xl px-6 py-16 text-slate-500">
-        {translations.auth.checkingSession}
-      </p>
+      <LoadingState label={translations.auth.checkingSession} compact={true} />
     );
   if (error)
     return (

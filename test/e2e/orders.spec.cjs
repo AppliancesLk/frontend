@@ -71,7 +71,17 @@ test('real history, stored purchase details and refreshed status', async ({
   await fixture.admin.api.patch(`/products/${fixture.washer.productID}`, {
     data: { name: 'Changed catalog product', price: 9999, isActive: false },
   });
-  await page.getByRole('link', { name: 'My orders', exact: true }).click();
+  if (info.project.name === 'mobile') {
+    await page.getByRole('button', { name: 'Open menu', exact: true }).click();
+    await page
+      .getByRole('dialog')
+      .getByRole('link', { name: 'Your orders', exact: true })
+      .click();
+  } else
+    await page
+      .getByRole('navigation', { name: 'Main navigation' })
+      .getByRole('link', { name: 'Your orders', exact: true })
+      .click();
   await expect(page.getByRole('heading', { name: 'My orders' })).toBeVisible();
   const links = page.getByRole('link', { name: /^View order / });
   await expect(links).toHaveCount(2);
@@ -92,7 +102,9 @@ test('real history, stored purchase details and refreshed status', async ({
   await expect(page.getByText('123 Test Road', { exact: true })).toBeVisible();
   await expect(page.getByText('Unit 2', { exact: true })).toBeVisible();
   await expect(
-    page.getByText('Pending payment', { exact: true }),
+    page
+      .getByRole('list', { name: 'Order progress' })
+      .getByText('Pending payment', { exact: true }),
   ).toBeVisible();
   await fixture.db.query('UPDATE orders SET status=$1 WHERE id=$2', [
     'SHIPPED',
@@ -101,14 +113,22 @@ test('real history, stored purchase details and refreshed status', async ({
   await page
     .getByRole('button', { name: 'Refresh order', exact: true })
     .click();
-  await expect(page.getByText('Shipped', { exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole('list', { name: 'Order progress' })
+      .getByText('Shipped', { exact: true }),
+  ).toBeVisible();
   await noOverflow(page);
   await page.screenshot({
     path: test.info().outputPath(`order-details-${info.project.name}.png`),
     fullPage: true,
   });
   await page.reload();
-  await expect(page.getByText('Shipped', { exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole('list', { name: 'Order progress' })
+      .getByText('Shipped', { exact: true }),
+  ).toBeVisible();
 });
 test('empty, unknown and another customer order states', async ({ page }) => {
   await page.goto('/orders');
@@ -150,12 +170,10 @@ test('loading, failed list and details reads can be retried', async ({
     });
     await page.goto(path);
     await expect(
-      page
-        .getByRole('main')
-        .getByRole('heading', {
-          name: path === '/orders' ? 'My orders' : 'Order details',
-          exact: true,
-        }),
+      page.getByRole('main').getByRole('heading', {
+        name: path === '/orders' ? 'My orders' : 'Order details',
+        exact: true,
+      }),
     ).toBeVisible();
     await expect(page.getByRole('main').getByRole('status')).toBeVisible();
     release();
@@ -166,13 +184,22 @@ test('loading, failed list and details reads can be retried', async ({
     await page.unroute(url);
     await page.getByRole('button', { name: 'Try again', exact: false }).click();
     await expect(
-      page.getByText('Pending payment', { exact: true }),
+      (path === '/orders'
+        ? page
+        : page.getByRole('list', { name: 'Order progress' })
+      ).getByText('Pending payment', { exact: true }),
     ).toBeVisible();
   }
 });
 test('protected routes reject logged-out users and other roles', async ({
   page,
 }) => {
+  if (
+    !(await page
+      .getByRole('button', { name: 'Sign out', exact: true })
+      .isVisible())
+  )
+    await page.getByRole('banner').locator('summary').click();
   await page.getByRole('button', { name: 'Sign out', exact: true }).click();
   await page.goto(`/orders/${randomUUID()}`);
   await expect(page).toHaveURL(/\/login$/);

@@ -1,3 +1,4 @@
+import { LoadingState } from '../../../../components/ui/Feedback';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../../constants/routes';
 import { translations } from '../../../../utils/translations';
@@ -9,31 +10,14 @@ export function ProductDetailsState({
   status: 'loading' | 'error' | 'not-found';
   retry: () => void;
 }) {
-  if (status === 'loading')
-    return (
-      <div role="status" aria-live="polite">
-        <span className="sr-only">{t.loading}</span>
-        <div
-          aria-hidden="true"
-          className="grid animate-pulse gap-6 lg:grid-cols-2 motion-reduce:animate-none"
-        >
-          <div className="aspect-square rounded-xl border border-slate-200 bg-white" />
-          <div className="space-y-5 rounded-xl border border-slate-200 bg-white p-8">
-            <div className="h-4 w-24 rounded bg-slate-100" />
-            <div className="h-9 w-3/4 rounded bg-slate-100" />
-            <div className="h-6 w-1/3 rounded bg-slate-100" />
-            <div className="mt-8 h-12 w-1/2 rounded bg-slate-100" />
-          </div>
-        </div>
-      </div>
-    );
+  if (status === 'loading') return <LoadingState />;
   const missing = status === 'not-found';
   return (
     <section
       role={missing ? undefined : 'alert'}
       className="mx-auto max-w-xl rounded-xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm"
     >
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+      <h1 className="ui-page-title text-slate-900">
         {missing ? t.notFound : t.loadError}
       </h1>
       <p className="mt-3 text-sm leading-6 text-slate-500">
