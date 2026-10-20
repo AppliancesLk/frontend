@@ -1,3 +1,5 @@
+import { Spinner } from '../../../components/ui/Feedback';
+import { LoadingState } from '../../../components/ui/Feedback';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuthForm } from '../hooks/useAuthForm';
 import { ROUTES } from '../../../constants/routes';
@@ -26,25 +28,23 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   } = useAuthForm(mode);
   if (loading)
     return (
-      <p role="status" className="p-12 text-center text-slate-500">
-        {translations.auth.checkingSession}
-      </p>
+      <LoadingState label={translations.auth.checkingSession} compact={true} />
     );
   if (user) return <Navigate to={destination} replace />;
   return (
-    <main className="min-h-[calc(100vh-81px)] bg-slate-50 px-4 py-10 sm:py-16">
-      <div className="mx-auto grid max-w-5xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-2">
-        <aside className="flex flex-col justify-between bg-slate-900 p-8 text-white sm:p-12">
+    <main className="min-h-[calc(100dvh-8rem)] bg-slate-50 px-4 py-10 sm:py-16">
+      <div className="mx-auto grid max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-2">
+        <aside className="hidden flex-col justify-between bg-slate-950 p-8 lg:flex text-white sm:p-12">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">
               {translations.auth.brandTagline}
             </p>
-            <h1 className="mt-6 text-4xl font-semibold leading-tight">
+            <h2 className="mt-6 text-3xl font-semibold leading-tight text-white">
               {translations.auth.heroFirst}
               <br />
               {translations.auth.heroSecond}
-            </h1>
-            <p className="mt-5 max-w-sm leading-7 text-slate-300">
+            </h2>
+            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
               {translations.auth.heroDescription}
             </p>
           </div>
@@ -64,14 +64,11 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
           <p className="text-xs font-semibold uppercase tracking-widest text-blue-700">
             {registering ? translations.auth.join : translations.auth.welcome}
           </p>
-          <h2
-            id="auth-heading"
-            className="mt-3 text-3xl font-bold tracking-tight text-slate-900"
-          >
+          <h1 id="auth-heading" className="ui-page-title mt-3">
             {registering
               ? translations.auth.registerTitle
               : translations.auth.loginTitle}
-          </h2>
+          </h1>
           <p className="mt-3 text-sm leading-6 text-slate-500">
             {registering
               ? translations.auth.registerDescription
@@ -94,7 +91,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
               </label>
               <input
                 id="username"
-                className="auth-input"
+                className="ui-field auth-input"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
@@ -120,7 +117,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                 <input
                   id="email"
                   type="email"
-                  className="auth-input"
+                  className="ui-field auth-input"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
@@ -150,7 +147,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
               <input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                className="auth-input"
+                className="ui-field auth-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete={registering ? 'new-password' : 'current-password'}
@@ -173,7 +170,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                 <input
                   id="confirm"
                   type={showPassword ? 'text' : 'password'}
-                  className="auth-input"
+                  className="ui-field auth-input"
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
                   autoComplete="new-password"
@@ -185,6 +182,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
               </div>
             )}
             <button disabled={busy} className="auth-primary w-full">
+              {busy && <Spinner className="mr-2" />}
               {busy
                 ? translations.common.pleaseWait
                 : registering

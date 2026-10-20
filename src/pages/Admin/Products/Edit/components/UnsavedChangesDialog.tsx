@@ -26,7 +26,7 @@ export function UnsavedChangesDialog({
         event.preventDefault();
         stay();
       }}
-      className="fixed inset-0 m-auto w-[calc(100%_-_2rem)] max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-lg backdrop:bg-slate-900/50"
+      className="ui-dialog"
     >
       <h2 id="unsaved-title" className="text-xl font-semibold text-slate-900">
         {page.busy ? t.savingTitle : t.unsavedTitle}

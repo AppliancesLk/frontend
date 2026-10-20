@@ -1,3 +1,6 @@
+import { uiText } from '../../../utils/uiText';
+import { ProductImage } from '../../../components/common/ProductImage';
+import { LoadingState } from '../../../components/ui/Feedback';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
 import { Icon } from '../../../components/common/Icon';
@@ -9,6 +12,7 @@ import { HomeCategorySection } from './components/HomeCategorySection';
 const t = translations.storefront;
 export default function HomePage() {
   const { data, retry } = useHomePage();
+  const heroProduct = data?.products.find((product) => product.images[0]);
   const banner = (position: string) =>
     data?.banners.find((section) => section.position === position);
   return (
@@ -17,43 +21,60 @@ export default function HomePage() {
       {banner('top')?.visible ? (
         <h1 className="sr-only">{t.siteDescription}</h1>
       ) : (
-        <section className="relative overflow-hidden rounded-2xl bg-blue-700 px-6 py-10 text-white sm:px-12 md:py-14">
-          <div
-            aria-hidden="true"
-            className="absolute -right-16 -top-24 h-80 w-80 rounded-full border-[48px] border-blue-600"
-          />
-          <div className="relative max-w-2xl">
-            <p className="mb-5 text-xs font-bold tracking-[0.2em] text-yellow-300">
-              {t.eyebrow}
+        <section className="grid overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 lg:min-h-[30rem] lg:grid-cols-[1.1fr_1fr]">
+          <div className="flex flex-col items-start justify-center px-6 py-10 text-white sm:px-10 sm:py-14 lg:px-12">
+            <p className="mb-5 text-xs font-semibold tracking-widest text-blue-300">
+              {uiText.heroEyebrow}
             </p>
-            <h1 className="whitespace-pre-line text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-              {t.title}
+            <h1 className="whitespace-pre-line text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl xl:text-6xl">
+              {uiText.heroTitle}
             </h1>
-            <p className="mt-5 max-w-lg text-base leading-7 text-blue-100">
-              {t.introduction}
+            <p className="mt-6 max-w-md text-sm leading-7 text-slate-300 sm:text-base">
+              {uiText.heroDescription}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
-                className="flex items-center gap-3 rounded-lg bg-yellow-400 px-5 py-3 font-semibold text-slate-900 hover:bg-yellow-300"
+                className="ui-button ui-button-primary"
                 to={ROUTES.products}
               >
-                {t.shop}
-                <Icon name="arrow" />
+                {uiText.heroExplore}
+                <Icon name="arrow" className="h-4 w-4" />
               </Link>
               <Link
-                className="rounded-lg border border-blue-400 px-5 py-3 font-medium hover:bg-blue-600"
+                className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-slate-200 hover:bg-slate-800"
                 to={ROUTES.repairRequest}
               >
                 {t.bookRepair}
               </Link>
             </div>
           </div>
+          {heroProduct ? (
+            <Link
+              to={ROUTES.productDetail.replace(':id', heroProduct.productID)}
+              className="relative flex min-h-64 flex-col items-center justify-center bg-slate-100 p-8 sm:p-12"
+            >
+              <ProductImage
+                src={heroProduct.images[0]}
+                alt={heroProduct.name}
+                eager
+                className="aspect-square w-full max-w-72 mix-blend-multiply"
+              />
+              <span className="mt-4 max-w-full text-center text-sm font-medium text-slate-700">
+                {heroProduct.name}
+              </span>
+            </Link>
+          ) : (
+            <div
+              aria-hidden="true"
+              className="hidden items-center justify-center bg-slate-900 text-slate-700 lg:flex"
+            >
+              <Icon name="appliance" className="h-48 w-48" />
+            </div>
+          )}
         </section>
       )}
       {!data ? (
-        <p role="status" className="rounded-xl bg-white p-8 text-slate-500">
-          {t.loading}
-        </p>
+        <LoadingState label={t.loading} compact={false} />
       ) : (
         <>
           {data.errors.length > 0 && (
@@ -84,8 +105,8 @@ export default function HomePage() {
               title={t.more}
             />
           )}
-          <section className="grid gap-6 rounded-2xl border border-blue-100 bg-blue-50 p-6 sm:p-10 md:grid-cols-[auto_1fr_auto] md:items-center">
-            <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-yellow-300 text-blue-900">
+          <section className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 sm:p-10 md:grid-cols-[auto_1fr_auto] md:items-center">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
               <Icon name="repair" className="h-10 w-10" />
             </span>
             <div>
@@ -110,7 +131,7 @@ export default function HomePage() {
           >
             {t.highlights.map((item) => (
               <div key={item.title} className="flex items-start gap-4">
-                <span className="rounded-lg bg-yellow-100 p-3 text-blue-700">
+                <span className="rounded-lg bg-blue-50 p-3 text-blue-700">
                   <Icon name={item.icon} />
                 </span>
                 <div>

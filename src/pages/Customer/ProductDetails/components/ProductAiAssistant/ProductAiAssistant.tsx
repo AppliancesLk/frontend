@@ -1,3 +1,4 @@
+import { LoadingState } from '../../../../../components/ui/Feedback';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../../../hooks/useAuth';
@@ -68,19 +69,19 @@ function AssistantPanel({
           }}
           className="mb-3 flex max-h-[calc(100dvh-6rem)] w-[calc(100vw-2rem)] max-w-[25rem] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg"
         >
-          <header className="flex items-start justify-between gap-3 border-b border-slate-200 bg-blue-50 px-4 py-3">
+          <header className="flex items-start justify-between gap-3 border-b border-slate-800 bg-slate-900 px-4 py-4">
             <div className="min-w-0">
               <h2
                 id="product-ai-title"
                 ref={heading}
                 tabIndex={-1}
-                className="font-semibold text-slate-900 outline-none"
+                className="font-semibold text-white outline-none"
               >
                 {aiText.title}
               </h2>
               <p
                 id="product-ai-context"
-                className="mt-1 truncate text-xs text-slate-600"
+                className="mt-1 truncate text-xs text-slate-300"
               >
                 {productName}
               </p>
@@ -89,7 +90,7 @@ function AssistantPanel({
               type="button"
               onClick={close}
               aria-label={aiText.close}
-              className={`rounded-lg px-2 py-1 text-slate-600 hover:bg-blue-100 ${focusStyle}`}
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-300 hover:bg-slate-800 ${focusStyle}`}
             >
               ✕
             </button>
@@ -99,9 +100,7 @@ function AssistantPanel({
               {aiText.greeting}
             </p>
             {loading ? (
-              <p role="status" className="mt-3 text-sm text-slate-500">
-                {aiText.checking}
-              </p>
+              <LoadingState label={aiText.checking} compact={true} />
             ) : !user ? (
               <Link
                 to={ROUTES.login}
@@ -139,9 +138,7 @@ function AssistantPanel({
                   ))}
                 </div>
                 {chat.sending && (
-                  <p role="status" className="mt-3 text-sm text-slate-500">
-                    {aiText.sending}
-                  </p>
+                  <LoadingState label={aiText.sending} compact={true} />
                 )}
                 {chat.error && (
                   <div

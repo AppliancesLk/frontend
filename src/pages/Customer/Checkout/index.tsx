@@ -1,14 +1,15 @@
-import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
-import { ROUTES } from "../../../constants/routes";
-import { translations } from "../../../utils/translations";
-import { EmptyCart } from "../../../components/feedback/EmptyCart";
-import { useCheckoutPage } from "./hooks/useCheckoutPage";
-import { DeliveryForm } from "./components/DeliveryForm";
-import { OrderSummary } from "./components/OrderSummary";
-import { PreparedCheckout } from "./components/PreparedCheckout";
-import { PaymentAction } from "./components/PaymentAction";
+import { LoadingState } from '../../../components/ui/Feedback';
+import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../../hooks/useAuth';
+import { ROUTES } from '../../../constants/routes';
+import { translations } from '../../../utils/translations';
+import { EmptyCart } from '../../../components/feedback/EmptyCart';
+import { useCheckoutPage } from './hooks/useCheckoutPage';
+import { DeliveryForm } from './components/DeliveryForm';
+import { OrderSummary } from './components/OrderSummary';
+import { PreparedCheckout } from './components/PreparedCheckout';
+import { PaymentAction } from './components/PaymentAction';
 const t = translations.checkout;
 export default function CheckoutPage() {
   const { user } = useAuth();
@@ -54,9 +55,7 @@ function CheckoutContent({ email }: { email: string }) {
         </nav>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-              {t.title}
-            </h1>
+            <h1 className="ui-page-title text-slate-900">{t.title}</h1>
             <p className="mt-2 text-sm text-slate-500">{t.description}</p>
           </div>
           <Link to={ROUTES.cart} className="auth-secondary">
@@ -75,7 +74,7 @@ function CheckoutContent({ email }: { email: string }) {
               type="button"
               disabled={page.saving || page.loading}
               onClick={() => void page.refresh()}
-              className="mt-2 min-h-10 rounded-lg px-2 font-semibold underline underline-offset-4 disabled:opacity-50"
+              className="mt-2 min-min-h-11 rounded-lg px-2 font-semibold underline underline-offset-4 disabled:opacity-50"
             >
               {t.refreshCart}
             </button>
@@ -102,16 +101,7 @@ function CheckoutContent({ email }: { email: string }) {
           </p>
         )}
         {page.loading ? (
-          <section
-            role="status"
-            className="rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-500 shadow-sm"
-          >
-            {t.loading}
-            <div
-              aria-hidden="true"
-              className="mt-6 h-48 rounded-lg bg-slate-100 motion-safe:animate-pulse"
-            />
-          </section>
+          <LoadingState label={t.loading} />
         ) : (
           page.cart &&
           (page.cart.items.length === 0 ? (

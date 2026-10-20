@@ -1,3 +1,4 @@
+import { EmptyState } from '../../../components/ui/Feedback';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
@@ -48,9 +49,7 @@ function RepairsContent() {
 
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-              {t.title}
-            </h1>
+            <h1 className="ui-page-title text-slate-900">{t.title}</h1>
             <p className="mt-2 text-sm text-slate-500">{t.description}</p>
           </div>
           <div className="flex gap-2">
@@ -77,20 +76,19 @@ function RepairsContent() {
         {!page.loading && !page.error && (
           <>
             {page.repairs.length === 0 ? (
-              <div className="rounded-xl border border-slate-200 bg-white p-12 text-center shadow-sm">
-                <p className="text-sm font-medium text-slate-900">
-                  No repair tickets found
-                </p>
-                <p className="mt-2 text-sm text-slate-500">
-                  You haven't submitted any repair requests yet.
-                </p>
-                <Link
-                  to={ROUTES.repairRequest}
-                  className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-                >
-                  {t.requestTitle}
-                </Link>
-              </div>
+              <EmptyState
+                title={'No repair tickets found'}
+                description={"You haven't submitted any repair requests yet."}
+                action={
+                  <Link
+                    to={ROUTES.repairRequest}
+                    className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    {t.requestTitle}
+                  </Link>
+                }
+                icon="repair"
+              />
             ) : (
               <CustomerRepairsTable repairs={page.repairs} />
             )}
