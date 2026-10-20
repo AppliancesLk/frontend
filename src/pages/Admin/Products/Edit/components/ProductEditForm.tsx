@@ -24,7 +24,7 @@ export function ProductEditForm({
       {editor.restored && (
         <p
           role="status"
-          className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800"
+          className="rounded-sm border border-primary bg-primary-subtle p-4 text-sm text-fg-link"
         >
           {t.restored}
         </p>
@@ -32,7 +32,7 @@ export function ProductEditForm({
       {page.error && (
         <p
           role="alert"
-          className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+          className="rounded-sm border border-danger/25 bg-danger-bg p-4 text-sm text-danger"
         >
           {page.error}
         </p>
@@ -40,14 +40,14 @@ export function ProductEditForm({
       {page.success && (
         <p
           role="status"
-          className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700"
+          className="rounded-sm border border-success/25 bg-success-bg p-4 text-sm text-success"
         >
           {page.success}
         </p>
       )}
       <fieldset
         disabled={page.busy}
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+        className="rounded-md border border-line bg-surface p-5  sm:p-6"
       >
         <legend className="sr-only">{t.title}</legend>
         <div className="grid gap-5 sm:grid-cols-2">
@@ -61,11 +61,11 @@ export function ProductEditForm({
             }
           />
         </div>
-        <div className="mt-6 border-t border-slate-200 pt-5">
-          <label className="flex items-center gap-3 text-sm font-medium text-slate-900">
+        <div className="mt-6 border-t border-line pt-5">
+          <label className="flex items-center gap-3 text-sm font-medium text-fg">
             <input
               type="checkbox"
-              className="h-4 w-4 accent-blue-600"
+              className="h-4 w-4 accent-primary"
               checked={draft.isActive}
               onChange={(event) =>
                 page.changeDraft({ ...draft, isActive: event.target.checked })
@@ -73,28 +73,26 @@ export function ProductEditForm({
             />
             {t.availability}
           </label>
-          <p className="mt-2 text-xs leading-5 text-slate-500">
+          <p className="mt-2 text-xs leading-5 text-fg-muted">
             {t.availabilityHint}
           </p>
         </div>
       </fieldset>
       <fieldset
         disabled={page.busy}
-        className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+        className="rounded-md border border-line bg-surface p-5  sm:p-6"
       >
         <legend className="sr-only">{translations.admin.specifications}</legend>
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-xl font-semibold text-slate-900">
+            <h2 className="text-xl font-semibold text-fg">
               {translations.admin.specifications}
             </h2>
-            <p className="mt-2 text-sm text-slate-500">
-              {t.specificationsHint}
-            </p>
+            <p className="mt-2 text-sm text-fg-muted">{t.specificationsHint}</p>
           </div>
           <button
             type="button"
-            className="text-sm font-medium text-red-600 hover:text-red-700"
+            className="text-sm font-medium text-danger hover:text-danger"
             onClick={() =>
               page.changeDraft({
                 ...draft,
@@ -107,7 +105,7 @@ export function ProductEditForm({
           </button>
         </div>
         {draft.specifications.length === 0 && (
-          <p className="mb-4 text-sm text-slate-500">
+          <p className="mb-4 text-sm text-fg-muted">
             {draft.specificationsMode === 'clear'
               ? t.clearedSpecifications
               : t.emptySpecifications}
@@ -124,8 +122,8 @@ export function ProductEditForm({
           }
         />
       </fieldset>
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <p className="text-sm text-slate-600">
+      <div className="rounded-md border border-line bg-surface p-5  sm:p-6">
+        <p className="text-sm text-fg-secondary">
           {t.inventoryHint}{' '}
           <span className="font-medium">
             {translations.admin.currentStock}{' '}
@@ -134,7 +132,7 @@ export function ProductEditForm({
         </p>
         <Link
           to={ROUTES.adminInventory}
-          className="mt-3 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+          className="mt-3 inline-block text-sm font-medium text-fg-link hover:text-fg-link"
         >
           {t.inventoryLink}
         </Link>
@@ -152,7 +150,7 @@ export function ProductEditForm({
           {t.cancel}
         </Link>
         {page.dirty && (
-          <span className="text-xs text-amber-700">{t.unsaved}</span>
+          <span className="text-xs text-warning">{t.unsaved}</span>
         )}
       </div>
     </form>

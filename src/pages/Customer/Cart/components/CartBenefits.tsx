@@ -10,16 +10,27 @@ const benefits: { icon: IconName; title: string; description: string }[] = [
 export function CartBenefits({ compact = false }: { compact?: boolean }) {
   return (
     <div
-      className={`rounded-xl bg-blue-50 p-5 ${compact ? 'space-y-5' : 'grid gap-6 sm:grid-cols-2 xl:grid-cols-4'}`}
+      className={`rounded-md bg-primary-subtle p-5 ${compact ? 'cart-trust space-y-3' : 'grid gap-6 sm:grid-cols-2 xl:grid-cols-4'}`}
     >
       {benefits
         .slice(0, compact ? 3 : 4)
         .map(({ icon, title, description }) => (
           <div key={title} className="flex items-start gap-3">
-            <Icon name={icon} className="h-8 w-8 shrink-0 text-blue-600" />
+            <Icon
+              name={icon}
+              className={
+                compact
+                  ? 'h-4 w-4 shrink-0 text-fg-muted'
+                  : 'h-8 w-8 shrink-0 text-fg-link'
+              }
+            />
             <div>
-              <p className="text-sm font-semibold text-slate-900">{title}</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
+              <p className="text-sm font-semibold text-fg">{title}</p>
+              <p
+                className={
+                  compact ? 'sr-only' : 'mt-1 text-xs leading-5 text-fg-muted'
+                }
+              >
                 {description}
               </p>
             </div>

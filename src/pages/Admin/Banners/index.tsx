@@ -27,8 +27,8 @@ export default function BannersPage() {
   }, [revision]);
   return (
     <div className="mx-auto max-w-5xl">
-      <h1 className="ui-page-title text-slate-900">{t.banners}</h1>
-      <p className="mb-8 mt-3 text-sm leading-6 text-slate-600">
+      <h1 className="ui-page-title text-fg">{t.banners}</h1>
+      <p className="mb-8 mt-3 text-sm leading-6 text-fg-secondary">
         {t.bannerDescription}
       </p>
       <CatalogFeedback

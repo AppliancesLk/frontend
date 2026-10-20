@@ -16,13 +16,13 @@ export function ProductImage({
   if (!src || failedSource === src)
     return (
       <div
-        className={`flex flex-col items-center justify-center gap-3 bg-slate-50 text-slate-400 ${className}`}
+        className={`flex flex-col items-center justify-center gap-3 bg-page text-fg-muted ${className}`}
         role="img"
         aria-label={`${alt}: ${translations.productDetails.noImage}`}
       >
         <svg
           aria-hidden="true"
-          className="h-10 w-10"
+          className="h-8 w-8"
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
@@ -43,6 +43,9 @@ export function ProductImage({
       alt={alt}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
+      width={800}
+      height={800}
+      fetchPriority={eager ? 'high' : undefined}
       onError={() => setFailedSource(src)}
       className={`object-contain ${className}`}
     />

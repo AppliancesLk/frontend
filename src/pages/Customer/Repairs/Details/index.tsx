@@ -1,3 +1,5 @@
+import { RatingPlate } from '../../../../components/common/RatingPlate';
+import { CopyReference } from '../../../../components/common/CopyReference';
 import { formatDate } from '../../../../utils/date';
 import { LoadingState } from '../../../../components/ui/Feedback';
 import { useEffect } from 'react';
@@ -10,7 +12,7 @@ export default function CustomerRepairDetailsPage() {
 
   useEffect(() => {
     const previous = document.title;
-    document.title = 'Repair Details | Appliances LK';
+    document.title = 'Repair details | Appliances LK';
     return () => {
       document.title = previous;
     };
@@ -18,8 +20,8 @@ export default function CustomerRepairDetailsPage() {
 
   if (page.loading) {
     return (
-      <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <main className="bg-page px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+        <div className="mx-auto max-w-[1200px]">
           <LoadingState />
         </div>
       </main>
@@ -28,20 +30,20 @@ export default function CustomerRepairDetailsPage() {
 
   if (page.error) {
     return (
-      <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+      <main className="bg-page px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+        <div className="mx-auto max-w-[1200px]">
           <div
             role="alert"
-            className="rounded-xl border border-red-200 bg-red-50 p-8 text-center shadow-sm"
+            className="rounded-md border border-danger/25 bg-danger-bg p-8 text-center "
           >
-            <p className="font-medium text-red-900">Repair Not Found</p>
-            <p className="mt-2 text-sm text-red-700">{page.error}</p>
+            <p className="font-medium text-danger">Repair not found</p>
+            <p className="mt-2 text-sm text-danger">{page.error}</p>
             <button
               type="button"
               onClick={() => void page.refresh()}
               className="mt-4 auth-secondary"
             >
-              Try Again
+              Try again
             </button>
           </div>
         </div>
@@ -54,19 +56,19 @@ export default function CustomerRepairDetailsPage() {
   }
 
   return (
-    <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-6">
+    <main className="bg-page px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+      <div className="mx-auto max-w-[1200px] space-y-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <button
               type="button"
               onClick={page.goBack}
-              className="mb-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+              className="mb-2 text-sm font-medium text-fg-link hover:text-fg-link"
             >
-              ← Back to My Repairs
+              ← Back to your repairs
             </button>
-            <h1 className="ui-page-title text-slate-900">Repair Details</h1>
-            <p className="mt-1 tabular-nums text-sm text-slate-500">
+            <h1 className="ui-page-title text-fg">Repair details</h1>
+            <p className="mt-1 tabular-nums text-sm text-fg-muted">
               {page.repair.reference}
             </p>
           </div>
@@ -79,58 +81,79 @@ export default function CustomerRepairDetailsPage() {
           </button>
         </div>
 
+        <RatingPlate
+          title={page.repair.reference}
+          rows={[
+            {
+              label: 'Reference',
+              value: (
+                <span className="flex items-center gap-2">
+                  {page.repair.reference}
+                  <CopyReference value={page.repair.reference} />
+                </span>
+              ),
+            },
+            {
+              label: 'Device',
+              value: `${page.repair.device.brand} ${page.repair.device.model}`,
+            },
+            {
+              label: 'Serial number',
+              value: page.repair.device.serialNumber || 'Not provided',
+            },
+            { label: 'Submitted', value: formatDate(page.repair.createdAt) },
+          ]}
+        />
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">
-              Current Status
-            </h2>
+          <div className="rounded-md border border-line bg-surface p-6 ">
+            <h2 className="text-lg font-semibold text-fg">Current status</h2>
             <div className="mt-4">
               <RepairStatusBadge status={page.repair.status} />
-              <p className="mt-3 text-sm text-slate-700">
+              <p className="mt-3 text-sm text-fg-secondary">
                 {getStatusDescription(page.repair.status)}
               </p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">
-              Device Information
+          <div className="rounded-md border border-line bg-surface p-6 ">
+            <h2 className="text-lg font-semibold text-fg">
+              Device information
             </h2>
             <dl className="mt-4 space-y-3">
               <div>
-                <dt className="text-sm font-medium text-slate-500">Type</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Type</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.deviceType}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-500">Brand</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Brand</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.brand}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-500">Model</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Model</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.model}
                 </dd>
               </div>
               {page.repair.device.serialNumber && (
                 <div>
-                  <dt className="text-sm font-medium text-slate-500">
+                  <dt className="text-sm font-medium text-fg-muted">
                     Serial Number
                   </dt>
-                  <dd className="mt-1 tabular-nums text-sm text-slate-900">
+                  <dd className="mt-1 tabular-nums text-sm text-fg">
                     {page.repair.device.serialNumber}
                   </dd>
                 </div>
               )}
               {page.repair.device.purchaseDate && (
                 <div>
-                  <dt className="text-sm font-medium text-slate-500">
+                  <dt className="text-sm font-medium text-fg-muted">
                     Purchase Date
                   </dt>
-                  <dd className="mt-1 text-sm text-slate-900">
+                  <dd className="mt-1 text-sm text-fg">
                     {new Date(
                       page.repair.device.purchaseDate,
                     ).toLocaleDateString()}
@@ -141,24 +164,20 @@ export default function CustomerRepairDetailsPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Problem Description
-          </h2>
-          <p className="mt-4 whitespace-pre-wrap text-sm text-slate-700">
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">Problem Description</h2>
+          <p className="mt-4 whitespace-pre-wrap text-sm text-fg-secondary">
             {page.repair.problemDescription}
           </p>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Repair Timeline
-          </h2>
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">Repair Timeline</h2>
           <div className="mt-4 space-y-4">
             <div className="flex gap-4">
-              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-100">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary-subtle">
                 <svg
-                  className="h-4 w-4 text-blue-600"
+                  className="h-4 w-4 text-fg-link"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -170,10 +189,8 @@ export default function CustomerRepairDetailsPage() {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-slate-900">
-                  Repair Submitted
-                </p>
-                <p className="text-sm text-slate-500">
+                <p className="text-sm font-medium text-fg">Repair Submitted</p>
+                <p className="text-sm text-fg-muted">
                   {formatDate(page.repair.createdAt)}
                 </p>
               </div>
@@ -181,9 +198,9 @@ export default function CustomerRepairDetailsPage() {
 
             {page.repair.reviewedAt && (
               <div className="flex gap-4">
-                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-100">
+                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary-subtle">
                   <svg
-                    className="h-4 w-4 text-blue-600"
+                    className="h-4 w-4 text-fg-link"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -195,10 +212,10 @@ export default function CustomerRepairDetailsPage() {
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-900">
+                  <p className="text-sm font-medium text-fg">
                     Reviewed by Admin
                   </p>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-fg-muted">
                     {formatDate(page.repair.reviewedAt)}
                   </p>
                 </div>
@@ -214,8 +231,8 @@ export default function CustomerRepairDetailsPage() {
                     'READY_FOR_COLLECTION',
                     'COMPLETED',
                   ].includes(page.repair.status)
-                    ? 'bg-blue-100'
-                    : 'bg-slate-100'
+                    ? 'bg-primary-subtle'
+                    : 'bg-subtle'
                 }`}
               >
                 {[
@@ -225,7 +242,7 @@ export default function CustomerRepairDetailsPage() {
                   'COMPLETED',
                 ].includes(page.repair.status) ? (
                   <svg
-                    className="h-4 w-4 text-blue-600"
+                    className="h-4 w-4 text-fg-link"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -236,7 +253,7 @@ export default function CustomerRepairDetailsPage() {
                     />
                   </svg>
                 ) : (
-                  <div className="h-2 w-2 rounded-full bg-slate-400" />
+                  <div className="h-2 w-2 rounded-full bg-sunken" />
                 )}
               </div>
               <div className="flex-1">
@@ -248,11 +265,11 @@ export default function CustomerRepairDetailsPage() {
                       'READY_FOR_COLLECTION',
                       'COMPLETED',
                     ].includes(page.repair.status)
-                      ? 'text-slate-900'
-                      : 'text-slate-500'
+                      ? 'text-fg'
+                      : 'text-fg-muted'
                   }`}
                 >
-                  Repair In Progress
+                  In repair
                 </p>
                 {[
                   'IN_PROGRESS',
@@ -260,7 +277,7 @@ export default function CustomerRepairDetailsPage() {
                   'READY_FOR_COLLECTION',
                   'COMPLETED',
                 ].includes(page.repair.status) && (
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-fg-muted">
                     Currently: {getStatusLabel(page.repair.status)}
                   </p>
                 )}
@@ -271,13 +288,13 @@ export default function CustomerRepairDetailsPage() {
               <div
                 className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${
                   page.repair.status === 'COMPLETED'
-                    ? 'bg-green-100'
-                    : 'bg-slate-100'
+                    ? 'bg-success-bg'
+                    : 'bg-subtle'
                 }`}
               >
                 {page.repair.status === 'COMPLETED' ? (
                   <svg
-                    className="h-4 w-4 text-green-600"
+                    className="h-4 w-4 text-success"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -288,21 +305,21 @@ export default function CustomerRepairDetailsPage() {
                     />
                   </svg>
                 ) : (
-                  <div className="h-2 w-2 rounded-full bg-slate-400" />
+                  <div className="h-2 w-2 rounded-full bg-sunken" />
                 )}
               </div>
               <div className="flex-1">
                 <p
                   className={`text-sm font-medium ${
                     page.repair.status === 'COMPLETED'
-                      ? 'text-slate-900'
-                      : 'text-slate-500'
+                      ? 'text-fg'
+                      : 'text-fg-muted'
                   }`}
                 >
-                  Repair Completed
+                  Repair completed
                 </p>
                 {page.repair.status === 'COMPLETED' && (
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-fg-muted">
                     {formatDate(page.repair.updatedAt)}
                   </p>
                 )}
@@ -311,11 +328,11 @@ export default function CustomerRepairDetailsPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Important Information
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">
+            Important information
           </h2>
-          <div className="mt-4 space-y-3 text-sm text-slate-700">
+          <div className="mt-4 space-y-3 text-sm text-fg-secondary">
             <p>
               • Your repair ticket reference is:{' '}
               <span className="tabular-nums font-medium">
@@ -326,7 +343,7 @@ export default function CustomerRepairDetailsPage() {
               • Please keep this reference for any inquiries about your repair.
             </p>
             {page.repair.status === 'READY_FOR_COLLECTION' && (
-              <p className="font-medium text-green-700">
+              <p className="font-medium text-success">
                 • Your device is ready for collection! Please visit our service
                 center.
               </p>

@@ -32,10 +32,10 @@ export default function AdminRepairDetailsPage() {
       <section className="space-y-6">
         <div
           role="alert"
-          className="rounded-xl border border-red-200 bg-red-50 p-8 text-center shadow-sm"
+          className="rounded-md border border-danger/25 bg-danger-bg p-8 text-center "
         >
-          <p className="font-medium text-red-900">{t.notFound}</p>
-          <p className="mt-2 text-sm text-red-700">{page.error}</p>
+          <p className="font-medium text-danger">{t.notFound}</p>
+          <p className="mt-2 text-sm text-danger">{page.error}</p>
           <button
             type="button"
             onClick={() => void page.refresh()}
@@ -62,12 +62,12 @@ export default function AdminRepairDetailsPage() {
             <button
               type="button"
               onClick={page.goBack}
-              className="mb-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+              className="mb-2 text-sm font-medium text-fg-link hover:text-fg-link"
             >
               ← {t.back}
             </button>
-            <h1 className="ui-page-title text-slate-900">{t.detailsTitle}</h1>
-            <p className="mt-1 tabular-nums text-sm text-slate-500">
+            <h1 className="ui-page-title text-fg">{t.detailsTitle}</h1>
+            <p className="mt-1 tabular-nums text-sm text-fg-muted">
               {page.repair.reference}
             </p>
           </div>
@@ -82,31 +82,29 @@ export default function AdminRepairDetailsPage() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">
-              {t.customer}
-            </h2>
+          <div className="rounded-md border border-line bg-surface p-6 ">
+            <h2 className="text-lg font-semibold text-fg">{t.customer}</h2>
             <dl className="mt-4 space-y-3">
               <div>
-                <dt className="text-sm font-medium text-slate-500">Username</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Username</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.customer.username}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-500">Email</dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dt className="text-sm font-medium text-fg-muted">Email</dt>
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.customer.email}
                 </dd>
               </div>
             </dl>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">{t.status}</h2>
+          <div className="rounded-md border border-line bg-surface p-6 ">
+            <h2 className="text-lg font-semibold text-fg">{t.status}</h2>
             <div className="mt-4 space-y-3">
               <div>
-                <dt className="text-sm font-medium text-slate-500">
+                <dt className="text-sm font-medium text-fg-muted">
                   Current status
                 </dt>
                 <dd className="mt-2">
@@ -114,19 +112,19 @@ export default function AdminRepairDetailsPage() {
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-500">
+                <dt className="text-sm font-medium text-fg-muted">
                   {t.submittedDate}
                 </dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dd className="mt-1 text-sm text-fg">
                   {formatDate(page.repair.createdAt)}
                 </dd>
               </div>
               {page.repair.reviewedAt && (
                 <div>
-                  <dt className="text-sm font-medium text-slate-500">
+                  <dt className="text-sm font-medium text-fg-muted">
                     {t.reviewedDate}
                   </dt>
-                  <dd className="mt-1 text-sm text-slate-900">
+                  <dd className="mt-1 text-sm text-fg">
                     {formatDate(page.repair.reviewedAt)}
                   </dd>
                 </div>
@@ -135,47 +133,45 @@ export default function AdminRepairDetailsPage() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">
-            {t.deviceInfo}
-          </h2>
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">{t.deviceInfo}</h2>
           <dl className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
-              <dt className="text-sm font-medium text-slate-500">
+              <dt className="text-sm font-medium text-fg-muted">
                 {t.deviceType}
               </dt>
-              <dd className="mt-1 text-sm text-slate-900">
+              <dd className="mt-1 text-sm text-fg">
                 {page.repair.device.deviceType}
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-slate-500">{t.brand}</dt>
-              <dd className="mt-1 text-sm text-slate-900">
+              <dt className="text-sm font-medium text-fg-muted">{t.brand}</dt>
+              <dd className="mt-1 text-sm text-fg">
                 {page.repair.device.brand}
               </dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-slate-500">{t.model}</dt>
-              <dd className="mt-1 text-sm text-slate-900">
+              <dt className="text-sm font-medium text-fg-muted">{t.model}</dt>
+              <dd className="mt-1 text-sm text-fg">
                 {page.repair.device.model}
               </dd>
             </div>
             {page.repair.device.serialNumber && (
               <div>
-                <dt className="text-sm font-medium text-slate-500">
+                <dt className="text-sm font-medium text-fg-muted">
                   {t.serialNumber}
                 </dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.serialNumber}
                 </dd>
               </div>
             )}
             {page.repair.device.purchaseDate && (
               <div>
-                <dt className="text-sm font-medium text-slate-500">
+                <dt className="text-sm font-medium text-fg-muted">
                   {t.purchaseDate}
                 </dt>
-                <dd className="mt-1 text-sm text-slate-900">
+                <dd className="mt-1 text-sm text-fg">
                   {page.repair.device.purchaseDate}
                 </dd>
               </div>
@@ -183,9 +179,9 @@ export default function AdminRepairDetailsPage() {
           </dl>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">{t.problem}</h2>
-          <p className="mt-4 whitespace-pre-wrap text-sm text-slate-700">
+        <div className="rounded-md border border-line bg-surface p-6 ">
+          <h2 className="text-lg font-semibold text-fg">{t.problem}</h2>
+          <p className="mt-4 whitespace-pre-wrap text-sm text-fg-secondary">
             {page.repair.problemDescription}
           </p>
         </div>
@@ -196,7 +192,7 @@ export default function AdminRepairDetailsPage() {
               type="button"
               onClick={() => page.setAction('approve')}
               disabled={page.processing}
-              className="auth-primary bg-green-600 hover:bg-green-700 flex-1"
+              className="auth-primary bg-success hover:bg-success flex-1"
             >
               {t.approve}
             </button>
@@ -204,7 +200,7 @@ export default function AdminRepairDetailsPage() {
               type="button"
               onClick={() => page.setAction('reject')}
               disabled={page.processing}
-              className="auth-primary bg-red-600 hover:bg-red-700 flex-1"
+              className="auth-primary bg-danger hover:bg-danger flex-1"
             >
               {t.reject}
             </button>

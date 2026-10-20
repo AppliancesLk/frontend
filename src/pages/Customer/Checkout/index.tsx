@@ -34,17 +34,17 @@ function CheckoutContent({ email }: { email: string }) {
     };
   }, []);
   return (
-    <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-6">
+    <main className="bg-page px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+      <div className="mx-auto max-w-[1200px] space-y-6">
         <nav
           aria-label={translations.productDetails.breadcrumb}
           className="text-sm"
         >
-          <ol className="flex flex-wrap items-center gap-2 text-slate-500">
+          <ol className="flex flex-wrap items-center gap-2 text-fg-muted">
             <li>
               <Link
                 to={ROUTES.cart}
-                className="font-medium text-blue-600 hover:text-blue-700"
+                className="font-medium text-fg-link hover:text-fg-link"
               >
                 {translations.cart.title}
               </Link>
@@ -55,8 +55,8 @@ function CheckoutContent({ email }: { email: string }) {
         </nav>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="ui-page-title text-slate-900">{t.title}</h1>
-            <p className="mt-2 text-sm text-slate-500">{t.description}</p>
+            <h1 className="ui-page-title text-fg">{t.title}</h1>
+            <p className="mt-2 text-sm text-fg-muted">{t.description}</p>
           </div>
           <Link to={ROUTES.cart} className="auth-secondary">
             {t.backToCart}
@@ -67,14 +67,14 @@ function CheckoutContent({ email }: { email: string }) {
             ref={errorFocus}
             tabIndex={-1}
             role="alert"
-            className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            className="rounded-md border border-danger/25 bg-danger-bg p-4 text-sm text-danger outline-none focus-visible:ring-2 focus-visible:ring-danger"
           >
             <p>{page.error}</p>
             <button
               type="button"
               disabled={page.saving || page.loading}
               onClick={() => void page.refresh()}
-              className="mt-2 min-min-h-11 rounded-lg px-2 font-semibold underline underline-offset-4 disabled:opacity-50"
+              className="mt-2 min-min-h-11 rounded-sm px-2 font-semibold underline underline-offset-4 "
             >
               {t.refreshCart}
             </button>
@@ -85,7 +85,7 @@ function CheckoutContent({ email }: { email: string }) {
             ref={successFocus}
             tabIndex={-1}
             role="status"
-            className="rounded-xl border border-green-200 bg-green-50 p-5 text-green-900 outline-none focus-visible:ring-2 focus-visible:ring-green-500"
+            className="rounded-md border border-success/25 bg-success-bg p-5 text-success outline-none focus-visible:ring-2 focus-visible:ring-success"
           >
             <h2 className="text-lg font-semibold">{t.ready}</h2>
             <p className="mt-2 text-sm leading-6">{t.readyDescription}</p>
@@ -95,7 +95,7 @@ function CheckoutContent({ email }: { email: string }) {
         {(page.changes.pricesChanged || page.changes.itemsChanged) && (
           <p
             role="status"
-            className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+            className="rounded-md border border-warning/25 bg-warning-bg p-4 text-sm text-warning"
           >
             {page.changes.pricesChanged ? t.pricesChanged : t.itemsChanged}
           </p>
@@ -111,7 +111,7 @@ function CheckoutContent({ email }: { email: string }) {
               {blocked && !page.summary && (
                 <div
                   role="alert"
-                  className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+                  className="rounded-md border border-warning/25 bg-warning-bg p-4 text-sm text-warning"
                 >
                   <p>{t.cartBlocked}</p>
                   <Link
