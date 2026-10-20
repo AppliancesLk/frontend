@@ -9,38 +9,38 @@ const t = translations.adminRepairs;
 
 export function RepairsTable({ repairs }: { repairs: AdminRepairTicket[] }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-md border border-line bg-surface ">
       <div className="overflow-x-auto">
-        <table className="ui-table ui-card-table min-w-full divide-y divide-slate-200">
-          <thead className="bg-slate-50">
+        <table className="ui-table ui-card-table min-w-full divide-y divide-line">
+          <thead className="bg-page">
             <tr>
               <th
                 scope="col"
-                className="px-4 py-3 text-left text-sm font-semibold text-slate-900"
+                className="px-4 py-3 text-left text-sm font-semibold text-fg"
               >
                 {t.reference}
               </th>
               <th
                 scope="col"
-                className="px-4 py-3 text-left text-sm font-semibold text-slate-900"
+                className="px-4 py-3 text-left text-sm font-semibold text-fg"
               >
                 {t.customer}
               </th>
               <th
                 scope="col"
-                className="px-4 py-3 text-left text-sm font-semibold text-slate-900"
+                className="px-4 py-3 text-left text-sm font-semibold text-fg"
               >
                 {t.device}
               </th>
               <th
                 scope="col"
-                className="px-4 py-3 text-left text-sm font-semibold text-slate-900"
+                className="px-4 py-3 text-left text-sm font-semibold text-fg"
               >
                 {t.status}
               </th>
               <th
                 scope="col"
-                className="px-4 py-3 text-left text-sm font-semibold text-slate-900"
+                className="px-4 py-3 text-left text-sm font-semibold text-fg"
               >
                 {t.submittedDate}
               </th>
@@ -49,38 +49,35 @@ export function RepairsTable({ repairs }: { repairs: AdminRepairTicket[] }) {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 bg-white">
+          <tbody className="divide-y divide-line bg-surface">
             {repairs.map((repair) => (
-              <tr
-                key={repair.id}
-                className="hover:bg-slate-50 transition-colors"
-              >
+              <tr key={repair.id} className="hover:bg-page transition-colors">
                 <td
                   data-label={t.reference}
                   className="xl:whitespace-nowrap px-4 py-4"
                 >
                   <div className="ui-cell-value">
-                    <div className="tabular-nums text-sm font-medium text-slate-900">
+                    <div className="tabular-nums text-sm font-medium text-fg">
                       {repair.reference}
                     </div>
                   </div>
                 </td>
                 <td data-label={t.customer} className="px-4 py-4">
                   <div className="ui-cell-value">
-                    <div className="text-sm text-slate-900">
+                    <div className="text-sm text-fg">
                       {repair.customer.username}
                     </div>
-                    <div className="text-sm text-slate-500">
+                    <div className="text-sm text-fg-muted">
                       {repair.customer.email}
                     </div>
                   </div>
                 </td>
                 <td data-label={t.device} className="px-4 py-4">
                   <div className="ui-cell-value">
-                    <div className="text-sm text-slate-900">
+                    <div className="text-sm text-fg">
                       {repair.device.deviceType}
                     </div>
-                    <div className="text-sm text-slate-500">
+                    <div className="text-sm text-fg-muted">
                       {repair.device.brand} {repair.device.model}
                     </div>
                   </div>
@@ -92,7 +89,7 @@ export function RepairsTable({ repairs }: { repairs: AdminRepairTicket[] }) {
                 </td>
                 <td
                   data-label={t.submittedDate}
-                  className="xl:whitespace-nowrap px-4 py-4 text-sm text-slate-500"
+                  className="xl:whitespace-nowrap px-4 py-4 text-sm text-fg-muted"
                 >
                   <div className="ui-cell-value">
                     {formatDate(repair.createdAt)}
@@ -105,7 +102,7 @@ export function RepairsTable({ repairs }: { repairs: AdminRepairTicket[] }) {
                   <div className="ui-cell-value">
                     <Link
                       to={ROUTES.adminRepairDetail.replace(':id', repair.id)}
-                      className="font-medium text-blue-600 hover:text-blue-700"
+                      className="font-medium text-fg-link hover:text-fg-link"
                     >
                       {t.viewDetails}
                     </Link>

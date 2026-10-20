@@ -1,68 +1,61 @@
-import { Link } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 import type { RepairTicket } from '../../../../../types/repair.types';
 import { translations } from '../../../../../utils/translations';
 import { ROUTES } from '../../../../../constants/routes';
-
+import { RatingPlate } from '../../../../../components/common/RatingPlate';
+import { CopyReference } from '../../../../../components/common/CopyReference';
+import { Icon } from '../../../../../components/common/Icon';
 const t = translations.repairs;
-
 export function RepairSuccess({ ticket }: { ticket: RepairTicket }) {
   return (
-    <div className="rounded-xl border border-green-200 bg-green-50 p-6 shadow-sm">
-      <div className="flex items-start gap-4">
-        <div className="flex min-h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-green-600">
-          <svg
-            className="h-6 w-6 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        </div>
-        <div className="flex-1">
-          <h2 className="text-xl font-semibold text-green-900">
-            {t.ticketCreated}
-          </h2>
-          <p className="mt-2 text-sm text-green-800">{t.submitSuccess}</p>
-
-          <div className="mt-4 space-y-3 rounded-lg bg-white p-4">
-            <div>
-              <dt className="text-sm font-medium text-slate-500">
-                {t.ticketReference}
-              </dt>
-              <dd className="mt-1 text-lg font-semibold text-slate-900">
-                {ticket.reference}
-              </dd>
-            </div>
-
-            <div>
-              <dt className="text-sm font-medium text-slate-500">
-                {t.ticketStatus}
-              </dt>
-              <dd className="mt-1">
-                <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-amber-800">
-                  {t.statuses[ticket.status] || ticket.status}
+    <section
+      className="mx-auto max-w-[760px] rounded-lg border border-line bg-surface p-6 sm:p-8"
+      aria-label="Repair request confirmation"
+    >
+      <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-success-bg text-success">
+        <Icon name="check" className="h-7 w-7" />
+      </span>
+      <h2 className="mt-5 text-center text-2xl font-semibold">
+        Repair request submitted
+      </h2>
+      <p className="mt-3 text-center text-sm text-fg-secondary">
+        We have your request. You can follow every update in Your repairs.
+      </p>
+      <div className="mt-8">
+        <RatingPlate
+          title={ticket.reference}
+          rows={[
+            {
+              label: 'Reference',
+              value: (
+                <span className="flex items-center gap-2">
+                  {ticket.reference}
+                  <CopyReference value={ticket.reference} />
                 </span>
-              </dd>
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link to={ROUTES.repairs} className="auth-primary text-center">
-              {t.continueToRepairs}
-            </Link>
-            <Link to={ROUTES.products} className="auth-secondary text-center">
-              {t.backToProducts}
-            </Link>
-          </div>
-        </div>
+              ),
+            },
+            {
+              label: 'Device',
+              value: `${ticket.device.brand} ${ticket.device.model}`,
+            },
+            { label: 'Status', value: t.statuses[ticket.status] },
+          ]}
+        />
       </div>
-    </div>
+      <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <Link
+          to={generatePath(ROUTES.repairDetail, { id: ticket.id })}
+          className="auth-primary"
+        >
+          View repair
+        </Link>
+        <Link to={ROUTES.repairs} className="auth-secondary">
+          Back to your repairs
+        </Link>
+        <Link to={ROUTES.products} className="ui-button ui-button-ghost">
+          Continue shopping
+        </Link>
+      </div>
+    </section>
   );
 }

@@ -14,12 +14,12 @@ export function HomeProductSection({
   return (
     <section>
       <div className="mb-6 flex items-end justify-between gap-4">
-        <h2 className="text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
+        <h2 className="text-xl font-semibold tracking-tight text-fg md:text-2xl">
           {title}
         </h2>
         <Link
           to={ROUTES.products}
-          className="shrink-0 py-2 text-sm font-medium text-blue-700"
+          className="shrink-0 py-2 text-sm font-medium text-fg-link"
         >
           {translations.storefront.viewAll} &rarr;
         </Link>
@@ -27,7 +27,7 @@ export function HomeProductSection({
       {!products.length ? (
         <EmptyState title={translations.storefront.empty} />
       ) : (
-        <div className="grid grid-cols-1 gap-5 min-[375px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 xl:grid-cols-4">
           {products.map((product) => (
             <CatalogProductCard key={product.productID} product={product} />
           ))}

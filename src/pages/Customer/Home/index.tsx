@@ -1,150 +1,156 @@
-import { uiText } from '../../../utils/uiText';
+import { Link, generatePath } from 'react-router-dom';
 import { ProductImage } from '../../../components/common/ProductImage';
-import { LoadingState } from '../../../components/ui/Feedback';
-import { Link } from 'react-router-dom';
+import { ProductGridSkeleton } from '../../../components/feedback/ProductGridSkeleton';
 import { ROUTES } from '../../../constants/routes';
 import { Icon } from '../../../components/common/Icon';
-import { translations } from '../../../utils/translations';
+import { formatCurrency } from '../../../utils/currency';
 import { useHomePage } from './hooks/useHomePage';
 import { PromotionalBanner } from './components/PromotionalBanner';
 import { HomeProductSection } from './components/HomeProductSection';
 import { HomeCategorySection } from './components/HomeCategorySection';
-const t = translations.storefront;
 export default function HomePage() {
   const { data, retry } = useHomePage();
-  const heroProduct = data?.products.find((product) => product.images[0]);
+  const heroProduct =
+    data?.products.find((product) => product.images[0] && product.isActive) ??
+    data?.products[0];
   const banner = (position: string) =>
     data?.banners.find((section) => section.position === position);
   return (
-    <main className="mx-auto max-w-7xl space-y-12 px-4 py-6 sm:px-6 md:space-y-16 md:py-8 lg:px-8">
+    <main className="home-page shell-wide">
       <PromotionalBanner section={banner('top')} />
       {banner('top')?.visible ? (
-        <h1 className="sr-only">{t.siteDescription}</h1>
+        <h1 className="sr-only">Appliances and everyday technology</h1>
       ) : (
-        <section className="grid overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 lg:min-h-[30rem] lg:grid-cols-[1.1fr_1fr]">
-          <div className="flex flex-col items-start justify-center px-6 py-10 text-white sm:px-10 sm:py-14 lg:px-12">
-            <p className="mb-5 text-xs font-semibold tracking-widest text-blue-300">
-              {uiText.heroEyebrow}
-            </p>
-            <h1 className="whitespace-pre-line text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl xl:text-6xl">
-              {uiText.heroTitle}
+        <section className="home-hero">
+          <div className="hero-copy">
+            <h1>
+              Made for your
+              <br />
+              everyday.
             </h1>
-            <p className="mt-6 max-w-md text-sm leading-7 text-slate-300 sm:text-base">
-              {uiText.heroDescription}
+            <p>
+              Good technology makes life a little easier. Discover appliances
+              and electronics for the way you live.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                className="ui-button ui-button-primary"
                 to={ROUTES.products}
+                className="ui-button ui-button-primary"
               >
-                {uiText.heroExplore}
-                <Icon name="arrow" className="h-4 w-4" />
+                Shop all products
               </Link>
               <Link
-                className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-slate-200 hover:bg-slate-800"
                 to={ROUTES.repairRequest}
+                className="ui-button ui-button-secondary"
               >
-                {t.bookRepair}
+                Repair a device
               </Link>
+            </div>
+            <div className="hero-assurance">
+              <Icon name="truck" className="h-4 w-4" />
+              <span>Islandwide delivery</span>
+              <span className="hero-assurance-dot" />
+              <Icon name="chat" className="h-4 w-4" />
+              <span>Real people. Ready to help.</span>
             </div>
           </div>
-          {heroProduct ? (
-            <Link
-              to={ROUTES.productDetail.replace(':id', heroProduct.productID)}
-              className="relative flex min-h-64 flex-col items-center justify-center bg-slate-100 p-8 sm:p-12"
-            >
-              <ProductImage
-                src={heroProduct.images[0]}
-                alt={heroProduct.name}
-                eager
-                className="aspect-square w-full max-w-72 mix-blend-multiply"
-              />
-              <span className="mt-4 max-w-full text-center text-sm font-medium text-slate-700">
-                {heroProduct.name}
-              </span>
-            </Link>
-          ) : (
-            <div
-              aria-hidden="true"
-              className="hidden items-center justify-center bg-slate-900 text-slate-700 lg:flex"
-            >
-              <Icon name="appliance" className="h-48 w-48" />
-            </div>
-          )}
+          <div className="hero-product-stage">
+            {heroProduct ? (
+              <Link
+                className="hero-product"
+                to={generatePath(ROUTES.productDetail, {
+                  id: heroProduct.productID,
+                })}
+              >
+                <ProductImage
+                  src={heroProduct.images[0]}
+                  alt={heroProduct.name}
+                  eager
+                  className="hero-product-image"
+                />
+                <div className="hero-product-label">
+                  <div className="min-w-0">
+                    <p className="text-xs text-fg-muted">
+                      {heroProduct.brand || heroProduct.category.name}
+                    </p>
+                    <p className="mt-1 line-clamp-2 text-sm font-semibold">
+                      {heroProduct.name}
+                    </p>
+                  </div>
+                  <p className="price shrink-0 text-sm font-semibold">
+                    {formatCurrency(heroProduct.price)}
+                  </p>
+                </div>
+              </Link>
+            ) : (
+              <div className="hero-placeholder">
+                <Icon name="appliance" className="h-32 w-32" />
+                <p>Something good for every home.</p>
+              </div>
+            )}
+          </div>
         </section>
       )}
       {!data ? (
-        <LoadingState label={t.loading} compact={false} />
+        <ProductGridSkeleton count={4} />
       ) : (
         <>
           {data.errors.length > 0 && (
             <div
               role="alert"
-              className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900"
+              className="ui-alert ui-tone-warning flex-wrap justify-between"
             >
-              {[...new Set(data.errors)].map((error) => (
-                <p key={error}>{error}</p>
-              ))}
+              <p>{Array.from(new Set(data.errors)).join(' ')}</p>
               <button
                 onClick={retry}
-                className="mt-3 rounded-lg border border-amber-400 px-4 py-2 font-medium"
+                className="font-semibold underline underline-offset-4"
               >
-                {t.retry}
+                Try again
               </button>
             </div>
           )}
           <HomeCategorySection categories={data.categories} />
           <HomeProductSection
+            title="Popular right now"
             products={data.products.slice(0, 8)}
-            title={t.featured}
           />
           <PromotionalBanner section={banner('middle')} />
           {data.products.length > 8 && (
             <HomeProductSection
-              products={data.products.slice(8, 12)}
-              title={t.more}
+              title="More to make life easier"
+              products={data.products.slice(8, 16)}
             />
           )}
-          <section className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 sm:p-10 md:grid-cols-[auto_1fr_auto] md:items-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
-              <Icon name="repair" className="h-10 w-10" />
-            </span>
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
-                {t.repairTitle}
-              </h2>
-              <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">
-                {t.repairDescription}
-              </p>
+          <section className="home-repair">
+            <div className="repair-art" aria-hidden="true">
+              <Icon name="repair" className="h-20 w-20" />
             </div>
-            <Link
-              className="justify-self-start rounded-lg bg-blue-600 px-5 py-3 font-medium text-white hover:bg-blue-700"
-              to={ROUTES.repairRequest}
-            >
-              {t.bookRepair} →
-            </Link>
+            <div>
+              <h2>A little care. A longer life.</h2>
+              <p>
+                Keep the devices you love working for longer. Tell us what’s
+                wrong and follow your repair, from request to ready.
+              </p>
+              <Link
+                to={ROUTES.repairRequest}
+                className="ui-button ui-button-primary mt-6"
+              >
+                Request a repair
+              </Link>
+            </div>
+            <ol className="repair-steps">
+              <li>
+                <span>1</span>Tell us about your device
+              </li>
+              <li>
+                <span>2</span>Get help from our team
+              </li>
+              <li>
+                <span>3</span>Track your repair online
+              </li>
+            </ol>
           </section>
           <PromotionalBanner section={banner('bottom-one')} />
-          <section
-            aria-label={t.confidence}
-            className="grid gap-6 border-y border-slate-200 py-8 md:grid-cols-3"
-          >
-            {t.highlights.map((item) => (
-              <div key={item.title} className="flex items-start gap-4">
-                <span className="rounded-lg bg-blue-50 p-3 text-blue-700">
-                  <Icon name={item.icon} />
-                </span>
-                <div>
-                  <h2 className="text-sm font-semibold text-slate-900">
-                    {item.title}
-                  </h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </section>
           <PromotionalBanner section={banner('bottom-two')} />
         </>
       )}

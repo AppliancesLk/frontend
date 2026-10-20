@@ -1,5 +1,6 @@
+import { formatCategoryName } from '../../utils/category';
 import { EmptyState } from '../../components/ui/Feedback';
-import { LoadingState } from '../../components/ui/Feedback';
+import { ProductGridSkeleton } from '../../components/feedback/ProductGridSkeleton';
 import { Dialog } from '../../components/ui/Dialog';
 import { uiText } from '../../utils/uiText';
 import { Link } from 'react-router-dom';
@@ -7,13 +8,11 @@ import { useState } from 'react';
 import { ROUTES } from '../../constants/routes';
 import { translations } from '../../utils/translations';
 import { Icon } from '../../components/common/Icon';
-import { ProductImage } from '../../components/common/ProductImage';
 import { CATALOG_SORTS } from '../../types/catalog.types';
 import { formatCurrency } from '../../utils/currency';
 import { useProductsCatalog } from './hooks/useProductsCatalog';
 import { CatalogProductCard } from './components/CatalogProductCard';
 import { CatalogFilters } from './components/CatalogFilters';
-import { CategoryIcon } from './components/CategoryIcon';
 import { CatalogPagination } from './components/CatalogPagination';
 const t = translations.catalog;
 export default function ProductsPage() {
@@ -23,13 +22,6 @@ export default function ProductsPage() {
   const selectedCategory = data?.facets.categories.find(
     (category) => category.categoryID === query?.categoryId,
   );
-  const tiles =
-    data?.facets.categories
-      .filter(
-        (category) =>
-          category.parentId === (selectedCategory?.parentId ?? null),
-      )
-      .slice(0, 6) ?? [];
   const chips = [
     ...(query?.q
       ? [{ label: `“${query.q}”`, clear: () => page.update({ q: undefined }) }]
@@ -71,47 +63,48 @@ export default function ProductsPage() {
       : []),
   ];
   return (
-    <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <main className="shell-wide py-6 md:py-8">
       <nav
         aria-label={t.breadcrumb}
-        className="mb-4 flex items-center gap-2 text-xs text-slate-500"
+        className="mb-4 flex items-center gap-2 text-xs text-fg-muted"
       >
-        <Link to={ROUTES.home} className="hover:text-blue-700">
+        <Link to={ROUTES.home} className="hover:text-fg-link">
           {t.home}
         </Link>
         <span aria-hidden="true">›</span>
         <span aria-current="page">{t.title}</span>
       </nav>
-      <header className="relative mb-6 overflow-hidden rounded-2xl border border-slate-200 bg-white px-5 py-7 sm:px-8 lg:flex lg:min-h-40 lg:items-center lg:justify-between">
+      <header className="mb-10 pt-2">
         <div className="relative z-10 max-w-xl">
-          <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-blue-600">
-            {t.eyebrow}
-          </p>
-          <h1 className="ui-page-title text-slate-900">{t.title}</h1>
-          <p className="mt-3 max-w-lg text-sm leading-6 text-slate-600">
+          <h1 className="ui-page-title text-fg">
+            {selectedCategory
+              ? formatCategoryName(selectedCategory.name)
+              : t.title}
+          </h1>
+          <p className="mt-3 max-w-lg text-sm leading-6 text-fg-secondary">
             {t.description}
           </p>
         </div>
       </header>
-      {page.loading && !data && <LoadingState />}
+      {page.loading && !data && <ProductGridSkeleton />}
       {page.error && (
         <div
           role="alert"
-          className="rounded-xl border border-red-200 bg-red-50 p-6"
+          className="rounded-md border border-danger/25 bg-danger-bg p-6"
         >
-          <p className="text-sm text-red-700">{page.error}</p>
+          <p className="text-sm text-danger">{page.error}</p>
           <div className="mt-4 flex gap-3">
             {query && (
               <button
                 onClick={page.retry}
-                className="ui-button ui-button-primary rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white"
+                className="ui-button ui-button-primary rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-on"
               >
                 {t.retry}
               </button>
             )}
             <button
               onClick={page.clear}
-              className="ui-button ui-button-secondary rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700"
+              className="ui-button ui-button-secondary rounded-sm border border-line bg-surface px-4 py-2 text-sm text-fg-secondary"
             >
               {t.clear}
             </button>
@@ -121,7 +114,7 @@ export default function ProductsPage() {
       {data && query && (
         <div
           aria-busy={page.loading}
-          className="grid items-start gap-5 lg:grid-cols-[15rem_minmax(0,1fr)] xl:gap-6"
+          className="grid items-start gap-5 lg:grid-cols-[17.5rem_minmax(0,1fr)] xl:gap-6"
         >
           <aside aria-label={t.filters} className="min-w-0">
             <button
@@ -129,7 +122,7 @@ export default function ProductsPage() {
               aria-expanded={filtersOpen}
               aria-controls="catalog-filters"
               onClick={() => setFiltersOpen((value) => !value)}
-              className="ui-button ui-button-secondary mb-3 flex min-h-11 w-full items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 lg:hidden"
+              className="ui-button ui-button-secondary mb-3 flex min-h-11 w-full items-center gap-2 rounded-sm border border-line bg-surface px-4 text-sm font-semibold text-fg-secondary lg:hidden"
             >
               <Icon name="filter" />
               {t.filters}
@@ -169,7 +162,6 @@ export default function ProductsPage() {
             </Dialog>
           </aside>
           <section aria-label={t.title} className="min-w-0">
-            
             {chips.length > 0 && (
               <div
                 aria-label={t.active}
@@ -180,7 +172,7 @@ export default function ProductsPage() {
                     key={chip.label}
                     onClick={chip.clear}
                     aria-label={`${t.remove}: ${chip.label}`}
-                    className="max-w-full rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-xs text-blue-700"
+                    className="max-w-full rounded-sm border border-primary bg-primary-subtle px-3 py-2 text-xs text-fg-link"
                   >
                     <span className="break-words">{chip.label}</span>
                     <span aria-hidden="true" className="ml-2">
@@ -191,13 +183,13 @@ export default function ProductsPage() {
               </div>
             )}
             <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-              <p role="status" className="text-sm text-slate-500">
+              <p role="status" className="text-sm text-fg-muted">
                 {t.showing} {data.total ? (data.page - 1) * data.limit + 1 : 0}–
                 {Math.min(data.page * data.limit, data.total)} {t.of}{' '}
                 {data.total.toLocaleString()}{' '}
                 {data.total === 1 ? t.product : t.products}
               </p>
-              <label className="flex items-center gap-3 whitespace-nowrap text-sm font-medium text-slate-700">
+              <label className="flex items-center gap-3 whitespace-nowrap text-sm font-medium text-fg-secondary">
                 {t.sort}
                 <select
                   aria-label={t.sort}
@@ -205,7 +197,7 @@ export default function ProductsPage() {
                   onChange={(event) =>
                     page.update({ sort: event.target.value })
                   }
-                  className="ui-field min-h-11 w-auto rounded-lg border border-slate-200 bg-white px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="ui-field min-h-11 w-auto rounded-sm border border-line bg-surface px-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
                   {CATALOG_SORTS.map((sort) => (
                     <option key={sort} value={sort}>
@@ -222,7 +214,7 @@ export default function ProductsPage() {
                 action={
                   <button
                     onClick={page.clear}
-                    className="ui-button ui-button-primary mt-5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white"
+                    className="ui-button ui-button-primary mt-5 rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-on"
                   >
                     {t.clear}
                   </button>
@@ -230,7 +222,7 @@ export default function ProductsPage() {
                 icon="bag"
               />
             ) : (
-              <div className="grid grid-cols-1 gap-5 min-[375px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                 {data.items.map((product) => (
                   <CatalogProductCard
                     key={product.productID}

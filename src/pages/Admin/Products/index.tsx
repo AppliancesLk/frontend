@@ -9,8 +9,8 @@ export default function AdminProductsPage() {
   return (
     <section className="space-y-6">
       <header>
-        <h1 className="ui-page-title text-slate-900">{t.products}</h1>
-        <p className="mt-2 text-sm text-slate-500">{t.productsDescription}</p>
+        <h1 className="ui-page-title text-fg">{t.products}</h1>
+        <p className="mt-2 text-sm text-fg-muted">{t.productsDescription}</p>
       </header>
       <CatalogFeedback
         loading={page.loading}

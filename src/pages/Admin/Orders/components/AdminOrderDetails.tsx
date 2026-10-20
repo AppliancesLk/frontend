@@ -51,48 +51,44 @@ export function AdminOrderDetails({
           </Button>
         </div>
       </Dialog>
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <section className="rounded-md border border-line bg-surface p-5  sm:p-6">
         <dl className="grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <dt className="text-slate-500">{translations.orders.id}</dt>
-            <dd className="mt-2 break-all font-medium text-slate-900">
-              {order.id}
-            </dd>
+            <dt className="text-fg-muted">{translations.orders.id}</dt>
+            <dd className="mt-2 break-all font-medium text-fg">{order.id}</dd>
           </div>
           <div>
-            <dt className="text-slate-500">{t.customer}</dt>
-            <dd className="mt-2 font-medium text-slate-900">
+            <dt className="text-fg-muted">{t.customer}</dt>
+            <dd className="mt-2 font-medium text-fg">
               {order.customer.username}
             </dd>
-            <dd className="mt-1 break-all text-slate-500">
+            <dd className="mt-1 break-all text-fg-muted">
               {order.customer.email}
             </dd>
           </div>
           <div>
-            <dt className="text-slate-500">{translations.orders.date}</dt>
-            <dd className="mt-2 text-slate-900">
-              {formatDate(order.createdAt)}
-            </dd>
+            <dt className="text-fg-muted">{translations.orders.date}</dt>
+            <dd className="mt-2 text-fg">{formatDate(order.createdAt)}</dd>
           </div>
           <div>
-            <dt className="text-slate-500">{translations.orders.total}</dt>
-            <dd className="mt-2 text-lg font-semibold text-slate-900">
+            <dt className="text-fg-muted">{translations.orders.total}</dt>
+            <dd className="mt-2 text-lg font-semibold text-fg">
               {formatCurrency(order.total)}
             </dd>
           </div>
           <div>
-            <dt className="text-slate-500">{translations.orders.status}</dt>
+            <dt className="text-fg-muted">{translations.orders.status}</dt>
             <dd className="mt-2">
               <AdminOrderStatusBadge status={order.status} />
             </dd>
           </div>
           <div>
-            <dt className="text-slate-500">{t.payment}</dt>
+            <dt className="text-fg-muted">{t.payment}</dt>
             <dd className="mt-2">
               {order.payment ? (
                 <PaymentBadge status={order.payment.status} />
               ) : (
-                <span className="text-slate-500">{t.noPayment}</span>
+                <span className="text-fg-muted">{t.noPayment}</span>
               )}
             </dd>
           </div>
@@ -100,22 +96,22 @@ export function AdminOrderDetails({
       </section>
       <OrderProgress status={order.status} />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
-        <section className="rounded-xl border border-slate-200 bg-white shadow-sm">
-          <h2 className="border-b border-slate-200 p-5 text-xl font-semibold text-slate-900">
+        <section className="rounded-md border border-line bg-surface ">
+          <h2 className="border-b border-line p-5 text-xl font-semibold text-fg">
             {translations.orders.items}
           </h2>
-          <ul className="divide-y divide-slate-200">
+          <ul className="divide-y divide-line">
             {order.items.map((item) => (
               <li
                 key={item.id}
                 className="grid gap-3 p-5 text-sm sm:grid-cols-[minmax(0,1fr)_auto_auto_auto]"
               >
                 <div>
-                  <p className="font-semibold text-slate-900">{item.name}</p>
-                  <p className="mt-1 text-xs text-slate-500">{item.SKU}</p>
+                  <p className="font-semibold text-fg">{item.name}</p>
+                  <p className="mt-1 text-xs text-fg-muted">{item.SKU}</p>
                 </div>
                 <div>
-                  <span className="text-slate-500">
+                  <span className="text-fg-muted">
                     {translations.cart.quantity}:{' '}
                   </span>
                   {item.quantity}
@@ -129,14 +125,12 @@ export function AdminOrderDetails({
           </ul>
         </section>
         <div className="space-y-6">
-          <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900">
-              {t.updateStatus}
-            </h2>
+          <section className="rounded-md border border-line bg-surface p-5 ">
+            <h2 className="text-xl font-semibold text-fg">{t.updateStatus}</h2>
             {page.updateError && (
               <p
                 role="alert"
-                className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700"
+                className="mt-4 rounded-sm bg-danger-bg p-3 text-sm text-danger"
               >
                 {page.updateError}
               </p>
@@ -144,7 +138,7 @@ export function AdminOrderDetails({
             {page.success && (
               <p
                 role="status"
-                className="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-700"
+                className="mt-4 rounded-sm bg-success-bg p-3 text-sm text-success"
               >
                 {page.success}
               </p>
@@ -162,7 +156,7 @@ export function AdminOrderDetails({
                     }}
                     className={
                       status === 'CANCELLED'
-                        ? 'auth-secondary w-full text-red-700'
+                        ? 'auth-secondary w-full text-danger'
                         : 'auth-primary w-full'
                     }
                   >
@@ -174,15 +168,15 @@ export function AdminOrderDetails({
                 ))}
               </div>
             ) : (
-              <p className="mt-4 text-sm text-slate-500">{t.finalStatus}</p>
+              <p className="mt-4 text-sm text-fg-muted">{t.finalStatus}</p>
             )}
           </section>
-          <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-xl font-semibold text-slate-900">
+          <section className="rounded-md border border-line bg-surface p-5 ">
+            <h2 className="text-xl font-semibold text-fg">
               {translations.orders.delivery}
             </h2>
-            <address className="mt-4 space-y-2 break-words text-sm not-italic text-slate-600">
-              <p className="font-medium text-slate-900">
+            <address className="mt-4 space-y-2 break-words text-sm not-italic text-fg-secondary">
+              <p className="font-medium text-fg">
                 {order.delivery?.firstName} {order.delivery?.lastName}
               </p>
               <p>{order.delivery?.addressLine1}</p>

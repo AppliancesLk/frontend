@@ -66,11 +66,11 @@ export function ErrorState({
 }) {
   return (
     <section role="alert" className="ui-state">
-      <span className="ui-state-icon bg-red-50 text-red-600">
+      <span className="ui-state-icon bg-danger-bg text-danger">
         <Icon name="info" />
       </span>
-      <h2 className="mt-4 text-lg font-semibold text-slate-900">{title}</h2>
-      <p className="mt-2 text-sm leading-6 text-slate-600">{message}</p>
+      <h2 className="mt-4 text-lg font-semibold text-fg">{title}</h2>
+      <p className="mt-2 text-sm leading-6 text-fg-secondary">{message}</p>
       {retry && (
         <button
           type="button"
@@ -99,14 +99,12 @@ export function EmptyState({
   const Heading = headingAs;
   return (
     <section className="ui-state">
-      <span className="ui-state-icon bg-blue-50 text-blue-700">
+      <span className="ui-state-icon bg-primary-subtle text-fg-link">
         <Icon name={icon} className="h-6 w-6" />
       </span>
-      <Heading className="mt-4 text-lg font-semibold text-slate-900">
-        {title}
-      </Heading>
+      <Heading className="mt-4 text-lg font-semibold text-fg">{title}</Heading>
       {description && (
-        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
+        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-fg-secondary">
           {description}
         </p>
       )}

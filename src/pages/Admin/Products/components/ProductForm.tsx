@@ -11,16 +11,14 @@ export function ProductForm({
   page: ReturnType<typeof useProductsPage>;
 }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-      <h2 className="mb-5 text-xl font-semibold text-slate-900">
-        {t.addProduct}
-      </h2>
+    <section className="rounded-md border border-line bg-surface p-5  sm:p-6">
+      <h2 className="mb-5 text-xl font-semibold text-fg">{t.addProduct}</h2>
       {page.categories.length === 0 ? (
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-fg-secondary">
           {t.categoryRequired}{' '}
           <Link
             to={ROUTES.adminCategories}
-            className="font-medium text-blue-600"
+            className="font-medium text-fg-link"
           >
             {t.addCategory}
           </Link>
@@ -71,7 +69,7 @@ export function ProductForm({
                 }
                 aria-describedby="spec-hint"
               />
-              <p id="spec-hint" className="mt-2 text-xs text-slate-500">
+              <p id="spec-hint" className="mt-2 text-xs text-fg-muted">
                 {t.specificationsHint}
               </p>
             </div>
@@ -85,12 +83,12 @@ export function ProductForm({
         </form>
       )}
       {page.formError && (
-        <p role="alert" className="mt-4 text-sm text-red-700">
+        <p role="alert" className="mt-4 text-sm text-danger">
           {page.formError}
         </p>
       )}
       {page.success && (
-        <p role="status" className="mt-4 text-sm text-green-700">
+        <p role="status" className="mt-4 text-sm text-success">
           {page.success}
         </p>
       )}

@@ -9,16 +9,16 @@ export function CategoryTable({
   page: ReturnType<typeof useCategoriesPage>;
 }) {
   return (
-    <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-      <h2 className="border-b border-slate-200 p-5 text-xl font-semibold text-slate-900">
+    <section className="overflow-hidden rounded-md border border-line bg-surface ">
+      <h2 className="border-b border-line p-5 text-xl font-semibold text-fg">
         {t.categoryList} ({page.categories.length})
       </h2>
       {page.categories.length === 0 ? (
-        <p className="p-6 text-sm text-slate-500">{t.noCategories}</p>
+        <p className="p-6 text-sm text-fg-muted">{t.noCategories}</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="ui-table ui-card-table w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-600">
+            <thead className="bg-page text-fg-secondary">
               <tr>
                 {[t.categoryName, t.parentCategory, t.actions].map((label) => (
                   <th key={label} scope="col" className="px-5 py-3 font-medium">
@@ -29,20 +29,17 @@ export function CategoryTable({
             </thead>
             <tbody>
               {page.categories.map((category) => (
-                <tr
-                  key={category.categoryID}
-                  className="border-t border-slate-200"
-                >
+                <tr key={category.categoryID} className="border-t border-line">
                   <td
                     data-label={t.categoryName}
-                    className="px-5 py-4 font-medium text-slate-900"
+                    className="px-5 py-4 font-medium text-fg"
                   >
                     <div className="ui-cell-value">
                       {category.imageUrl && (
                         <ProductImage
                           src={category.imageUrl}
                           alt={category.name}
-                          className="mb-2 h-14 w-14 rounded-lg"
+                          className="mb-2 h-14 w-14 rounded-sm"
                         />
                       )}
                       {category.name}
@@ -55,7 +52,7 @@ export function CategoryTable({
                   </td>
                   <td
                     data-label={t.parentCategory}
-                    className="px-5 py-4 text-slate-600"
+                    className="px-5 py-4 text-fg-secondary"
                   >
                     <div className="ui-cell-value">
                       {category.parent?.name ?? t.topLevel}

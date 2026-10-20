@@ -6,7 +6,7 @@ import { EmptyState } from '../../components/ui/Feedback';
 export default function NotFoundPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 sm:py-20">
-      <p className="mb-6 text-center text-xs font-semibold tracking-widest text-blue-700">
+      <p className="mb-6 text-center text-xs font-semibold tracking-normal text-fg-link">
         404
       </p>
       <EmptyState

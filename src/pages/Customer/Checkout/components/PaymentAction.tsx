@@ -1,5 +1,6 @@
-import { translations } from "../../../../utils/translations";
-import type { useCheckoutPage } from "../hooks/useCheckoutPage";
+import { formatCurrency } from '../../../../utils/currency';
+import { translations } from '../../../../utils/translations';
+import type { useCheckoutPage } from '../hooks/useCheckoutPage';
 
 const t = translations.checkout;
 
@@ -9,25 +10,29 @@ export function PaymentAction({
   page: ReturnType<typeof useCheckoutPage>;
 }) {
   const retryable =
-    page.paymentStatus === "FAILED" || page.paymentStatus === "CANCELLED";
+    page.paymentStatus === 'FAILED' || page.paymentStatus === 'CANCELLED';
   return (
     <section
       aria-labelledby="payment-heading"
-      className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+      className="rounded-md border border-line bg-surface p-5  sm:p-6"
     >
-      <h2 id="payment-heading" className="text-xl font-semibold text-slate-900">
+      <h2
+        id="payment-heading"
+        className="flex items-center gap-3 text-xl font-semibold text-fg"
+      >
+        <span className="form-step-number">2</span>
         {t.paymentTitle}
       </h2>
-      <p className="mt-2 text-sm leading-6 text-slate-500">
+      <p className="mt-2 text-sm leading-6 text-fg-muted">
         {t.paymentDescription}
       </p>
       {page.paymentMessage && (
         <div
           role="status"
-          className={`mt-5 rounded-lg border p-4 text-sm ${
+          className={`mt-5 rounded-sm border p-4 text-sm ${
             retryable
-              ? "border-amber-200 bg-amber-50 text-amber-900"
-              : "border-sky-200 bg-sky-50 text-sky-900"
+              ? 'border-warning/25 bg-warning-bg text-warning'
+              : 'border-info/25 bg-info-bg text-info'
           }`}
         >
           {page.paymentMessage}
@@ -38,15 +43,17 @@ export function PaymentAction({
           type="button"
           onClick={() => void page.pay()}
           disabled={page.paying}
-          className="auth-primary h-12 flex-1 disabled:cursor-not-allowed disabled:opacity-60"
+          className="auth-primary h-12 flex-1 disabled:cursor-not-allowed "
         >
           {page.paying
             ? t.processingPayment
             : retryable
               ? t.retryPayment
-              : t.payWithPayHere}
+              : page.summary
+                ? `Pay ${formatCurrency(page.summary.total)}`
+                : t.payWithPayHere}
         </button>
-        {page.paymentStatus === "PENDING" && !page.paying && (
+        {page.paymentStatus === 'PENDING' && !page.paying && (
           <button
             type="button"
             onClick={() => void page.retryVerification()}
@@ -56,7 +63,7 @@ export function PaymentAction({
           </button>
         )}
       </div>
-      <p className="mt-3 text-xs leading-5 text-slate-500">
+      <p className="mt-3 text-xs leading-5 text-fg-muted">
         {t.backendVerificationNotice}
       </p>
     </section>

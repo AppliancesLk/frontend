@@ -13,19 +13,19 @@ export default function AdminOrderDetailsPage() {
     <section className="space-y-6">
       <Link
         to={ROUTES.adminOrders}
-        className="text-sm font-medium text-blue-600 hover:text-blue-700"
+        className="text-sm font-medium text-fg-link hover:text-fg-link"
       >
         &larr; {t.back}
       </Link>
       <header>
-        <h1 className="ui-page-title text-slate-900">{t.detailsTitle}</h1>
-        <p className="mt-2 text-sm text-slate-500">{t.description}</p>
+        <h1 className="ui-page-title text-fg">{t.detailsTitle}</h1>
+        <p className="mt-2 text-sm text-fg-muted">{t.description}</p>
       </header>
       {page.loading && <LoadingState label={t.loading} compact={false} />}
       {page.error && (
         <div
           role="alert"
-          className="rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-700"
+          className="rounded-md border border-danger/25 bg-danger-bg p-5 text-sm text-danger"
         >
           <p>{page.error}</p>
           <button
@@ -38,9 +38,9 @@ export default function AdminOrderDetailsPage() {
         </div>
       )}
       {page.notFound && (
-        <div className="rounded-xl border border-slate-200 bg-white p-8 text-center">
-          <h2 className="text-lg font-semibold text-slate-900">{t.notFound}</h2>
-          <p className="mt-2 text-sm text-slate-500">{t.notFoundDescription}</p>
+        <div className="rounded-md border border-line bg-surface p-8 text-center">
+          <h2 className="text-lg font-semibold text-fg">{t.notFound}</h2>
+          <p className="mt-2 text-sm text-fg-muted">{t.notFoundDescription}</p>
         </div>
       )}
       {!page.loading && !page.error && !page.notFound && page.order && (

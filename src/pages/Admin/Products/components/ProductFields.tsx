@@ -58,7 +58,7 @@ export function ProductFields({
         </select>
       </div>
       <div className="sm:col-span-2">
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-fg-muted">
           {translations.catalog.metadataHint}
         </p>
       </div>
@@ -120,7 +120,7 @@ export function ProductFields({
           onChange={(event) => onChange('imageUrls', event.target.value)}
           aria-describedby="image-hint"
         />
-        <p id="image-hint" className="mt-2 text-xs text-slate-500">
+        <p id="image-hint" className="mt-2 text-xs text-fg-muted">
           {t.imageHint} {editing && translations.productEdit.clearImagesHint}
         </p>
       </div>
@@ -147,7 +147,7 @@ export function ProductFields({
               onChange={(event) => onChange(field, event.target.value)}
               className="ui-field auth-input h-auto py-2"
             />
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-fg-muted">
               {field === 'features' || field === 'boxContents'
                 ? translations.experience.listHint
                 : ''}

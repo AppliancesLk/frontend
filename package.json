@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "test:redesign:e2e": "playwright test --config playwright.redesign.config.cjs",
     "test:ai:e2e": "playwright test --config playwright.ai.config.cjs",
     "test:experience:e2e": "playwright test --config playwright.experience.config.cjs",
     "test:catalog": "node --test test/catalog.test.cjs",

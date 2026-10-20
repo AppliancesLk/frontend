@@ -28,12 +28,12 @@ export function UnsavedChangesDialog({
       }}
       className="ui-dialog"
     >
-      <h2 id="unsaved-title" className="text-xl font-semibold text-slate-900">
+      <h2 id="unsaved-title" className="text-xl font-semibold text-fg">
         {page.busy ? t.savingTitle : t.unsavedTitle}
       </h2>
       <p
         id="unsaved-description"
-        className="mt-3 text-sm leading-6 text-slate-500"
+        className="mt-3 text-sm leading-6 text-fg-muted"
       >
         {page.busy ? t.savingDescription : t.unsavedDescription}
       </p>
@@ -43,7 +43,7 @@ export function UnsavedChangesDialog({
         </button>
         <button
           type="button"
-          className="auth-secondary disabled:opacity-50"
+          className="auth-secondary "
           disabled={page.busy}
           onClick={page.discard}
         >

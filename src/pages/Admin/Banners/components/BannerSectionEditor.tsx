@@ -89,17 +89,17 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
         event.preventDefault();
         void save();
       }}
-      className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6"
+      className="rounded-md border border-line bg-surface p-5 sm:p-6"
     >
-      <fieldset disabled={busy} className="min-w-0 disabled:opacity-70">
+      <fieldset disabled={busy} className="min-w-0 ">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-xl font-semibold text-slate-900">
+          <h2 className="text-xl font-semibold text-fg">
             {t.positions[draft.position]}
           </h2>
-          <label className="flex items-center gap-3 text-sm font-medium text-slate-700">
+          <label className="flex items-center gap-3 text-sm font-medium text-fg-secondary">
             <input
               type="checkbox"
-              className="h-5 w-5 accent-blue-600"
+              className="h-5 w-5 accent-primary"
               checked={draft.visible}
               onChange={(event) => {
                 setDraft({ ...draft, visible: event.target.checked });
@@ -109,15 +109,15 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
             {t.visible}
           </label>
         </div>
-        <p className="mt-3 text-sm leading-6 text-slate-500">{t.imageHelp}</p>
+        <p className="mt-3 text-sm leading-6 text-fg-muted">{t.imageHelp}</p>
         {!draft.slides.length && (
-          <p className="my-5 text-sm text-slate-500">0 / {limit}</p>
+          <p className="my-5 text-sm text-fg-muted">0 / {limit}</p>
         )}
         <div className="mt-5 space-y-6">
           {draft.slides.map((slide, index) => (
             <div
               key={index}
-              className="rounded-xl border border-slate-200 bg-slate-50 p-4"
+              className="rounded-md border border-line bg-page p-4"
             >
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="font-medium">
@@ -125,7 +125,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
                 </h3>
                 <button
                   type="button"
-                  className="rounded-lg px-3 py-2 text-sm text-red-700 hover:bg-red-50"
+                  className="rounded-sm px-3 py-2 text-sm text-danger hover:bg-danger-bg"
                   onClick={() => {
                     setDraft({
                       ...draft,
@@ -141,15 +141,15 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
                 <ProductImage
                   src={bannerImageUrl(slide.imageUrl)}
                   alt={slide.alt || t.image}
-                  className="mb-4 aspect-[8/3] w-full rounded-lg bg-white"
+                  className="mb-4 aspect-[8/3] w-full rounded-sm bg-surface"
                 />
               )}
-              <label className="mb-5 block text-sm font-medium text-slate-700">
+              <label className="mb-5 block text-sm font-medium text-fg-secondary">
                 {uploading === index ? t.uploading : t.upload}
                 <input
                   type="file"
                   accept="image/png,image/jpeg,image/webp"
-                  className="mt-2 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-blue-700"
+                  className="mt-2 block w-full text-sm file:mr-3 file:rounded-sm file:border-0 file:bg-primary-subtle file:px-4 file:py-2 file:text-fg-link"
                   onChange={(event) => {
                     void upload(index, event.target.files?.[0]);
                     event.target.value = '';
@@ -160,7 +160,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
                 {fields.map((field) => (
                   <label
                     key={field}
-                    className={`block text-sm font-medium text-slate-700 ${field === 'description' || field === 'imageUrl' ? 'sm:col-span-2' : ''}`}
+                    className={`block text-sm font-medium text-fg-secondary ${field === 'description' || field === 'imageUrl' ? 'sm:col-span-2' : ''}`}
                   >
                     {labels[field]}
                     <input
@@ -185,7 +185,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
                       onChange={(event) =>
                         update(index, field, event.target.value)
                       }
-                      className="ui-field mt-2 min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm font-normal focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="ui-field mt-2 min-h-11 w-full rounded-sm border border-line bg-surface px-3 text-sm font-normal focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                   </label>
                 ))}
@@ -203,7 +203,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
                       aria-label={
                         direction < 0 ? 'Move image up' : 'Move image down'
                       }
-                      className="ui-button ui-button-secondary rounded-lg border border-slate-300 px-4 py-2 disabled:opacity-30"
+                      className="ui-button ui-button-secondary rounded-sm border border-line px-4 py-2 disabled:text-fg-disabled"
                       onClick={() => {
                         const slides = [...draft.slides];
                         [slides[index], slides[index + direction]] = [
@@ -243,11 +243,11 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
               });
               setMessage('');
             }}
-            className="ui-button ui-button-secondary rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium disabled:opacity-40"
+            className="ui-button ui-button-secondary rounded-sm border border-line px-4 py-2 text-sm font-medium disabled:text-fg-disabled"
           >
             {t.addSlide} ({draft.slides.length}/{limit})
           </button>
-          <button className="ui-button ui-button-primary rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+          <button className="ui-button ui-button-primary rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-on hover:bg-primary-hover">
             {saving && <Spinner className="mr-2" />}
             {saving ? t.saving : t.save}
           </button>
@@ -256,7 +256,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
       {error && (
         <p
           role="alert"
-          className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700"
+          className="mt-4 rounded-sm bg-danger-bg p-3 text-sm text-danger"
         >
           {error}
         </p>
@@ -264,7 +264,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
       {message && (
         <p
           role="status"
-          className="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-700"
+          className="mt-4 rounded-sm bg-success-bg p-3 text-sm text-success"
         >
           {message}
         </p>
