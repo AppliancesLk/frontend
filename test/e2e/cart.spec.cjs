@@ -263,9 +263,7 @@ test('guest and admin access reuse existing authentication and role handling', a
   await page.goto('/cart');
   await expect(page).toHaveURL(/\/forbidden$/);
   await expect(
-    page
-      .getByRole('navigation', { name: 'Main navigation' })
-      .getByRole('link', { name: 'Cart', exact: true }),
+    page.getByRole('banner').getByRole('link', { name: 'Cart', exact: true }),
   ).toHaveCount(0);
 });
 

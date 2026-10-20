@@ -1,3 +1,4 @@
+import { StatusBadge } from '../../../components/ui/StatusBadge';
 import { Link, generatePath } from 'react-router-dom';
 import type { Product } from '../../../types/product.types';
 import { ProductImage } from '../../../components/common/ProductImage';
@@ -22,7 +23,7 @@ export function CatalogProductCard({ product }: { product: Product }) {
         />
         {product.badge && (
           <span
-            className={`absolute left-0 top-0 rounded-lg px-2.5 py-1 text-xs font-semibold ${product.badge === 'DEAL' ? 'bg-yellow-300 text-slate-900' : product.badge === 'NEW' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}
+            className={`absolute left-0 top-0 rounded-lg px-2.5 py-1 text-xs font-semibold ${product.badge === 'DEAL' ? 'bg-blue-100 text-slate-900' : product.badge === 'NEW' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}
           >
             {t.badges[product.badge]}
           </span>
@@ -33,7 +34,7 @@ export function CatalogProductCard({ product }: { product: Product }) {
           {product.brand}
         </p>
       )}
-      <h2 className="line-clamp-2 min-h-10 break-words text-sm font-semibold leading-5 text-slate-900">
+      <h2 className="line-clamp-2 min-min-h-11 break-words text-sm font-semibold leading-5 text-slate-900">
         <Link
           to={generatePath(ROUTES.productDetail, { id: product.productID })}
           className="hover:text-blue-700"
@@ -45,7 +46,14 @@ export function CatalogProductCard({ product }: { product: Product }) {
         {product.subtitle || product.category.name}
       </p>
       <div className="mt-auto pt-3">
-      {(product.ratingCount??0)>0&&<div className="mb-2"><Rating average={product.ratingAverage??0} count={product.ratingCount??0}/></div>}
+        {(product.ratingCount ?? 0) > 0 && (
+          <div className="mb-2">
+            <Rating
+              average={product.ratingAverage ?? 0}
+              count={product.ratingCount ?? 0}
+            />
+          </div>
+        )}
         <p className="break-words text-base font-bold tracking-tight text-blue-700">
           {formatCurrency(product.price)}
         </p>
@@ -56,17 +64,11 @@ export function CatalogProductCard({ product }: { product: Product }) {
             </p>
           )}
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <span
-            className={`flex items-center gap-1.5 text-xs font-medium ${available ? 'text-green-700' : 'text-slate-500'}`}
-          >
-            <span
-              aria-hidden="true"
-              className={`h-1.5 w-1.5 rounded-full ${available ? 'bg-green-600' : 'bg-slate-400'}`}
-            />
+          <StatusBadge status={available ? 'IN_STOCK' : 'OUT_OF_STOCK'}>
             {available
               ? translations.productDetails.inStock
               : translations.productDetails.outOfStock}
-          </span>
+          </StatusBadge>
           <AddToCart
             compact
             productId={product.productID}

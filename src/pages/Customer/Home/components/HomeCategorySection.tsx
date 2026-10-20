@@ -8,7 +8,11 @@ import { translations } from '../../../../utils/translations';
 
 const t = translations.storefront;
 
-export function HomeCategorySection({ categories }: { categories: Category[] }) {
+export function HomeCategorySection({
+  categories,
+}: {
+  categories: Category[];
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -45,7 +49,8 @@ export function HomeCategorySection({ categories }: { categories: Category[] }) 
     const scroll = (time: number) => {
       const maximum = element.scrollWidth - element.clientWidth;
       if (maximum > 0 && previousTime) {
-        element.scrollLeft += direction * Math.min(time - previousTime, 50) * 0.024;
+        element.scrollLeft +=
+          direction * Math.min(time - previousTime, 50) * 0.024;
         if (element.scrollLeft >= maximum) {
           element.scrollLeft = maximum;
           direction = -1;
@@ -93,9 +98,7 @@ export function HomeCategorySection({ categories }: { categories: Category[] }) 
           >
             {t.categories}
           </h2>
-          <p className="mt-2 text-sm text-slate-500">
-            {t.categoryDescription}
-          </p>
+          <p className="mt-2 text-sm text-slate-500">{t.categoryDescription}</p>
         </div>
         {hasOverflow && (
           <div className="flex shrink-0 items-center gap-1">
@@ -103,7 +106,7 @@ export function HomeCategorySection({ categories }: { categories: Category[] }) 
               type="button"
               aria-label={t.previousCategory}
               onClick={() => scrollCategories(-1)}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+              className="flex min-h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
             >
               <Icon name="arrow" className="h-4 w-4 rotate-180" />
             </button>
@@ -111,13 +114,15 @@ export function HomeCategorySection({ categories }: { categories: Category[] }) 
               type="button"
               aria-label={t.nextCategory}
               onClick={() => scrollCategories(1)}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+              className="flex min-h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
             >
               <Icon name="arrow" className="h-4 w-4" />
             </button>
             <button
               type="button"
-              aria-label={paused ? t.resumeCategoryScroll : t.pauseCategoryScroll}
+              aria-label={
+                paused ? t.resumeCategoryScroll : t.pauseCategoryScroll
+              }
               onClick={() => setPaused((value) => !value)}
               className="rounded-lg px-2 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100"
             >
@@ -140,12 +145,12 @@ export function HomeCategorySection({ categories }: { categories: Category[] }) 
             to={`${ROUTES.products}?category=${encodeURIComponent(category.categoryID)}`}
             className="group w-44 shrink-0 rounded-xl border border-slate-200 bg-white p-5 transition-colors hover:border-blue-400 hover:bg-blue-50"
           >
-            <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-600 group-hover:bg-yellow-300">
+            <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-700">
               {category.imageUrl ? (
                 <ProductImage
                   src={category.imageUrl}
                   alt=""
-                  className="h-10 w-10"
+                  className="min-h-11 w-11"
                 />
               ) : (
                 <Icon name="grid" />

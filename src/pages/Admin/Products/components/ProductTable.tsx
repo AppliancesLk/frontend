@@ -1,3 +1,4 @@
+import { StatusBadge } from '../../../../components/ui/StatusBadge';
 import { generatePath, Link } from 'react-router-dom';
 import { ROUTES } from '../../../../constants/routes';
 import type { useProductsPage } from '../hooks/useProductsPage';
@@ -18,7 +19,7 @@ export function ProductTable({
         <input
           aria-label={t.search}
           placeholder={t.search}
-          className="auth-input max-w-xs"
+          className="ui-field auth-input max-w-xs"
           value={page.search}
           onChange={(event) => page.setSearch(event.target.value)}
         />
@@ -31,7 +32,7 @@ export function ProductTable({
         </p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="ui-table ui-card-table w-full text-left text-sm">
             <thead className="bg-slate-50 text-slate-600">
               <tr>
                 {[
@@ -54,42 +55,60 @@ export function ProductTable({
                   key={product.productID}
                   className="border-t border-slate-200"
                 >
-                  <td className="px-5 py-4 font-medium text-slate-900">
-                    {product.name}
-                    <span
-                      className={`ml-2 rounded-full px-2 py-1 text-xs ${product.isActive ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'}`}
-                    >
-                      {product.isActive ? t.active : t.inactive}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4">{product.SKU}</td>
-                  <td className="px-5 py-4">{product.category.name}</td>
-                  <td className="whitespace-nowrap px-5 py-4">
-                    {formatCurrency(product.price)}
-                  </td>
-                  <td className="px-5 py-4">{product.stockQty}</td>
-                  <td className="px-5 py-4">
-                    <div className="flex flex-wrap gap-2">
-                      <Link
-                        to={generatePath(ROUTES.adminProductEdit, {
-                          id: product.productID,
-                        })}
-                        className="auth-secondary"
-                        aria-label={`${translations.productEdit.title}: ${product.name}`}
+                  <td
+                    data-label={t.productName}
+                    className="px-5 py-4 font-medium text-slate-900"
+                  >
+                    <div className="ui-cell-value">
+                      {product.name}
+                      <StatusBadge
+                        status={product.isActive ? 'ACTIVE' : 'INACTIVE'}
                       >
-                        {translations.productEdit.editLabel}
-                      </Link>
-                      <button
-                        className="auth-secondary"
-                        disabled={page.updating !== null}
-                        onClick={() => void page.toggle(product)}
-                      >
-                        {page.updating === product.productID
-                          ? t.saving
-                          : product.isActive
-                            ? t.deactivate
-                            : t.activate}
-                      </button>
+                        {product.isActive ? t.active : t.inactive}
+                      </StatusBadge>
+                    </div>
+                  </td>
+                  <td data-label={t.sku} className="px-5 py-4">
+                    <div className="ui-cell-value">{product.SKU}</div>
+                  </td>
+                  <td data-label={t.category} className="px-5 py-4">
+                    <div className="ui-cell-value">{product.category.name}</div>
+                  </td>
+                  <td
+                    data-label={t.price}
+                    className="xl:whitespace-nowrap px-5 py-4"
+                  >
+                    <div className="ui-cell-value">
+                      {formatCurrency(product.price)}
+                    </div>
+                  </td>
+                  <td data-label={t.stock} className="px-5 py-4">
+                    <div className="ui-cell-value">{product.stockQty}</div>
+                  </td>
+                  <td data-label={t.actions} className="px-5 py-4">
+                    <div className="ui-cell-value">
+                      <div className="flex flex-wrap gap-2">
+                        <Link
+                          to={generatePath(ROUTES.adminProductEdit, {
+                            id: product.productID,
+                          })}
+                          className="auth-secondary"
+                          aria-label={`${translations.productEdit.title}: ${product.name}`}
+                        >
+                          {translations.productEdit.editLabel}
+                        </Link>
+                        <button
+                          className="auth-secondary"
+                          disabled={page.updating !== null}
+                          onClick={() => void page.toggle(product)}
+                        >
+                          {page.updating === product.productID
+                            ? t.saving
+                            : product.isActive
+                              ? t.deactivate
+                              : t.activate}
+                        </button>
+                      </div>
                     </div>
                   </td>
                 </tr>

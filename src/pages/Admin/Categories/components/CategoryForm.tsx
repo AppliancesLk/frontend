@@ -1,3 +1,4 @@
+import { Spinner } from '../../../../components/ui/Feedback';
 import type { useCategoriesPage } from '../hooks/useCategoriesPage';
 import { translations } from '../../../../utils/translations';
 import { ImageUploader } from '../../../../components/forms/ImageUploader';
@@ -25,7 +26,7 @@ export function CategoryForm({
               required
               minLength={2}
               id="category-name"
-              className="auth-input"
+              className="ui-field auth-input"
               value={page.name}
               onChange={(event) => page.setName(event.target.value)}
             />
@@ -36,7 +37,7 @@ export function CategoryForm({
             </label>
             <select
               id="parent-category"
-              className="auth-input"
+              className="ui-field auth-input"
               value={page.parentID}
               onChange={(event) => page.setParentID(event.target.value)}
             >
@@ -54,6 +55,7 @@ export function CategoryForm({
             </select>
           </div>
           <button type="submit" className="auth-primary">
+            {page.busy && <Spinner className="mr-2" />}
             {page.busy
               ? t.saving
               : page.editing

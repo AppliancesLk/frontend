@@ -12,7 +12,7 @@ export default function ProfilePage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-blue-700">
           {translations.auth.yourAccount}
         </p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
+        <h1 className="ui-page-title mt-3    text-slate-900">
           {translations.auth.hello}, {user?.username}
         </h1>
         <p className="mt-3 text-slate-500">

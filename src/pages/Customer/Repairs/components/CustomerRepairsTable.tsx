@@ -1,3 +1,4 @@
+import { formatDate } from '../../../../utils/date';
 import { Link } from 'react-router-dom';
 import type { RepairTicket } from '../../../../types/repair.types';
 import { RepairStatusBadge } from '../../../Admin/Repairs/components/RepairStatusBadge';
@@ -10,7 +11,7 @@ export function CustomerRepairsTable({ repairs }: CustomerRepairsTableProps) {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="ui-table ui-card-table w-full">
           <thead className="border-b border-slate-200 bg-slate-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-700">
@@ -36,30 +37,53 @@ export function CustomerRepairsTable({ repairs }: CustomerRepairsTableProps) {
                 key={repair.id}
                 className="transition-colors hover:bg-slate-50"
               >
-                <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-900">
-                  {repair.reference}
+                <td
+                  data-label={'Reference'}
+                  className="xl:whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-900"
+                >
+                  <div className="ui-cell-value">{repair.reference}</div>
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-700">
-                  <div>
-                    <div className="font-medium">{repair.device.brand}</div>
-                    <div className="text-slate-500">
-                      {repair.device.model} ({repair.device.deviceType})
+                <td
+                  data-label={'Device'}
+                  className="xl:whitespace-nowrap px-6 py-4 text-sm text-slate-700"
+                >
+                  <div className="ui-cell-value">
+                    <div>
+                      <div className="font-medium">{repair.device.brand}</div>
+                      <div className="text-slate-500">
+                        {repair.device.model} ({repair.device.deviceType})
+                      </div>
                     </div>
                   </div>
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm">
-                  <RepairStatusBadge status={repair.status} />
+                <td
+                  data-label={'Status'}
+                  className="xl:whitespace-nowrap px-6 py-4 text-sm"
+                >
+                  <div className="ui-cell-value">
+                    <RepairStatusBadge status={repair.status} />
+                  </div>
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-500">
-                  {new Date(repair.createdAt).toLocaleDateString()}
+                <td
+                  data-label={'Submitted'}
+                  className="xl:whitespace-nowrap px-6 py-4 text-sm text-slate-500"
+                >
+                  <div className="ui-cell-value">
+                    {formatDate(repair.createdAt)}
+                  </div>
                 </td>
-                <td className="whitespace-nowrap px-6 py-4 text-right text-sm">
-                  <Link
-                    to={`/repairs/${repair.id}`}
-                    className="font-medium text-blue-600 hover:text-blue-800"
-                  >
-                    View Details
-                  </Link>
+                <td
+                  data-label={'Actions'}
+                  className="xl:whitespace-nowrap px-6 py-4 text-right text-sm"
+                >
+                  <div className="ui-cell-value">
+                    <Link
+                      to={`/repairs/${repair.id}`}
+                      className="font-medium text-blue-600 hover:text-blue-800"
+                    >
+                      View Details
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}

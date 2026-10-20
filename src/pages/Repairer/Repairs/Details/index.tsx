@@ -1,3 +1,7 @@
+import { formatDate } from '../../../../utils/date';
+import { Dialog } from '../../../../components/ui/Dialog';
+import { Spinner } from '../../../../components/ui/Feedback';
+import { LoadingState } from '../../../../components/ui/Feedback';
 import { useEffect, useState } from 'react';
 import { useRepairerRepairDetails } from './hooks/useRepairerRepairDetails';
 import { RepairStatusBadge } from '../../../Admin/Repairs/components/RepairStatusBadge';
@@ -6,16 +10,6 @@ import {
   getStatusLabel,
 } from '../../../../utils/statusTransitions';
 import type { RepairStatus } from '../../../../types/repair.types';
-
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
 
 export default function RepairerRepairDetailsPage() {
   const page = useRepairerRepairDetails();
@@ -44,28 +38,15 @@ export default function RepairerRepairDetailsPage() {
 
   if (page.loading) {
     return (
-      <main className="space-y-6">
-        <div
-          role="status"
-          className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm"
-        >
-          <p className="text-sm text-slate-500">Loading repair details...</p>
-          <div
-            aria-hidden="true"
-            className="mt-6 space-y-4 motion-safe:animate-pulse"
-          >
-            {[1, 2, 3].map((key) => (
-              <div key={key} className="h-20 rounded-lg bg-slate-100" />
-            ))}
-          </div>
-        </div>
+      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+        <LoadingState />
       </main>
     );
   }
 
   if (page.error) {
     return (
-      <main className="space-y-6">
+      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
         <div
           role="alert"
           className="rounded-xl border border-red-200 bg-red-50 p-8 text-center shadow-sm"
@@ -93,7 +74,7 @@ export default function RepairerRepairDetailsPage() {
 
   return (
     <>
-      <main className="space-y-6">
+      <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <button
@@ -103,10 +84,8 @@ export default function RepairerRepairDetailsPage() {
             >
               ← Back to Repairs
             </button>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-              Repair Details
-            </h1>
-            <p className="mt-1 font-mono text-sm text-slate-500">
+            <h1 className="ui-page-title text-slate-900">Repair Details</h1>
+            <p className="mt-1 tabular-nums text-sm text-slate-500">
               {page.repair.reference}
             </p>
           </div>
@@ -124,7 +103,7 @@ export default function RepairerRepairDetailsPage() {
                 type="button"
                 onClick={() => setShowStatusDialog(true)}
                 disabled={page.processing}
-                className="rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="ui-button ui-button-primary rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Update Status
               </button>
@@ -186,7 +165,7 @@ export default function RepairerRepairDetailsPage() {
                   <dt className="text-sm font-medium text-slate-500">
                     Serial Number
                   </dt>
-                  <dd className="mt-1 font-mono text-sm text-slate-900">
+                  <dd className="mt-1 tabular-nums text-sm text-slate-900">
                     {page.repair.device.serialNumber}
                   </dd>
                 </div>
@@ -197,7 +176,9 @@ export default function RepairerRepairDetailsPage() {
                     Purchase Date
                   </dt>
                   <dd className="mt-1 text-sm text-slate-900">
-                    {new Date(page.repair.device.purchaseDate).toLocaleDateString()}
+                    {new Date(
+                      page.repair.device.purchaseDate,
+                    ).toLocaleDateString()}
                   </dd>
                 </div>
               )}
@@ -257,58 +238,60 @@ export default function RepairerRepairDetailsPage() {
       </main>
 
       {showStatusDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
-            <h2 className="text-lg font-semibold text-slate-900">
-              Update Repair Status
-            </h2>
-            <p className="mt-2 text-sm text-slate-500">
-              Select the new status for this repair ticket
-            </p>
-
-            <div className="mt-4 space-y-2">
-              {validNextStatuses.map((status) => (
-                <button
-                  key={status}
-                  type="button"
-                  onClick={() => setSelectedStatus(status)}
-                  className={`w-full rounded-lg border p-3 text-left text-sm font-medium transition-colors ${
-                    selectedStatus === status
-                      ? 'border-blue-500 bg-blue-50 text-blue-900'
-                      : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'
-                  }`}
-                >
-                  <RepairStatusBadge status={status} />
-                  <p className="mt-1 text-xs text-slate-500">
-                    {getStatusDescription(status)}
-                  </p>
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-6 flex gap-3">
+        <Dialog
+          open
+          onClose={() => {
+            setShowStatusDialog(false);
+            setSelectedStatus(null);
+          }}
+          title={'Update repair status'}
+          description={'Select the next status for this repair ticket.'}
+          busy={page.processing}
+        >
+          <div className="mt-4 space-y-2">
+            {validNextStatuses.map((status) => (
               <button
+                key={status}
                 type="button"
-                onClick={() => {
-                  setShowStatusDialog(false);
-                  setSelectedStatus(null);
-                }}
-                disabled={page.processing}
-                className="flex-1 auth-secondary"
+                aria-pressed={selectedStatus === status}
+                onClick={() => setSelectedStatus(status)}
+                className={`w-full rounded-lg border p-3 text-left text-sm font-medium transition-colors ${
+                  selectedStatus === status
+                    ? 'border-blue-500 bg-blue-50 text-blue-900'
+                    : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50'
+                }`}
               >
-                Cancel
+                <RepairStatusBadge status={status} />
+                <p className="mt-1 text-xs text-slate-500">
+                  {getStatusDescription(status)}
+                </p>
               </button>
-              <button
-                type="button"
-                onClick={() => void handleStatusUpdate()}
-                disabled={!selectedStatus || page.processing}
-                className="flex-1 rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {page.processing ? 'Updating...' : 'Update Status'}
-              </button>
-            </div>
+            ))}
           </div>
-        </div>
+
+          <div className="mt-6 flex gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                setShowStatusDialog(false);
+                setSelectedStatus(null);
+              }}
+              disabled={page.processing}
+              className="flex-1 auth-secondary"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleStatusUpdate()}
+              disabled={!selectedStatus || page.processing}
+              className="ui-button ui-button-primary flex-1 rounded-lg border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {page.processing && <Spinner className="mr-2" />}
+              {page.processing ? 'Updating...' : 'Update Status'}
+            </button>
+          </div>
+        </Dialog>
       )}
     </>
   );

@@ -1,3 +1,4 @@
+import { LoadingState } from '../../../components/ui/Feedback';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
@@ -50,9 +51,7 @@ function CartContent() {
         </nav>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-              {t.title}
-            </h1>
+            <h1 className="ui-page-title text-slate-900">{t.title}</h1>
             <p className="mt-2 text-sm text-slate-500">{t.description}</p>
           </div>
           {page.cart && (
@@ -90,20 +89,7 @@ function CartContent() {
           {page.notice}
         </p>
         {page.loading ? (
-          <section
-            role="status"
-            className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm"
-          >
-            <p className="text-sm text-slate-500">{t.loading}</p>
-            <div
-              aria-hidden="true"
-              className="mt-6 space-y-4 motion-safe:animate-pulse"
-            >
-              {[1, 2, 3].map((key) => (
-                <div key={key} className="h-24 rounded-lg bg-slate-100" />
-              ))}
-            </div>
-          </section>
+          <LoadingState label={t.loading} />
         ) : (
           page.cart &&
           (page.cart.items.length === 0 ? (
@@ -146,7 +132,7 @@ function CartContent() {
                               setConfirmClear(false);
                               void page.clear();
                             }}
-                            className="h-10 rounded-lg bg-red-600 px-4 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+                            className="ui-button ui-button-danger min-h-11 rounded-lg bg-red-600 px-4 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
                           >
                             {t.clear}
                           </button>

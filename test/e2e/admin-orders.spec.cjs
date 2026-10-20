@@ -14,7 +14,9 @@ test.afterAll(async () => cleanupShopFixture(fixture));
 async function loginAdmin(page) {
   await page.goto('/login');
   await page.getByLabel('Username or email').fill(fixture.admin.username);
-  await page.getByLabel('Password', { exact: true }).fill(fixture.admin.password);
+  await page
+    .getByLabel('Password', { exact: true })
+    .fill(fixture.admin.password);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await expect(page).not.toHaveURL(/\/login$/);
   await page.goto('/admin/orders');
@@ -49,8 +51,12 @@ test('admin manages an order and customer sees the persisted status', async ({
   ]);
 
   await loginAdmin(page);
-  await expect(page.getByRole('heading', { name: 'Customer orders' })).toBeVisible();
-  await expect(page.getByText(fixture.customer.username, { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Customer orders' }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(fixture.customer.username, { exact: true }),
+  ).toBeVisible();
   await expect(page.getByText('Confirmed', { exact: true })).toBeVisible();
   await page
     .getByText(fixture.customer.username, { exact: true })
@@ -58,13 +64,21 @@ test('admin manages an order and customer sees the persisted status', async ({
     .getByRole('link', { name: 'View order', exact: true })
     .click();
   await expect(page).toHaveURL(new RegExp(`/admin/orders/${order.id}$`));
-  await expect(page.getByText(fixture.washer.name, { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(fixture.washer.name, { exact: true }),
+  ).toBeVisible();
   await expect(page.getByText('Not initiated', { exact: true })).toBeVisible();
   await page
     .getByRole('button', { name: 'Save status: Processing', exact: true })
     .click();
-  await expect(page.getByText('Order status updated successfully.')).toBeVisible();
-  await expect(page.getByText('Processing', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('Order status updated successfully.'),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole('list', { name: 'Order progress' })
+      .getByText('Processing', { exact: true }),
+  ).toBeVisible();
   const customerOrder = await fixture.customer.api.get(`/orders/${order.id}`);
   expect((await customerOrder.json()).status).toBe('PROCESSING');
 });
@@ -74,11 +88,21 @@ test('admin order pages handle empty, missing and forbidden access', async ({
 }) => {
   await loginAdmin(page);
   await page.goto(`/admin/orders/${randomUUID()}`);
-  await expect(page.getByRole('heading', { name: 'Order not found' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Order not found' }),
+  ).toBeVisible();
+  if (
+    !(await page
+      .getByRole('button', { name: 'Sign out', exact: true })
+      .isVisible())
+  )
+    await page.getByRole('banner').locator('summary').click();
   await page.getByRole('button', { name: 'Sign out', exact: true }).click();
   await expect(page).toHaveURL(/\/login$/);
   await page.getByLabel('Username or email').fill(fixture.customer.username);
-  await page.getByLabel('Password', { exact: true }).fill(fixture.customer.password);
+  await page
+    .getByLabel('Password', { exact: true })
+    .fill(fixture.customer.password);
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await expect(page).not.toHaveURL(/\/login$/);
   await page.goto('/admin/orders');

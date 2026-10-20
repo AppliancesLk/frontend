@@ -23,7 +23,10 @@ export function useCustomerRepairDetails() {
     setError('');
 
     try {
-      const result = await repairService.getCustomerRepair(id, controller.signal);
+      const result = await repairService.getCustomerRepair(
+        id,
+        controller.signal,
+      );
       if (!controller.signal.aborted && alive.current) {
         setRepair(result);
       }
@@ -42,8 +45,9 @@ export function useCustomerRepairDetails() {
 
   useEffect(() => {
     alive.current = true;
-    void refresh();
+    const initialLoad = window.setTimeout(() => void refresh(), 0);
     return () => {
+      window.clearTimeout(initialLoad);
       alive.current = false;
       read.current?.abort();
     };

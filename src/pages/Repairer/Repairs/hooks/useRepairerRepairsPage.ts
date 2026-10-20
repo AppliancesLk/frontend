@@ -25,7 +25,10 @@ export function useRepairerRepairsPage() {
     } catch (err: unknown) {
       if (!controller.signal.aborted && alive.current) {
         setError(
-          getApiError(err, 'Failed to load assigned repairs. Please try again.'),
+          getApiError(
+            err,
+            'Failed to load assigned repairs. Please try again.',
+          ),
         );
       }
     } finally {
@@ -37,8 +40,9 @@ export function useRepairerRepairsPage() {
 
   useEffect(() => {
     alive.current = true;
-    void refresh();
+    const initialLoad = window.setTimeout(() => void refresh(), 0);
     return () => {
+      window.clearTimeout(initialLoad);
       alive.current = false;
       read.current?.abort();
     };

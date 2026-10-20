@@ -1,3 +1,4 @@
+import { LoadingState } from '../../../../components/ui/Feedback';
 import { generatePath, Link } from 'react-router-dom';
 import type { Product } from '../../../../types/product.types';
 import { ROUTES } from '../../../../constants/routes';
@@ -19,12 +20,7 @@ export function RelatedProducts({ product }: { product: Product }) {
         <p className="mt-2 text-sm text-slate-500">{t.relatedDescription}</p>
       </div>
       {related.loading ? (
-        <p
-          role="status"
-          className="rounded-xl border border-slate-200 bg-white p-6 text-sm text-slate-500"
-        >
-          {t.relatedLoading}
-        </p>
+        <LoadingState label={t.relatedLoading} compact={true} />
       ) : related.error ? (
         <div
           role="alert"

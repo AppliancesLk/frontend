@@ -72,7 +72,9 @@ async function filters(page, info) {
     if ((await toggle.getAttribute('aria-expanded')) === 'false')
       await toggle.click();
   }
-  return page.getByRole('complementary', { name: 'Filters', exact: true });
+  return info.project.name === 'mobile'
+    ? page.getByRole('dialog', { name: 'Refine your search' })
+    : page.getByRole('complementary', { name: 'Filters', exact: true });
 }
 test('catalog renders the reference layout with real counts, cards, and paging', async ({
   page,
@@ -84,12 +86,13 @@ test('catalog renders the reference layout with real counts, cards, and paging',
     'Showing 1–12 of 15 products',
   );
   await expect(page.locator('article')).toHaveCount(12);
-  await filters(page, info);
-  await expect(
-    page
-      .getByRole('complementary', { name: 'Filters' })
-      .getByLabel('Atlas', { exact: false }),
-  ).toBeVisible();
+  const sidebar = await filters(page, info);
+  await expect(sidebar.getByLabel('Atlas', { exact: false })).toBeVisible();
+  if (info.project.name === 'mobile')
+    await page
+      .getByRole('dialog')
+      .getByRole('button', { name: 'Show products', exact: true })
+      .click();
   await page.getByLabel('Sort by', { exact: true }).selectOption('price-desc');
   await expect(page.locator('article').first().getByRole('heading')).toHaveText(
     fixture.washer.name,
@@ -123,6 +126,11 @@ test('brand and price filters combine and remain in the URL', async ({
   await expect(page.locator('article')).toHaveCount(12);
   let sidebar = await filters(page, info);
   await sidebar.getByLabel('Nova', { exact: false }).check();
+  if (info.project.name === 'mobile')
+    await page
+      .getByRole('dialog')
+      .getByRole('button', { name: 'Show products', exact: true })
+      .click();
   await expect(page).toHaveURL(/brands=Nova/);
   await expect(page.getByRole('status')).toHaveText(
     'Showing 1–7 of 7 products',
@@ -133,6 +141,11 @@ test('brand and price filters combine and remain in the URL', async ({
   await sidebar
     .getByRole('button', { name: 'Apply price', exact: true })
     .click();
+  if (info.project.name === 'mobile')
+    await page
+      .getByRole('dialog')
+      .getByRole('button', { name: 'Show products', exact: true })
+      .click();
   await expect(page.getByRole('status')).toHaveText(
     'Showing 1–3 of 3 products',
   );
@@ -194,9 +207,7 @@ test('customer can add from a catalog card and unavailable products stay disable
     })
     .click();
   await expect(
-    page
-      .getByRole('navigation', { name: 'Main navigation' })
-      .getByRole('link', { name: /Cart/ }),
+    page.getByRole('banner').getByRole('link', { name: /Cart/ }),
   ).toContainText('1');
   await page.goto(categoryURL() + '&sort=price-asc');
   await expect(

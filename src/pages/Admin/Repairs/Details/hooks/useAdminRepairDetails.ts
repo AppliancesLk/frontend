@@ -49,8 +49,9 @@ export function useAdminRepairDetails() {
 
   useEffect(() => {
     alive.current = true;
-    void refresh();
+    const initialLoad = window.setTimeout(() => void refresh(), 0);
     return () => {
+      window.clearTimeout(initialLoad);
       alive.current = false;
       read.current?.abort();
     };
