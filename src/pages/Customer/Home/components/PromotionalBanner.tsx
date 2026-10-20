@@ -20,10 +20,9 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     )
       return;
-    const timer = window.setInterval(
-      () => setIndex((value) => (value + 1) % count),
-      6500,
-    );
+    const timer = window.setInterval(() => {
+      if (!document.hidden) setIndex((value) => (value + 1) % count);
+    }, 7000);
     return () => window.clearInterval(timer);
   }, [count, paused, interacting]);
   if (!section?.visible || !count) return null;
@@ -32,7 +31,7 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
     <section
       aria-label={t.positions[section.position]}
       aria-roledescription={count > 1 ? 'carousel' : undefined}
-      className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+      className="overflow-hidden rounded-lg border border-line bg-surface"
       onMouseEnter={() => setInteracting(true)}
       onMouseLeave={() => setInteracting(false)}
       onFocusCapture={() => setInteracting(true)}
@@ -54,7 +53,10 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
     >
       <div
         key={current}
-        className="motion-safe:animate-fade-in"
+        className="campaign-slide motion-safe:animate-fade-in"
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`${current + 1} of ${count}`}
         aria-live={paused || interacting ? 'polite' : 'off'}
       >
         <ProductImage
@@ -62,18 +64,18 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
           src={bannerImageUrl(slide.imageUrl)}
           alt={slide.alt}
           eager={section.position === 'top'}
-          className={`w-full ${section.position === 'top' ? 'aspect-[8/3]' : 'aspect-[16/5]'}`}
+          className={`campaign-art w-full ${section.position === 'top' ? 'aspect-[8/3]' : 'aspect-[16/5]'}`}
         />
         {(slide.title || slide.description || slide.buttonText) && (
-          <div className="flex flex-col gap-4 border-t border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div className="flex flex-col gap-4 border-t border-line-subtle p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8">
             <div>
               {slide.title && (
-                <h2 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
+                <h2 className="text-2xl font-bold tracking-tight text-fg md:text-3xl">
                   {slide.title}
                 </h2>
               )}
               {slide.description && (
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-fg-secondary">
                   {slide.description}
                 </p>
               )}
@@ -82,14 +84,14 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
               slide.href &&
               (slide.href.startsWith('/') ? (
                 <Link
-                  className="shrink-0 self-start rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                  className="shrink-0 self-start rounded-sm bg-primary px-5 py-3 font-semibold text-primary-on hover:bg-primary-hover"
                   to={slide.href}
                 >
                   {slide.buttonText} →
                 </Link>
               ) : (
                 <a
-                  className="shrink-0 self-start rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
+                  className="shrink-0 self-start rounded-sm bg-primary px-5 py-3 font-semibold text-primary-on hover:bg-primary-hover"
                   href={slide.href}
                 >
                   {slide.buttonText} →
@@ -99,10 +101,10 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
         )}
       </div>
       {count > 1 && (
-        <div className="flex items-center justify-center gap-3 border-t border-slate-100 p-3">
+        <div className="flex items-center justify-center gap-3 border-t border-line-subtle p-3">
           <button
             aria-label={t.previous}
-            className="min-h-11 w-11 rounded-lg hover:bg-slate-100"
+            className="min-h-11 w-11 rounded-sm hover:bg-subtle"
             onClick={() => setIndex((current + count - 1) % count)}
           >
             ←
@@ -116,19 +118,19 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
               className="flex min-h-11 w-7 items-center justify-center"
             >
               <span
-                className={`h-2 rounded-full ${current === i ? 'w-6 bg-blue-600' : 'w-2 bg-slate-300'}`}
+                className={`h-2 rounded-full ${current === i ? 'w-6 bg-primary' : 'w-2 bg-sunken'}`}
               />
             </button>
           ))}
           <button
             aria-label={t.next}
-            className="min-h-11 w-11 rounded-lg hover:bg-slate-100"
+            className="min-h-11 w-11 rounded-sm hover:bg-subtle"
             onClick={() => setIndex((current + 1) % count)}
           >
             →
           </button>
           <button
-            className="rounded-lg px-3 py-2 text-xs text-slate-600"
+            className="rounded-sm px-3 py-2 text-xs text-fg-secondary"
             onClick={() => setPaused((value) => !value)}
           >
             {paused ? t.play : t.pause}

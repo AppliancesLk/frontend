@@ -27,17 +27,17 @@ function RepairsContent() {
   }, []);
 
   return (
-    <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+    <main className="bg-page px-4 py-6 sm:px-6 md:py-8 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
         <nav
           aria-label={translations.productDetails.breadcrumb}
           className="text-sm"
         >
-          <ol className="flex items-center gap-2 text-slate-500">
+          <ol className="flex items-center gap-2 text-fg-muted">
             <li>
               <Link
                 to={ROUTES.products}
-                className="font-medium text-blue-600 hover:text-blue-700"
+                className="font-medium text-fg-link hover:text-fg-link"
               >
                 {translations.productDetails.products}
               </Link>
@@ -49,8 +49,8 @@ function RepairsContent() {
 
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="ui-page-title text-slate-900">{t.title}</h1>
-            <p className="mt-2 text-sm text-slate-500">{t.description}</p>
+            <h1 className="ui-page-title text-fg">{t.title}</h1>
+            <p className="mt-2 text-sm text-fg-muted">{t.description}</p>
           </div>
           <div className="flex gap-2">
             <button
@@ -82,7 +82,7 @@ function RepairsContent() {
                 action={
                   <Link
                     to={ROUTES.repairRequest}
-                    className="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+                    className="mt-4 inline-block text-sm font-medium text-fg-link hover:text-fg-link"
                   >
                     {t.requestTitle}
                   </Link>

@@ -55,13 +55,15 @@ export function RepairRequestForm({
     <form
       onSubmit={(event) => void page.submit(event)}
       noValidate
-      className="space-y-6"
+      className="repair-request-form space-y-6"
     >
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <h2 className="text-xl font-semibold text-slate-900">
+      <div className="rounded-md border border-line bg-surface p-5  sm:p-6">
+        <h2 className="flex items-center gap-3 text-xl font-semibold text-fg">
+          <span className="form-step-number">1</span>
           {t.deviceInformation}
         </h2>
-        <p className="mt-2 text-sm leading-6 text-slate-500">
+        <p className="mt-2 text-sm leading-6 text-fg-muted">
+          All fields are required unless marked optional.{' '}
           {t.deviceInformationDescription}
         </p>
         <fieldset
@@ -74,7 +76,7 @@ export function RepairRequestForm({
               <label htmlFor={`repair-${field.name}`} className="auth-label">
                 {field.label}
                 {field.optional && (
-                  <span className="ml-1 font-normal text-slate-500">
+                  <span className="ml-1 font-normal text-fg-muted">
                     {t.optional}
                   </span>
                 )}
@@ -86,7 +88,9 @@ export function RepairRequestForm({
                 required={!field.optional}
                 maxLength={field.maxLength}
                 value={page.draft[field.name]}
-                onChange={(event) => page.change(field.name, event.target.value)}
+                onChange={(event) =>
+                  page.change(field.name, event.target.value)
+                }
                 aria-invalid={!!page.errors[field.name]}
                 aria-describedby={
                   page.errors[field.name]
@@ -95,12 +99,12 @@ export function RepairRequestForm({
                       ? `${field.name}-hint`
                       : undefined
                 }
-                className={`auth-input ${page.errors[field.name] ? 'border-red-500' : ''}`}
+                className={`auth-input ${page.errors[field.name] ? 'border-danger/25' : ''}`}
               />
               {field.hint && (
                 <p
                   id={`${field.name}-hint`}
-                  className="mt-1.5 text-xs leading-5 text-slate-500"
+                  className="mt-1.5 text-xs leading-5 text-fg-muted"
                 >
                   {field.hint}
                 </p>
@@ -108,7 +112,7 @@ export function RepairRequestForm({
               {page.errors[field.name] && (
                 <p
                   id={`${field.name}-error`}
-                  className="mt-1.5 text-sm text-red-700"
+                  className="mt-1.5 text-sm text-danger"
                 >
                   {page.errors[field.name]}
                 </p>
@@ -118,11 +122,12 @@ export function RepairRequestForm({
         </fieldset>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <h2 className="text-xl font-semibold text-slate-900">
+      <div className="rounded-md border border-line bg-surface p-5  sm:p-6">
+        <h2 className="flex items-center gap-3 text-xl font-semibold text-fg">
+          <span className="form-step-number">2</span>
           {t.problemDescription}
         </h2>
-        <p className="mt-2 text-sm leading-6 text-slate-500">
+        <p className="mt-2 text-sm leading-6 text-fg-muted">
           {t.problemDescriptionHint}
         </p>
         <fieldset disabled={page.submitting} className="mt-6">
@@ -146,17 +151,17 @@ export function RepairRequestForm({
                 ? 'problemDescription-error'
                 : undefined
             }
-            className={`auth-input resize-none ${page.errors.problemDescription ? 'border-red-500' : ''}`}
+            className={`auth-input min-h-40 resize-y ${page.errors.problemDescription ? 'border-danger/25' : ''}`}
           />
           {page.errors.problemDescription && (
             <p
               id="problemDescription-error"
-              className="mt-1.5 text-sm text-red-700"
+              className="mt-1.5 text-sm text-danger"
             >
               {page.errors.problemDescription}
             </p>
           )}
-          <p className="mt-1.5 text-xs text-slate-500">
+          <p className="mt-1.5 text-xs text-fg-muted">
             {page.draft.problemDescription.length} / 2000 characters
           </p>
         </fieldset>
@@ -165,13 +170,13 @@ export function RepairRequestForm({
       {page.error && (
         <div
           role="alert"
-          className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"
+          className="rounded-md border border-danger/25 bg-danger-bg p-4 text-sm text-danger"
         >
           {page.error}
         </div>
       )}
 
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="repair-submit-bar flex flex-col gap-3 sm:flex-row">
         <button
           type="submit"
           disabled={page.submitting}
