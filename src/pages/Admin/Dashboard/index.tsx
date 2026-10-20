@@ -35,13 +35,8 @@ export default function DashboardPage() {
     <section className="space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-blue-700">
-            {translations.auth.adminWorkspace}
-          </p>
-          <h1 className="ui-page-title text-slate-900">{t.dashboardTitle}</h1>
-          <p className="mt-2 text-sm text-slate-500">
-            {t.dashboardDescription}
-          </p>
+          <h1 className="ui-page-title text-fg">{t.dashboardTitle}</h1>
+          <p className="mt-2 text-sm text-fg-muted">{t.dashboardDescription}</p>
         </div>
         <button
           onClick={page.refresh}
@@ -63,10 +58,10 @@ export default function DashboardPage() {
               <Link
                 key={metric.label}
                 to={metric.route}
-                className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+                className="rounded-md border border-line bg-surface p-6   "
               >
-                <p className="text-sm text-slate-500">{metric.label}</p>
-                <p className="mt-3 text-3xl font-semibold text-slate-900">
+                <p className="text-sm text-fg-muted">{metric.label}</p>
+                <p className="mt-3 text-3xl font-semibold text-fg">
                   {metric.value.toLocaleString()}
                 </p>
               </Link>
@@ -98,10 +93,10 @@ export default function DashboardPage() {
               <Link
                 key={item.route}
                 to={item.route}
-                className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+                className="rounded-md border border-line bg-surface p-6 "
               >
-                <h2 className="font-semibold text-blue-600">{item.title}</h2>
-                <p className="mt-3 text-sm leading-6 text-slate-500">
+                <h2 className="font-semibold text-fg-link">{item.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-fg-muted">
                   {item.detail}
                 </p>
               </Link>

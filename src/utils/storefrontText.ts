@@ -3,7 +3,7 @@ export const storefrontText = {
   home: 'Home',
   cart: 'Cart',
   orders: 'Your orders',
-  repairs: 'Repair item',
+  repairs: 'Repair a device',
   profile: 'Profile',
   search: 'Search phones, appliances, accessories…',
   searchLabel: 'Search products',

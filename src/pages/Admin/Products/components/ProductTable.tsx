@@ -11,9 +11,9 @@ export function ProductTable({
   page: ReturnType<typeof useProductsPage>;
 }) {
   return (
-    <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 p-5">
-        <h2 className="text-xl font-semibold text-slate-900">
+    <section className="overflow-hidden rounded-md border border-line bg-surface ">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line p-5">
+        <h2 className="text-xl font-semibold text-fg">
           {t.catalog} ({page.products.length})
         </h2>
         <input
@@ -25,7 +25,7 @@ export function ProductTable({
         />
       </div>
       {page.filtered.length === 0 ? (
-        <p className="p-6 text-sm text-slate-500">
+        <p className="p-6 text-sm text-fg-muted">
           {page.products.length === 0
             ? t.noProducts
             : translations.common.noMatches}
@@ -33,7 +33,7 @@ export function ProductTable({
       ) : (
         <div className="overflow-x-auto">
           <table className="ui-table ui-card-table w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-600">
+            <thead className="bg-page text-fg-secondary">
               <tr>
                 {[
                   t.productName,
@@ -51,13 +51,10 @@ export function ProductTable({
             </thead>
             <tbody>
               {page.filtered.map((product) => (
-                <tr
-                  key={product.productID}
-                  className="border-t border-slate-200"
-                >
+                <tr key={product.productID} className="border-t border-line">
                   <td
                     data-label={t.productName}
-                    className="px-5 py-4 font-medium text-slate-900"
+                    className="px-5 py-4 font-medium text-fg"
                   >
                     <div className="ui-cell-value">
                       {product.name}
