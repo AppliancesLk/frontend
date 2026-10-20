@@ -1,3 +1,9 @@
+import { Spinner } from '../ui/Feedback';
+import { Dialog } from '../ui/Dialog';
+import { Button } from '../ui/Button';
+import { StatusBadge } from '../ui/StatusBadge';
+import { uiText } from '../../utils/uiText';
+import { LoadingState } from '../ui/Feedback';
 import { useEffect, useRef, useState } from 'react';
 import type { useSupportChat } from '../../hooks/useSupportChat';
 import { chatText as t } from '../../utils/chatText';
@@ -10,6 +16,7 @@ export function ChatConversation({
   chat: ReturnType<typeof useSupportChat>;
   admin?: boolean;
 }) {
+  const [confirmClose, setConfirmClose] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   const view = chat.conversation;
   useEffect(() => {
@@ -28,21 +35,43 @@ export function ChatConversation({
         <button
           type="button"
           onClick={chat.retryHistory}
-          className="mt-3 rounded-lg border border-slate-300 px-4 py-2 text-slate-700"
+          className="ui-button ui-button-secondary mt-3 rounded-lg border border-slate-300 px-4 py-2 text-slate-700"
         >
           {t.retry}
         </button>
       </div>
     );
-  if (!view)
-    return (
-      <p role="status" className="p-6 text-sm text-slate-500">
-        {t.historyLoading}
-      </p>
-    );
+  if (!view) return <LoadingState label={t.historyLoading} compact={true} />;
   const { session, messages } = view;
   return (
-    <div className="flex min-h-[32rem] flex-col">
+    <div className="chat-conversation">
+      <Dialog
+        open={confirmClose}
+        onClose={() => setConfirmClose(false)}
+        title={uiText.closeChat}
+        description={uiText.closeChatDescription}
+        busy={chat.closing}
+      >
+        <div className="flex flex-wrap justify-end gap-3">
+          <Button
+            variant="secondary"
+            disabled={chat.closing}
+            onClick={() => setConfirmClose(false)}
+          >
+            {uiText.cancel}
+          </Button>
+          <Button
+            variant="danger"
+            busy={chat.closing}
+            onClick={async () => {
+              await chat.close();
+              setConfirmClose(false);
+            }}
+          >
+            {t.close}
+          </Button>
+        </div>
+      </Dialog>
       <header className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 p-4 sm:p-5">
         <div className="min-w-0">
           <h2 className="break-words font-semibold text-slate-900">
@@ -54,17 +83,21 @@ export function ChatConversation({
             </p>
           )}
           <p className="mt-2 text-xs text-slate-500">
-            {session.status === 'OPEN' ? t.open : t.closed} ·{' '}
+            <StatusBadge status={session.status}>
+              {session.status === 'OPEN' ? t.open : t.closed}
+            </StatusBadge>
+            {' · '}
             {session.messageCount}/100 · {formatDate(session.createdAt)}
           </p>
         </div>
         {admin && session.status === 'OPEN' && (
           <button
             type="button"
-            onClick={() => void chat.close()}
+            onClick={() => setConfirmClose(true)}
             disabled={chat.closing}
-            className="h-10 rounded-lg border border-slate-300 px-4 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+            className="ui-button ui-button-secondary min-h-11 rounded-lg border border-slate-300 px-4 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
           >
+            {chat.closing && <Spinner className="mr-2" />}
             {chat.closing ? t.closing : t.close}
           </button>
         )}
@@ -74,7 +107,8 @@ export function ChatConversation({
         aria-label={t.conversation}
         aria-live="polite"
         aria-relevant="additions"
-        className="max-h-[28rem] min-h-64 flex-1 space-y-4 overflow-y-auto overscroll-contain bg-slate-50 p-4 sm:p-5"
+        tabIndex={0}
+        className="chat-message-log flex-1 space-y-4 overflow-y-auto overscroll-contain bg-slate-50 p-4 focus-visible:outline-2 focus-visible:outline-blue-500 sm:p-5"
       >
         {messages.length === 0 && (
           <p className="py-8 text-center text-sm text-slate-500">
@@ -113,7 +147,7 @@ export function ChatConversation({
           role="status"
           className="border-t border-amber-200 bg-amber-50 p-4 text-sm text-amber-800"
         >
-          {t.limit}
+          {admin ? t.adminLimit : t.limit}
         </p>
       ) : session.status === 'CLOSED' ? (
         <p
@@ -125,6 +159,8 @@ export function ChatConversation({
       ) : (
         <ChatComposer
           key={session.id}
+          value={chat.draft}
+          setValue={(value) => chat.setDraft(session.id, value)}
           disabled={
             chat.sending || chat.connection !== 'connected' || !!chat.sendError
           }
@@ -152,15 +188,18 @@ export function ChatConversation({
   );
 }
 function ChatComposer({
+  value,
+  setValue,
   disabled,
   sending,
   send,
 }: {
+  value: string;
+  setValue: (value: string) => void;
   disabled: boolean;
   sending: boolean;
   send: (text: string) => Promise<boolean>;
 }) {
-  const [value, setValue] = useState('');
   const inFlight = useRef(false);
   async function submit() {
     if (disabled || inFlight.current || !value.trim()) return;
@@ -177,7 +216,7 @@ function ChatComposer({
         event.preventDefault();
         void submit();
       }}
-      className="space-y-2 border-t border-slate-200 p-4"
+      className="sticky bottom-0 space-y-2 border-t border-slate-200 bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
     >
       <label
         htmlFor="support-message"
@@ -187,7 +226,7 @@ function ChatComposer({
       </label>
       <textarea
         id="support-message"
-        rows={3}
+        rows={2}
         maxLength={2000}
         value={value}
         disabled={disabled}
@@ -203,7 +242,7 @@ function ChatComposer({
             void submit();
           }
         }}
-        className="w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:bg-slate-100"
+        className="ui-field w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:bg-slate-100"
       />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <span className="text-xs text-slate-500">
@@ -212,8 +251,9 @@ function ChatComposer({
         <button
           type="submit"
           disabled={disabled || !value.trim()}
-          className="h-10 rounded-lg bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50"
+          className="ui-button ui-button-primary min-h-11 rounded-lg bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50"
         >
+          {sending && <Spinner className="mr-2" />}
           {sending ? t.sending : t.send}
         </button>
       </div>

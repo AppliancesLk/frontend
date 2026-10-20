@@ -51,14 +51,14 @@ export function ProductGallery({
                 onClick={() =>
                   setSelected((index + items.length - 1) % items.length)
                 }
-                className="absolute left-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-100 bg-white shadow-sm"
+                className="absolute left-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-100 bg-white shadow-sm"
               >
                 ←
               </button>
               <button
                 aria-label={t.nextImage}
                 onClick={() => setSelected((index + 1) % items.length)}
-                className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-100 bg-white shadow-sm"
+                className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-100 bg-white shadow-sm"
               >
                 →
               </button>
@@ -68,7 +68,7 @@ export function ProductGallery({
             <button
               aria-label={translations.experience.zoom}
               onClick={() => dialog.current?.showModal()}
-              className="absolute bottom-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-xl text-blue-700 shadow-sm"
+              className="absolute bottom-2 right-2 flex min-h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-xl text-blue-700 shadow-sm"
             >
               ⤢
             </button>
@@ -86,12 +86,12 @@ export function ProductGallery({
       <dialog
         ref={dialog}
         aria-label={translations.experience.zoom}
-        className="fixed inset-0 m-auto max-h-[95vh] w-[min(95vw,60rem)] rounded-2xl border border-slate-200 bg-white p-4 backdrop:bg-slate-900/60"
+        className="ui-dialog max-w-4xl"
       >
         <div className="mb-3 flex justify-end">
           <button
             onClick={() => dialog.current?.close()}
-            className="rounded-lg border border-slate-200 px-4 py-2 text-sm"
+            className="ui-button ui-button-secondary rounded-lg border border-slate-200 px-4 py-2 text-sm"
           >
             {translations.experience.close}
           </button>

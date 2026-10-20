@@ -1,3 +1,4 @@
+import { Spinner } from '../../../../components/ui/Feedback';
 import { ProductFields } from './ProductFields';
 import type { useProductsPage } from '../hooks/useProductsPage';
 import { translations } from '../../../../utils/translations';
@@ -46,7 +47,7 @@ export function ProductForm({
                 max={2147483647}
                 step={1}
                 required
-                className="auth-input"
+                className="ui-field auth-input"
                 value={page.draft.stockQty}
                 onChange={(event) =>
                   page.setDraft({ ...page.draft, stockQty: event.target.value })
@@ -60,7 +61,7 @@ export function ProductForm({
               <textarea
                 id="specifications"
                 rows={3}
-                className="auth-input h-auto py-2"
+                className="ui-field auth-input h-auto py-2"
                 value={page.draft.specifications}
                 onChange={(event) =>
                   page.setDraft({
@@ -76,6 +77,7 @@ export function ProductForm({
             </div>
             <div className="sm:col-span-2">
               <button className="auth-primary" type="submit">
+                {page.busy && <Spinner className="mr-2" />}
                 {page.busy ? t.saving : t.addProduct}
               </button>
             </div>

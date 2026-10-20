@@ -1,6 +1,8 @@
+import { EmptyState } from '../../../components/ui/Feedback';
 import { InventoryList } from './components/InventoryList';
 import { useInventoryPage } from './hooks/useInventoryPage';
 import { translations } from '../../../utils/translations';
+import { LoadingState, ErrorState } from '../../../components/ui/Feedback';
 function InventoryPage() {
   const page = useInventoryPage();
   const { products, loading, loadError, saving, handleRefresh } = page;
@@ -9,7 +11,7 @@ function InventoryPage() {
       <div className="mx-auto max-w-5xl">
         <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
+            <h1 className="ui-page-title text-slate-900">
               {translations.admin.inventory}
             </h1>
 
@@ -22,32 +24,22 @@ function InventoryPage() {
             type="button"
             onClick={handleRefresh}
             disabled={loading || Object.values(saving).some(Boolean)}
-            className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+            className="ui-button ui-button-secondary rounded-lg bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {translations.admin.refresh}
           </button>
         </header>
 
         {loading && (
-          <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <p className="text-slate-500">
-              {translations.admin.inventoryLoading}
-            </p>
-          </div>
+          <LoadingState label={translations.admin.inventoryLoading} />
         )}
 
         {!loading && loadError && (
-          <div className="rounded-xl border border-red-200 bg-red-50 p-5">
-            <p className="font-medium text-red-700">{loadError}</p>
-          </div>
+          <ErrorState message={loadError} retry={handleRefresh} />
         )}
 
         {!loading && !loadError && products.length === 0 && (
-          <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-            <p className="text-slate-500">
-              {translations.admin.inventoryEmpty}
-            </p>
-          </div>
+          <EmptyState title={translations.admin.inventoryEmpty} icon="bag" />
         )}
 
         {!loading && !loadError && products.length > 0 && (

@@ -52,7 +52,11 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
         touchStart.current = null;
       }}
     >
-      <div key={current} className="motion-safe:animate-fade-in" aria-live={paused || interacting ? 'polite' : 'off'}>
+      <div
+        key={current}
+        className="motion-safe:animate-fade-in"
+        aria-live={paused || interacting ? 'polite' : 'off'}
+      >
         <ProductImage
           key={slide.imageUrl}
           src={bannerImageUrl(slide.imageUrl)}
@@ -78,14 +82,14 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
               slide.href &&
               (slide.href.startsWith('/') ? (
                 <Link
-                  className="shrink-0 self-start rounded-lg bg-yellow-400 px-5 py-3 font-semibold text-slate-900 hover:bg-yellow-300"
+                  className="shrink-0 self-start rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
                   to={slide.href}
                 >
                   {slide.buttonText} →
                 </Link>
               ) : (
                 <a
-                  className="shrink-0 self-start rounded-lg bg-yellow-400 px-5 py-3 font-semibold text-slate-900 hover:bg-yellow-300"
+                  className="shrink-0 self-start rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700"
                   href={slide.href}
                 >
                   {slide.buttonText} →
@@ -98,7 +102,7 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
         <div className="flex items-center justify-center gap-3 border-t border-slate-100 p-3">
           <button
             aria-label={t.previous}
-            className="h-10 w-10 rounded-lg hover:bg-slate-100"
+            className="min-h-11 w-11 rounded-lg hover:bg-slate-100"
             onClick={() => setIndex((current + count - 1) % count)}
           >
             ←
@@ -109,7 +113,7 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
               aria-label={`Slide ${i + 1}`}
               aria-current={current === i ? 'true' : undefined}
               onClick={() => setIndex(i)}
-              className="flex h-10 w-7 items-center justify-center"
+              className="flex min-h-11 w-7 items-center justify-center"
             >
               <span
                 className={`h-2 rounded-full ${current === i ? 'w-6 bg-blue-600' : 'w-2 bg-slate-300'}`}
@@ -118,7 +122,7 @@ export function PromotionalBanner({ section }: { section?: BannerSection }) {
           ))}
           <button
             aria-label={t.next}
-            className="h-10 w-10 rounded-lg hover:bg-slate-100"
+            className="min-h-11 w-11 rounded-lg hover:bg-slate-100"
             onClick={() => setIndex((current + 1) % count)}
           >
             →

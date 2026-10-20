@@ -1,3 +1,4 @@
+import { Spinner } from '../../../../components/ui/Feedback';
 import { useState } from 'react';
 import type {
   BannerSection,
@@ -184,7 +185,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
                       onChange={(event) =>
                         update(index, field, event.target.value)
                       }
-                      className="mt-2 h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm font-normal focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="ui-field mt-2 min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm font-normal focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                     />
                   </label>
                 ))}
@@ -202,7 +203,7 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
                       aria-label={
                         direction < 0 ? 'Move image up' : 'Move image down'
                       }
-                      className="rounded-lg border border-slate-300 px-4 py-2 disabled:opacity-30"
+                      className="ui-button ui-button-secondary rounded-lg border border-slate-300 px-4 py-2 disabled:opacity-30"
                       onClick={() => {
                         const slides = [...draft.slides];
                         [slides[index], slides[index + direction]] = [
@@ -242,11 +243,12 @@ export function BannerSectionEditor({ section }: { section: BannerSection }) {
               });
               setMessage('');
             }}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium disabled:opacity-40"
+            className="ui-button ui-button-secondary rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium disabled:opacity-40"
           >
             {t.addSlide} ({draft.slides.length}/{limit})
           </button>
-          <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+          <button className="ui-button ui-button-primary rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+            {saving && <Spinner className="mr-2" />}
             {saving ? t.saving : t.save}
           </button>
         </div>

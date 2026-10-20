@@ -49,6 +49,10 @@ export function useSupportChat(role: ChatRole) {
   const [page, setPage] = useState(1);
   const [listError, setListError] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [draft, setDraft] = useState<{ id: string | null; text: string }>({
+    id: null,
+    text: '',
+  });
   const [conversation, setConversation] = useState<{
     session: ChatSession;
     messages: ChatMessage[];
@@ -247,6 +251,7 @@ export function useSupportChat(role: ChatRole) {
   }, [role, userId, refreshAuth]);
 
   function select(id: string) {
+    if (selectedRef.current !== id) setDraft({ id, text: '' });
     if (selectedRef.current && socketRef.current)
       leaveChat(socketRef.current, selectedRef.current);
     selectedRef.current = id;
@@ -255,6 +260,19 @@ export function useSupportChat(role: ChatRole) {
     setActionError('');
     setSendError('');
     void load(id);
+  }
+  function deselect() {
+    setDraft({ id: null, text: '' });
+    if (selectedRef.current && socketRef.current)
+      leaveChat(socketRef.current, selectedRef.current);
+    selectedRef.current = null;
+    historyVersion.current++;
+    historyAbort.current?.abort();
+    pending.current = null;
+    setSelectedId(null);
+    setConversation(null);
+    setHistoryError('');
+    setSendError('');
   }
   async function create() {
     if (creating) return;
@@ -348,6 +366,10 @@ export function useSupportChat(role: ChatRole) {
     list,
     listError,
     selectedId,
+    draft: draft.id === selectedId ? draft.text : '',
+    setDraft: (id: string, text: string) => {
+      if (selectedRef.current === id) setDraft({ id, text });
+    },
     conversation: conversation?.session.id === selectedId ? conversation : null,
     historyError,
     connection,
@@ -359,6 +381,7 @@ export function useSupportChat(role: ChatRole) {
     status,
     page,
     select,
+    deselect,
     create,
     close,
     submit,

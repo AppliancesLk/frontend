@@ -1,3 +1,4 @@
+import { uiText } from '../../../utils/uiText';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { AccountDetails } from '../../../components/common/AccountDetails';
@@ -13,11 +14,11 @@ export default function RepairerDashboardPage() {
           <p className="text-xs font-semibold uppercase tracking-widest text-blue-700">
             {translations.auth.repairerWorkspace}
           </p>
-          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
+          <h1 className="ui-page-title mt-3    text-slate-900">
             {translations.auth.hello}, {user?.username}
           </h1>
           <p className="mt-3 text-slate-500">
-            {translations.auth.workspaceDescription}
+            {uiText.repairerDescription}
           </p>
         </div>
 
@@ -28,7 +29,7 @@ export default function RepairerDashboardPage() {
           >
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-slate-900 group-hover:text-blue-700">
-                My Assigned Repairs
+                {uiText.assignedRepairs}
               </h2>
               <svg
                 className="h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600"
@@ -45,20 +46,15 @@ export default function RepairerDashboardPage() {
               </svg>
             </div>
             <p className="mt-2 text-sm text-slate-500">
-              View and update repair tickets assigned to you
+              {uiText.assignedDescription}
             </p>
           </Link>
-
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-900">Quick Stats</h2>
-            <p className="mt-2 text-sm text-slate-500">
-              Statistics coming soon
-            </p>
-          </div>
         </div>
 
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">Account Details</h2>
+          <h2 className="text-lg font-semibold text-slate-900">
+            {uiText.account}
+          </h2>
           <AccountDetails />
         </div>
       </section>

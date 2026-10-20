@@ -57,7 +57,7 @@ export default function ProductDetailsPage() {
   }, [id]);
   return (
     <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-      <div className="mx-auto max-w-[96rem] space-y-6">
+      <div className="mx-auto max-w-7xl space-y-6">
         <nav
           aria-label={translations.productDetails.breadcrumb}
           className="text-sm"
@@ -123,7 +123,10 @@ export default function ProductDetailsPage() {
               onSummary={updateSummary}
             />
             <RelatedProducts product={product} />
-            <ProductAiAssistant productId={product.productID} productName={product.name} />
+            <ProductAiAssistant
+              productId={product.productID}
+              productName={product.name}
+            />
           </>
         ) : (
           <ProductDetailsState

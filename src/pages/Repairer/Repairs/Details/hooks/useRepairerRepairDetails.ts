@@ -27,7 +27,10 @@ export function useRepairerRepairDetails() {
     setError('');
 
     try {
-      const result = await repairService.getRepairerRepair(id, controller.signal);
+      const result = await repairService.getRepairerRepair(
+        id,
+        controller.signal,
+      );
       if (!controller.signal.aborted && alive.current) {
         setRepair(result);
       }
@@ -46,8 +49,9 @@ export function useRepairerRepairDetails() {
 
   useEffect(() => {
     alive.current = true;
-    void refresh();
+    const initialLoad = window.setTimeout(() => void refresh(), 0);
     return () => {
+      window.clearTimeout(initialLoad);
       alive.current = false;
       read.current?.abort();
     };
@@ -69,7 +73,10 @@ export function useRepairerRepairDetails() {
       } catch (err: unknown) {
         if (alive.current) {
           setUpdateError(
-            getApiError(err, 'Failed to update repair status. Please try again.'),
+            getApiError(
+              err,
+              'Failed to update repair status. Please try again.',
+            ),
           );
         }
       } finally {

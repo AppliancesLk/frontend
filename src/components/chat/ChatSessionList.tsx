@@ -1,3 +1,4 @@
+import { StatusBadge } from '../ui/StatusBadge';
 import type { ChatRole, ChatSession } from '../../types/chat.types';
 import { chatText as t } from '../../utils/chatText';
 import { formatDate } from '../../utils/date';
@@ -39,11 +40,9 @@ export function ChatSessionList({
                   ? (session.customer?.username ?? t.customer)
                   : `${t.newConversation} · ${session.id.slice(0, 8)}`}
               </span>
-              <span
-                className={`rounded-full px-2 py-0.5 text-xs ${session.status === 'OPEN' ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'}`}
-              >
+              <StatusBadge status={session.status}>
                 {session.status === 'OPEN' ? t.open : t.closed}
-              </span>
+              </StatusBadge>
             </span>
             {role === 'ADMIN' && (
               <span className="mt-1 block truncate text-xs text-slate-500">

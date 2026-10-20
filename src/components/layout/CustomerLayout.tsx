@@ -5,7 +5,11 @@ export function CustomerLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
       <SiteHeader />
-      <div className="flex-1">
+      <div
+        id="main-content"
+        tabIndex={-1}
+        className="min-w-0 flex-1 outline-none"
+      >
         <Outlet />
       </div>
       <SiteFooter />

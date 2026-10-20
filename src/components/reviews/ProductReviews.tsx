@@ -1,3 +1,8 @@
+import { Spinner } from '../ui/Feedback';
+import { Dialog } from '../ui/Dialog';
+import { Button } from '../ui/Button';
+import { uiText } from '../../utils/uiText';
+import { LoadingState } from '../ui/Feedback';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
@@ -49,7 +54,7 @@ function ReviewForm({
             aria-label={t.rating}
             value={rating}
             onChange={(event) => setRating(Number(event.target.value))}
-            className="auth-input mt-2"
+            className="ui-field auth-input mt-2"
           >
             {[5, 4, 3, 2, 1].map((value) => (
               <option key={value} value={value}>
@@ -66,7 +71,7 @@ function ReviewForm({
             maxLength={120}
             value={title}
             onChange={(event) => setTitle(event.target.value)}
-            className="auth-input mt-2"
+            className="ui-field auth-input mt-2"
           />
         </label>
         <label className="block text-sm font-medium text-slate-700">
@@ -78,10 +83,11 @@ function ReviewForm({
             rows={4}
             value={body}
             onChange={(event) => setBody(event.target.value)}
-            className="auth-input mt-2 h-auto py-2"
+            className="ui-field auth-input mt-2 h-auto py-2"
           />
         </label>
         <button className="auth-primary">
+          {busy && <Spinner className="mr-2" />}
           {busy ? t.loading : mine ? t.updateReview : t.submitReview}
         </button>
       </fieldset>
@@ -111,17 +117,19 @@ export function ProductReviews({
   const [feedback, setFeedback] = useState(''),
     [error, setError] = useState(''),
     [deleting, setDeleting] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   const summary = page.data?.summary;
   useEffect(() => {
     if (summary) onSummary?.(summary);
   }, [summary, onSummary]);
   async function remove(id: string) {
-    if (deleting || !window.confirm(t.deleteConfirm)) return;
+    if (deleting) return;
     setDeleting(true);
     setError('');
     try {
       await deleteReview(productId, id);
       setFeedback(t.reviewDeleted);
+      setDeleteId(null);
       page.refresh();
     } catch {
       setError(t.reviewDeleteError);
@@ -135,13 +143,42 @@ export function ProductReviews({
       aria-label={t.reviews}
       className="scroll-mt-32 space-y-6"
     >
+      <Dialog
+        open={deleteId !== null}
+        onClose={() => setDeleteId(null)}
+        title={t.deleteReview}
+        description={t.deleteConfirm}
+        busy={deleting}
+      >
+        {error && (
+          <p role="alert" className="ui-alert ui-tone-danger mb-4">
+            {error}
+          </p>
+        )}
+        <div className="flex justify-end gap-3">
+          <Button
+            variant="secondary"
+            disabled={deleting}
+            onClick={() => setDeleteId(null)}
+          >
+            {uiText.cancel}
+          </Button>
+          <Button
+            variant="danger"
+            busy={deleting}
+            onClick={() => {
+              if (deleteId) void remove(deleteId);
+            }}
+          >
+            {t.deleteReview}
+          </Button>
+        </div>
+      </Dialog>
       <h2 className="text-xl font-semibold text-slate-900">
         {user?.role === USER_ROLES.ADMIN ? t.moderation : t.reviews}
       </h2>
       {page.loading ? (
-        <p role="status" className="text-sm text-slate-500">
-          {t.loading}
-        </p>
+        <LoadingState label={t.loading} compact={true} />
       ) : page.error ? (
         <div role="alert">
           <p className="text-sm text-red-700">{t.reviewError}</p>
@@ -169,7 +206,7 @@ export function ProductReviews({
                     <span>{row.rating} ★</span>
                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-white">
                       <div
-                        className="h-full bg-yellow-400"
+                        className="h-full bg-blue-600"
                         style={{
                           width: `${summary.count ? (row.count / summary.count) * 100 : 0}%`,
                         }}
@@ -219,7 +256,10 @@ export function ProductReviews({
                         <button
                           disabled={deleting}
                           className="mt-3 rounded-lg px-3 py-2 text-xs font-medium text-red-700 hover:bg-red-50 disabled:opacity-50"
-                          onClick={() => void remove(review.id)}
+                          onClick={() => {
+                            setError('');
+                            setDeleteId(review.id);
+                          }}
                         >
                           {t.deleteReview}
                         </button>

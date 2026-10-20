@@ -1,3 +1,4 @@
+import { LoadingState } from '../../../../components/ui/Feedback';
 import { Link, useParams } from 'react-router-dom';
 import { ROUTES } from '../../../../constants/routes';
 import { translations } from '../../../../utils/translations';
@@ -18,21 +19,18 @@ export default function ProductEditPage() {
         >
           {translations.productDetails.backToProducts}
         </Link>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
-          {t.title}
-        </h1>
+        <h1 className="ui-page-title text-slate-900">{t.title}</h1>
         <p className="mt-2 text-sm text-slate-500">
           {page.editor?.product.name ?? t.description}
         </p>
       </header>
-      {page.status==='ready' && id && <div className="rounded-xl border border-slate-200 bg-white p-5"><ProductReviews productId={id}/></div>}
+      {page.status === 'ready' && id && (
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <ProductReviews productId={id} />
+        </div>
+      )}
       {page.status === 'loading' && (
-        <p
-          role="status"
-          className="rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-500"
-        >
-          {t.loading}
-        </p>
+        <LoadingState label={t.loading} compact={false} />
       )}
       {page.status === 'not-found' && (
         <div className="rounded-xl border border-slate-200 bg-white p-8">

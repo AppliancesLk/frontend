@@ -22,7 +22,10 @@
     "test:product-edit": "node --test test/product-edit.test.cjs",
     "test:orders:e2e": "playwright test --config playwright.orders.config.cjs",
     "test:admin-orders:e2e": "playwright test --config playwright.admin-orders.config.cjs",
-    "test:chat:e2e": "playwright test --config playwright.chat.config.cjs"
+    "test:chat:e2e": "playwright test --config playwright.chat.config.cjs",
+    "test:ui:e2e": "playwright test --config playwright.ui.config.cjs",
+    "test:ui:regression": "node test/run-ui-regression.cjs",
+    "test:ui:chat": "playwright test --config playwright.ui-chat.config.cjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

@@ -1,3 +1,4 @@
+import { Spinner } from '../../../../../components/ui/Feedback';
 import { Link } from 'react-router-dom';
 import type { useProductEdit } from '../hooks/useProductEdit';
 import { ProductFields } from '../../components/ProductFields';
@@ -144,6 +145,7 @@ export function ProductEditForm({
           className="auth-primary disabled:cursor-not-allowed"
           disabled={page.busy || !page.dirty}
         >
+          {page.busy && <Spinner className="mr-2" />}
           {page.busy ? translations.admin.saving : t.save}
         </button>
         <Link className="auth-secondary" to={ROUTES.adminProducts}>

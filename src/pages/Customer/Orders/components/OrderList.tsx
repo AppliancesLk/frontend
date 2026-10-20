@@ -1,3 +1,4 @@
+import { EmptyState } from '../../../../components/ui/Feedback';
 import { Link, generatePath } from 'react-router-dom';
 import type { Order } from '../../../../types/order.types';
 import { ROUTES } from '../../../../constants/routes';
@@ -9,13 +10,16 @@ const t = translations.orders;
 export function OrderList({ orders }: { orders: Order[] }) {
   if (!orders.length)
     return (
-      <section className="rounded-xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
-        <h2 className="text-xl font-semibold text-slate-900">{t.empty}</h2>
-        <p className="mt-2 text-sm text-slate-500">{t.emptyDescription}</p>
-        <Link to={ROUTES.products} className="auth-primary mt-6">
-          {translations.common.continueShopping}
-        </Link>
-      </section>
+      <EmptyState
+        title={t.empty}
+        description={t.emptyDescription}
+        action={
+          <Link to={ROUTES.products} className="auth-primary mt-6">
+            {translations.common.continueShopping}
+          </Link>
+        }
+        icon="orders"
+      />
     );
   return (
     <section aria-label={t.title} className="space-y-4">

@@ -20,7 +20,7 @@ export function ProductInformation({
       <p className="mb-3 text-sm font-medium text-slate-500">
         {product.brand || product.category.name}
       </p>
-      <h1 className="break-words text-3xl font-bold tracking-tight text-slate-900 xl:text-4xl">
+      <h1 className="ui-page-title break-words    text-slate-900">
         {product.name}
       </h1>
       {product.subtitle && (
@@ -29,10 +29,12 @@ export function ProductInformation({
         </p>
       )}
       <div className="mt-4 flex flex-wrap items-center gap-4">
-        <Rating
-          average={product.ratingAverage ?? 0}
-          count={product.ratingCount ?? 0}
-        />
+        {(product.ratingCount ?? 0) > 0 && (
+          <Rating
+            average={product.ratingAverage ?? 0}
+            count={product.ratingCount ?? 0}
+          />
+        )}
         <button
           onClick={showReviews}
           className="rounded-lg px-2 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50"
