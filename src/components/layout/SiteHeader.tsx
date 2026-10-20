@@ -108,7 +108,7 @@ export function SiteHeader() {
       <a href="#main-content" className="ui-skip">
         {uiText.skip}
       </a>
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
+      <header className="sticky top-0 z-30 bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8 lg:py-5">
           <button
             type="button"
@@ -123,7 +123,7 @@ export function SiteHeader() {
             to={ROUTES.home}
             className="shrink-0 text-xl font-bold tracking-tight text-slate-950 sm:text-2xl"
           >
-            appliances<span className="text-blue-600">.lk</span>
+            Appliances<span className="text-blue-600">.lk</span>
           </Link>
           <form
             role="search"
@@ -211,18 +211,18 @@ export function SiteHeader() {
         </div>
         <nav
           aria-label={translations.auth.mainNavigation}
-          className="hidden border-t border-slate-100 lg:block"
+          className="hidden border-t border-slate-100 lg:block bg-blue-600 "
         >
-          <div className="mx-auto flex max-w-7xl items-center gap-8 px-8">
+          <div className="mx-auto flex max-w-7xl items-center px-8">
             {links.map((link) => (
               <NavLink
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  'flex min-h-12 items-center gap-2 border-b-2 text-sm font-medium ' +
+                  'flex min-h-12 items-center  px-3 text-sm font-medium transition-colors ' +
                   (isActive
-                    ? 'border-blue-600 text-blue-700'
-                    : 'border-transparent text-slate-600 hover:text-blue-700')
+                    ? 'border-blue-600 text-dark'
+                    : 'border-transparent text-white hover:bg-white hover:text-blue-600')
                 }
               >
                 <Icon name={link.icon} className="h-4 w-4" />
