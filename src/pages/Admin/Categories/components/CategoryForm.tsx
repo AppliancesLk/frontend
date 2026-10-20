@@ -9,8 +9,8 @@ export function CategoryForm({
   page: ReturnType<typeof useCategoriesPage>;
 }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-      <h2 className="mb-5 text-xl font-semibold text-slate-900">
+    <section className="rounded-md border border-line bg-surface p-5  sm:p-6">
+      <h2 className="mb-5 text-xl font-semibold text-fg">
         {page.editing ? translations.experience.editCategory : t.addCategory}
       </h2>
       <form onSubmit={page.submit}>
@@ -63,7 +63,7 @@ export function CategoryForm({
                 : t.addCategory}
           </button>
           <div className="md:col-span-3">
-            <p className="mb-3 text-sm font-medium text-slate-700">
+            <p className="mb-3 text-sm font-medium text-fg-secondary">
               {translations.experience.categoryImage}
             </p>
             <ImageUploader
@@ -85,12 +85,12 @@ export function CategoryForm({
         </fieldset>
       </form>
       {page.formError && (
-        <p role="alert" className="mt-4 text-sm text-red-700">
+        <p role="alert" className="mt-4 text-sm text-danger">
           {page.formError}
         </p>
       )}
       {page.success && (
-        <p role="status" className="mt-4 text-sm text-green-700">
+        <p role="status" className="mt-4 text-sm text-success">
           {page.success}
         </p>
       )}

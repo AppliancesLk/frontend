@@ -37,7 +37,7 @@ export function ActionDialog({
             disabled={page.processing}
             className="ui-field auth-input resize-none"
           />
-          <p className="mt-1.5 text-xs text-slate-500">
+          <p className="mt-1.5 text-xs text-fg-muted">
             {page.rejectionReason.length} / 500 characters
           </p>
         </div>
@@ -46,7 +46,7 @@ export function ActionDialog({
       {page.actionError && (
         <div
           role="alert"
-          className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+          className="mt-4 rounded-sm border border-danger/25 bg-danger-bg p-3 text-sm text-danger"
         >
           {page.actionError}
         </div>
@@ -59,7 +59,7 @@ export function ActionDialog({
             void (isApprove ? page.approveRepair() : page.rejectRepair())
           }
           disabled={page.processing}
-          className={`auth-primary ${isApprove ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
+          className={`auth-primary ${isApprove ? 'bg-success hover:bg-success' : 'bg-danger hover:bg-danger'}`}
         >
           {page.processing && <Spinner className="mr-2" />}
           {page.processing

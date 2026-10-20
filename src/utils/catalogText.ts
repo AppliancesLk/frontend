@@ -1,5 +1,5 @@
 export const catalogText = {
-  title: 'All Products',
+  title: 'All products',
   eyebrow: 'FIND YOUR NEXT UPGRADE',
   description:
     'Explore electronics, appliances, and everyday essentials. Find the right product at the right price.',

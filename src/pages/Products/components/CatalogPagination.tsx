@@ -20,13 +20,13 @@ export function CatalogPagination({
         disabled={page <= 1}
         onClick={() => onChange(page - 1)}
         aria-label={t.previous}
-        className="min-h-11 w-11 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40"
+        className="min-h-11 w-11 rounded-sm border border-line bg-surface text-fg-secondary disabled:text-fg-disabled"
       >
         ←
       </button>
       {paginationPages(page, totalPages).map((value, index) =>
         value === 'ellipsis' ? (
-          <span key={`gap-${index}`} className="px-1 text-slate-500">
+          <span key={`gap-${index}`} className="px-1 text-fg-muted">
             …
           </span>
         ) : (
@@ -35,7 +35,7 @@ export function CatalogPagination({
             aria-label={`${t.page} ${value}`}
             aria-current={value === page ? 'page' : undefined}
             onClick={() => onChange(value)}
-            className={`h-10 min-w-10 rounded-lg border px-2 text-sm font-medium ${value === page ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-blue-400'}`}
+            className={`h-10 min-w-10 rounded-sm border px-2 text-sm font-medium ${value === page ? 'border-primary bg-primary text-primary-on' : 'border-line bg-surface text-fg-secondary hover:border-primary'}`}
           >
             {value}
           </button>
@@ -45,7 +45,7 @@ export function CatalogPagination({
         disabled={page >= totalPages}
         onClick={() => onChange(page + 1)}
         aria-label={t.next}
-        className="min-h-11 w-11 rounded-lg border border-slate-200 bg-white text-slate-600 disabled:opacity-40"
+        className="min-h-11 w-11 rounded-sm border border-line bg-surface text-fg-secondary disabled:text-fg-disabled"
       >
         →
       </button>

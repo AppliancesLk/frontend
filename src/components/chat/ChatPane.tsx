@@ -54,7 +54,7 @@ export function ChatPane({
   }, [mobile, selected]);
   if (!mobile)
     return (
-      <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <section className="min-w-0 overflow-hidden rounded-md border border-line bg-surface ">
         {children}
       </section>
     );
@@ -67,10 +67,10 @@ export function ChatPane({
         event.preventDefault();
         back();
       }}
-      className="fixed inset-0 m-0 h-dvh max-h-dvh w-screen max-w-none overflow-hidden border-0 bg-white p-0 text-slate-900 backdrop:bg-slate-950/40"
+      className="fixed inset-0 m-0 h-dvh max-h-dvh w-screen max-w-none overflow-hidden border-0 bg-surface p-0 text-fg backdrop:bg-inverse/40"
     >
       <div className="flex h-full min-h-0 flex-col">
-        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-slate-200 px-3 py-2">
+        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-line px-3 py-2">
           <button
             type="button"
             onClick={back}

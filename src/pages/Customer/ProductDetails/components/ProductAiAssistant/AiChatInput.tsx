@@ -16,7 +16,7 @@ export function AiChatInput({
   }
   return (
     <form
-      className="space-y-2 border-t border-slate-200 p-4"
+      className="space-y-2 border-t border-line p-4"
       onSubmit={(event) => {
         event.preventDefault();
         submit();
@@ -24,7 +24,7 @@ export function AiChatInput({
     >
       <label
         htmlFor="product-ai-question"
-        className="block text-sm font-medium text-slate-700"
+        className="block text-sm font-medium text-fg-secondary"
       >
         {aiText.label}
       </label>
@@ -46,14 +46,14 @@ export function AiChatInput({
             submit();
           }
         }}
-        className="ui-field w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:bg-slate-100"
+        className="ui-field w-full resize-none rounded-sm border border-line px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:bg-subtle"
       />
       <div className="flex items-center justify-between gap-3">
-        <span className="text-xs text-slate-500">{value.length}/2000</span>
+        <span className="text-xs text-fg-muted">{value.length}/2000</span>
         <button
           type="submit"
           disabled={disabled || !value.trim()}
-          className="ui-button ui-button-primary min-h-11 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="ui-button ui-button-primary min-h-11 rounded-sm bg-primary px-4 text-sm font-medium text-primary-on hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed "
         >
           {aiText.send}
         </button>

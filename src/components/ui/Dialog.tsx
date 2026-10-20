@@ -63,16 +63,13 @@ export function Dialog({
     >
       <div className="mb-5 flex items-start justify-between gap-4">
         <div>
-          <h2
-            id={id}
-            className="text-xl font-semibold tracking-tight text-slate-900"
-          >
+          <h2 id={id} className="text-xl font-semibold tracking-tight text-fg">
             {title}
           </h2>
           {description && (
             <p
               id={`${id}-description`}
-              className="mt-2 text-sm leading-6 text-slate-600"
+              className="mt-2 text-sm leading-6 text-fg-secondary"
             >
               {description}
             </p>
