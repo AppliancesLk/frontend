@@ -17,7 +17,20 @@ export function ProductGallery({
   return (
     <section
       aria-label={t.gallery}
-      className="min-w-0 rounded-xl border border-slate-200 bg-white p-3 sm:p-4"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (
+          items.length > 1 &&
+          (event.key === 'ArrowRight' || event.key === 'ArrowLeft')
+        ) {
+          event.preventDefault();
+          setSelected(
+            (index + (event.key === 'ArrowRight' ? 1 : items.length - 1)) %
+              items.length,
+          );
+        }
+      }}
+      className="product-gallery min-w-0"
     >
       <div
         className={`grid gap-3 ${items.length > 1 ? 'sm:grid-cols-[4rem_minmax(0,1fr)]' : ''}`}
@@ -30,14 +43,14 @@ export function ProductGallery({
                 aria-label={`${t.viewImage} ${i + 1}: ${name}`}
                 aria-pressed={i === index}
                 onClick={() => setSelected(i)}
-                className={`h-16 w-16 shrink-0 rounded-lg border-2 bg-slate-50 p-1 ${i === index ? 'border-blue-600' : 'border-slate-100 hover:border-blue-300'}`}
+                className={`h-16 w-16 shrink-0 rounded-sm border-2 bg-well p-1 ${i === index ? 'border-primary' : 'border-line-subtle hover:border-primary'}`}
               >
                 <ProductImage src={src} alt="" className="h-full w-full" />
               </button>
             ))}
           </div>
         )}
-        <div className="relative min-w-0">
+        <div className="relative min-w-0 rounded-lg bg-well p-3">
           <ProductImage
             src={items[index]}
             alt={`${name}${items.length > 1 ? ` - ${t.image} ${index + 1}` : ''}`}
@@ -51,14 +64,14 @@ export function ProductGallery({
                 onClick={() =>
                   setSelected((index + items.length - 1) % items.length)
                 }
-                className="absolute left-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-100 bg-white shadow-sm"
+                className="absolute left-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line-subtle bg-surface "
               >
                 ←
               </button>
               <button
                 aria-label={t.nextImage}
                 onClick={() => setSelected((index + 1) % items.length)}
-                className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-100 bg-white shadow-sm"
+                className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line-subtle bg-surface "
               >
                 →
               </button>
@@ -68,14 +81,14 @@ export function ProductGallery({
             <button
               aria-label={translations.experience.zoom}
               onClick={() => dialog.current?.showModal()}
-              className="absolute bottom-2 right-2 flex min-h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-xl text-blue-700 shadow-sm"
+              className="absolute bottom-2 right-2 flex min-h-11 w-11 items-center justify-center rounded-full border border-line bg-surface text-xl text-fg-link "
             >
               ⤢
             </button>
           )}
           <p
             aria-live="polite"
-            className="mt-3 text-center text-xs text-slate-400"
+            className="mt-3 text-center text-xs text-fg-muted"
           >
             {items.length
               ? `${t.image} ${index + 1} ${t.of} ${items.length}`
@@ -91,7 +104,7 @@ export function ProductGallery({
         <div className="mb-3 flex justify-end">
           <button
             onClick={() => dialog.current?.close()}
-            className="ui-button ui-button-secondary rounded-lg border border-slate-200 px-4 py-2 text-sm"
+            className="ui-button ui-button-secondary rounded-sm border border-line px-4 py-2 text-sm"
           >
             {translations.experience.close}
           </button>

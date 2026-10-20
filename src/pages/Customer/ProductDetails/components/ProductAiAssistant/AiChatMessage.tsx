@@ -6,14 +6,14 @@ export function AiChatMessage({ message }: { message: Message }) {
     <div
       className={
         message.role === 'USER'
-          ? 'ml-8 rounded-xl bg-blue-50 p-3'
-          : 'mr-4 rounded-xl border border-slate-200 bg-white p-3'
+          ? 'ml-8 rounded-md bg-primary-subtle p-3'
+          : 'mr-4 rounded-md border border-line bg-surface p-3'
       }
     >
-      <p className="mb-1 text-xs font-semibold text-slate-500">
+      <p className="mb-1 text-xs font-semibold text-fg-muted">
         {message.role === 'USER' ? aiText.you : aiText.assistant}
       </p>
-      <p className="whitespace-pre-wrap break-words text-sm leading-6 text-slate-800">
+      <p className="whitespace-pre-wrap break-words text-sm leading-6 text-fg">
         {message.content}
       </p>
     </div>

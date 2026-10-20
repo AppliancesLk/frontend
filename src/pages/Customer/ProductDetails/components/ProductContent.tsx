@@ -25,12 +25,12 @@ export function ProductContent({
   return (
     <section
       id="product-content"
-      className="scroll-mt-36 rounded-xl border border-slate-200 bg-white p-4 sm:p-6"
+      className="scroll-mt-36 rounded-md border border-line bg-surface p-4 sm:p-6"
     >
       <div
         role="tablist"
         aria-label={translations.productDetails.details}
-        className="mb-6 flex gap-2 overflow-x-auto border-b border-slate-200"
+        className="mb-6 flex gap-2 overflow-x-auto border-b border-line"
       >
         {tabs.map((tab, index) => (
           <button
@@ -58,7 +58,7 @@ export function ProductContent({
                 document.getElementById(`tab-${tabs[next]}`)?.focus();
               }
             }}
-            className={`shrink-0 border-b-2 px-3 py-3 text-sm font-medium ${active === tab ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
+            className={`shrink-0 border-b-2 px-3 py-3 text-sm font-medium ${active === tab ? 'border-primary text-fg-link' : 'border-transparent text-fg-muted hover:text-fg'}`}
           >
             {t[tab]}
             {tab === 'reviews' ? ` (${product.ratingCount ?? 0})` : ''}
@@ -77,24 +77,20 @@ export function ProductContent({
           {tab === 'overview' && (
             <div className="grid gap-6 xl:grid-cols-[1fr_1fr_1.1fr]">
               <div>
-                <h2 className="mb-3 font-semibold text-slate-900">
-                  {t.description}
-                </h2>
-                <p className="whitespace-pre-line text-sm leading-7 text-slate-600">
+                <h2 className="mb-3 font-semibold text-fg">{t.description}</h2>
+                <p className="whitespace-pre-line text-sm leading-7 text-fg-secondary">
                   {product.description || t.noDescription}
                 </p>
               </div>
               <div>
-                <h2 className="mb-3 font-semibold text-slate-900">
-                  {t.features}
-                </h2>
+                <h2 className="mb-3 font-semibold text-fg">{t.features}</h2>
                 {product.features?.length ? (
-                  <ul className="space-y-2 text-sm leading-6 text-slate-600">
+                  <ul className="space-y-2 text-sm leading-6 text-fg-secondary">
                     {product.features.map((feature, index) => (
                       <li className="flex gap-2" key={index}>
                         <span
                           aria-hidden="true"
-                          className="font-bold text-blue-600"
+                          className="font-bold text-fg-link"
                         >
                           ✓
                         </span>
@@ -103,22 +99,22 @@ export function ProductContent({
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-sm text-slate-500">{t.noFeatures}</p>
+                  <p className="text-sm text-fg-muted">{t.noFeatures}</p>
                 )}
               </div>
-              <div className="rounded-xl bg-blue-50 p-4">
+              <div className="rounded-md bg-primary-subtle p-4">
                 <div className="mb-3 flex flex-wrap justify-between gap-2">
-                  <h2 className="text-sm font-semibold text-slate-900">
+                  <h2 className="text-sm font-semibold text-fg">
                     {t.keySpecifications}
                   </h2>
                   <button
                     onClick={() => setActive('specifications')}
-                    className="text-xs font-medium text-blue-700"
+                    className="text-xs font-medium text-fg-link"
                   >
                     {t.fullSpecifications} →
                   </button>
                 </div>
-                <dl className="divide-y divide-blue-100">
+                <dl className="divide-y divide-line-subtle">
                   {getSpecificationEntries(product.specifications)
                     .slice(0, 8)
                     .map(([label, value]) => (
@@ -126,10 +122,10 @@ export function ProductContent({
                         key={label}
                         className="grid grid-cols-2 gap-3 py-2 text-xs"
                       >
-                        <dt className="break-words text-slate-500">
+                        <dt className="break-words text-fg-muted">
                           {formatSpecificationLabel(label)}
                         </dt>
-                        <dd className="break-words text-slate-700">
+                        <dd className="break-words text-fg-secondary">
                           {formatSpecificationValue(value)}
                         </dd>
                       </div>
@@ -143,17 +139,17 @@ export function ProductContent({
           )}
           {tab === 'boxContents' && (
             <>
-              <h2 className="mb-4 text-lg font-semibold text-slate-900">
+              <h2 className="mb-4 text-lg font-semibold text-fg">
                 {t.boxContents}
               </h2>
               {product.boxContents?.length ? (
-                <ul className="list-inside list-disc space-y-3 text-sm text-slate-600">
+                <ul className="list-inside list-disc space-y-3 text-sm text-fg-secondary">
                   {product.boxContents.map((item, index) => (
                     <li key={index}>{item}</li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-slate-500">{t.noBox}</p>
+                <p className="text-sm text-fg-muted">{t.noBox}</p>
               )}
             </>
           )}

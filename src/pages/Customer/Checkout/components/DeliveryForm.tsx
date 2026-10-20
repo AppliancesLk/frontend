@@ -87,12 +87,13 @@ export function DeliveryForm({
     <form
       onSubmit={(event) => void page.submit(event)}
       noValidate
-      className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+      className="rounded-md border border-line bg-surface p-5  sm:p-6"
     >
-      <h2 className="text-xl font-semibold text-slate-900">
+      <h2 className="flex items-center gap-3 text-xl font-semibold text-fg">
+        <span className="form-step-number">1</span>
         {t.deliveryTitle}
       </h2>
-      <p className="mt-2 text-sm leading-6 text-slate-500">
+      <p className="mt-2 text-sm leading-6 text-fg-muted">
         {t.deliveryDescription}
       </p>
       <fieldset
@@ -105,7 +106,7 @@ export function DeliveryForm({
             <label htmlFor={`checkout-${field.name}`} className="auth-label">
               {field.label}
               {field.optional && (
-                <span className="ml-1 font-normal text-slate-500">
+                <span className="ml-1 font-normal text-fg-muted">
                   {t.optional}
                 </span>
               )}
@@ -127,12 +128,12 @@ export function DeliveryForm({
                     ? `${field.name}-hint`
                     : undefined
               }
-              className={`auth-input ${page.errors[field.name] ? 'border-red-500' : ''}`}
+              className={`auth-input ${page.errors[field.name] ? 'border-danger/25' : ''}`}
             />
             {field.hint && (
               <p
                 id={`${field.name}-hint`}
-                className="mt-1.5 text-xs leading-5 text-slate-500"
+                className="mt-1.5 text-xs leading-5 text-fg-muted"
               >
                 {field.hint}
               </p>
@@ -140,7 +141,7 @@ export function DeliveryForm({
             {page.errors[field.name] && (
               <p
                 id={`${field.name}-error`}
-                className="mt-1.5 text-sm text-red-700"
+                className="mt-1.5 text-sm text-danger"
               >
                 {page.errors[field.name]}
               </p>
@@ -148,7 +149,7 @@ export function DeliveryForm({
           </div>
         ))}
       </fieldset>
-      <div className="mt-6 border-t border-slate-200 pt-5">
+      <div className="mt-6 border-t border-line pt-5">
         <button
           type="submit"
           disabled={page.locked || blocked}
@@ -161,7 +162,7 @@ export function DeliveryForm({
               ? t.validateAgain
               : t.prepare}
         </button>
-        <p className="mt-3 text-xs leading-5 text-slate-500">{t.prepareHint}</p>
+        <p className="mt-3 text-xs leading-5 text-fg-muted">{t.prepareHint}</p>
       </div>
     </form>
   );

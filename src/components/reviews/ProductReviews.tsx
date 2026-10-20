@@ -32,7 +32,7 @@ function ReviewForm({
     [error, setError] = useState('');
   return (
     <form
-      className="rounded-xl border border-slate-200 bg-slate-50 p-5"
+      className="rounded-md border border-line bg-page p-5"
       onSubmit={(event) => {
         event.preventDefault();
         if (busy) return;
@@ -44,11 +44,11 @@ function ReviewForm({
           .finally(() => setBusy(false));
       }}
     >
-      <h3 className="mb-4 font-semibold text-slate-900">
+      <h3 className="mb-4 font-semibold text-fg">
         {mine ? t.editReview : t.writeReview}
       </h3>
       <fieldset disabled={busy} className="space-y-4">
-        <label className="block text-sm font-medium text-slate-700">
+        <label className="block text-sm font-medium text-fg-secondary">
           {t.rating}
           <select
             aria-label={t.rating}
@@ -63,7 +63,7 @@ function ReviewForm({
             ))}
           </select>
         </label>
-        <label className="block text-sm font-medium text-slate-700">
+        <label className="block text-sm font-medium text-fg-secondary">
           {t.reviewTitle}
           <input
             required
@@ -74,7 +74,7 @@ function ReviewForm({
             className="ui-field auth-input mt-2"
           />
         </label>
-        <label className="block text-sm font-medium text-slate-700">
+        <label className="block text-sm font-medium text-fg-secondary">
           {t.reviewBody}
           <textarea
             required
@@ -92,7 +92,7 @@ function ReviewForm({
         </button>
       </fieldset>
       {error && (
-        <p role="alert" className="mt-3 text-sm text-red-700">
+        <p role="alert" className="mt-3 text-sm text-danger">
           {error}
         </p>
       )}
@@ -174,14 +174,14 @@ export function ProductReviews({
           </Button>
         </div>
       </Dialog>
-      <h2 className="text-xl font-semibold text-slate-900">
+      <h2 className="text-xl font-semibold text-fg">
         {user?.role === USER_ROLES.ADMIN ? t.moderation : t.reviews}
       </h2>
       {page.loading ? (
         <LoadingState label={t.loading} compact={true} />
       ) : page.error ? (
         <div role="alert">
-          <p className="text-sm text-red-700">{t.reviewError}</p>
+          <p className="text-sm text-danger">{t.reviewError}</p>
           <button className="auth-secondary mt-3" onClick={page.refresh}>
             {t.retry}
           </button>
@@ -190,8 +190,8 @@ export function ProductReviews({
         page.data && (
           <>
             <div className="grid gap-6 md:grid-cols-[13rem_1fr]">
-              <div className="rounded-xl bg-blue-50 p-5">
-                <p className="text-4xl font-bold text-slate-900">
+              <div className="rounded-md bg-primary-subtle p-5">
+                <p className="text-4xl font-bold text-fg">
                   {summary?.count ? summary.average.toFixed(1) : '—'}
                 </p>
                 <Rating
@@ -201,12 +201,12 @@ export function ProductReviews({
                 {summary?.distribution.map((row) => (
                   <div
                     key={row.rating}
-                    className="mt-2 flex items-center gap-2 text-xs text-slate-500"
+                    className="mt-2 flex items-center gap-2 text-xs text-fg-muted"
                   >
                     <span>{row.rating} ★</span>
-                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-white">
+                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface">
                       <div
-                        className="h-full bg-blue-600"
+                        className="h-full bg-accent"
                         style={{
                           width: `${summary.count ? (row.count / summary.count) * 100 : 0}%`,
                         }}
@@ -221,41 +221,41 @@ export function ProductReviews({
                   page.data.items.map((review) => (
                     <article
                       key={review.id}
-                      className="rounded-xl border border-slate-200 p-4"
+                      className="rounded-md border border-line p-4"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="text-sm font-semibold text-slate-900">
+                        <p className="text-sm font-semibold text-fg">
                           {review.author}
                         </p>
                         <time
-                          className="text-xs text-slate-500"
+                          className="text-xs text-fg-muted"
                           dateTime={review.createdAt}
                         >
                           {formatDate(review.createdAt)}
                         </time>
                       </div>
                       <p
-                        className="mt-2 text-yellow-500"
+                        className="mt-2 text-warning"
                         aria-label={`${t.rating}: ${review.rating}/5`}
                       >
                         {'★'.repeat(review.rating)}
                       </p>
                       {review.verifiedPurchase && (
-                        <p className="mt-1 text-xs font-medium text-green-700">
+                        <p className="mt-1 text-xs font-medium text-success">
                           {t.verified}
                         </p>
                       )}
-                      <h3 className="mt-2 break-words font-semibold text-slate-900">
+                      <h3 className="mt-2 break-words font-semibold text-fg">
                         {review.title}
                       </h3>
-                      <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-slate-600">
+                      <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-fg-secondary">
                         {review.body}
                       </p>
                       {(review.id === page.mine?.id ||
                         user?.role === USER_ROLES.ADMIN) && (
                         <button
                           disabled={deleting}
-                          className="mt-3 rounded-lg px-3 py-2 text-xs font-medium text-red-700 hover:bg-red-50 disabled:opacity-50"
+                          className="mt-3 rounded-sm px-3 py-2 text-xs font-medium text-danger hover:bg-danger-bg "
                           onClick={() => {
                             setError('');
                             setDeleteId(review.id);
@@ -267,7 +267,7 @@ export function ProductReviews({
                     </article>
                   ))
                 ) : (
-                  <p className="p-4 text-sm text-slate-500">{t.noReviews}</p>
+                  <p className="p-4 text-sm text-fg-muted">{t.noReviews}</p>
                 )}
                 {page.data.totalPages > 1 && (
                   <div className="flex items-center gap-3">
@@ -278,7 +278,7 @@ export function ProductReviews({
                     >
                       {t.previous}
                     </button>
-                    <span className="text-sm text-slate-500">
+                    <span className="text-sm text-fg-muted">
                       {page.data.page}/{page.data.totalPages}
                     </span>
                     <button
@@ -306,7 +306,7 @@ export function ProductReviews({
               <Link
                 to={ROUTES.login}
                 state={{ from: location.pathname + location.search }}
-                className="inline-flex rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white"
+                className="inline-flex rounded-sm bg-primary px-4 py-3 text-sm font-medium text-primary-on"
               >
                 {t.signInReview}
               </Link>
@@ -315,12 +315,12 @@ export function ProductReviews({
         )
       )}
       {feedback && (
-        <p role="status" className="text-sm text-green-700">
+        <p role="status" className="text-sm text-success">
           {feedback}
         </p>
       )}
       {error && (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-sm text-danger">
           {error}
         </p>
       )}

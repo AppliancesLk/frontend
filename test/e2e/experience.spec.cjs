@@ -211,9 +211,7 @@ test('customers can submit, edit, and delete real reviews with live ratings', as
   page,
 }) => {
   await login(page, fixture.customer, detail());
-  await page
-    .getByRole('button', { name: 'Write a review', exact: true })
-    .click();
+  await page.getByRole('tab', { name: /^Reviews \(/ }).click();
   await page
     .getByLabel('Review title', { exact: true })
     .fill('A helpful appliance');

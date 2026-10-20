@@ -17,17 +17,19 @@ function CustomerChat() {
   const [showConversation, setShowConversation] = useState(false);
   const chat = useSupportChat('CUSTOMER');
   return (
-    <main className="bg-slate-50 px-4 py-6 sm:px-6 md:py-8 lg:px-8">
-      <section className="mx-auto max-w-7xl space-y-6">
+    <main className="bg-page px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+      <section className="mx-auto max-w-[1200px] space-y-6">
         <header className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="ui-page-title text-slate-900">{t.title}</h1>
-            <p className="mt-2 text-sm text-slate-600">
+            <h1 className="ui-page-title text-fg">{t.title}</h1>
+            <p className="mt-2 text-sm text-fg-secondary">
               {t.customerDescription}
             </p>
-            <p className="mt-2 max-w-2xl text-xs text-slate-500">
-              {t.retention}
-            </p>
+            {chat.list && chat.list.total >= 4 && (
+              <p className="mt-2 max-w-2xl text-xs text-fg-muted">
+                {t.retention}
+              </p>
+            )}
           </div>
           <button
             type="button"
@@ -36,7 +38,7 @@ function CustomerChat() {
               void chat.create();
             }}
             disabled={chat.creating}
-            className="ui-button ui-button-primary min-h-11 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+            className="ui-button ui-button-primary min-h-11 rounded-sm bg-primary px-4 text-sm font-medium text-primary-on hover:bg-primary-hover "
           >
             {chat.creating && <Spinner className="mr-2" />}
             {chat.creating ? t.creating : t.newChat}
@@ -49,7 +51,7 @@ function CustomerChat() {
         {chat.listError ? (
           <div
             role="alert"
-            className="rounded-lg bg-red-50 p-4 text-sm text-red-700"
+            className="rounded-sm bg-danger-bg p-4 text-sm text-danger"
           >
             <p>{chat.listError}</p>
             <button
@@ -67,11 +69,10 @@ function CustomerChat() {
               className={
                 (showConversation && chat.selectedId
                   ? 'hidden lg:block '
-                  : '') +
-                'min-w-0 rounded-xl border border-slate-200 bg-white shadow-sm'
+                  : '') + 'min-w-0 rounded-md border border-line bg-surface '
               }
             >
-              <h2 className="border-b border-slate-200 p-4 font-semibold text-slate-900">
+              <h2 className="border-b border-line p-4 font-semibold text-fg">
                 {t.sessions} · {chat.list.total}/5
               </h2>
               <ChatSessionList

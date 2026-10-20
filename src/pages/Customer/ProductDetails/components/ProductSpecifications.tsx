@@ -1,3 +1,4 @@
+import { RatingPlate } from '../../../../components/common/RatingPlate';
 import {
   formatSpecificationValue,
   getSpecificationEntries,
@@ -15,32 +16,21 @@ export function ProductSpecifications({
     <section
       id="specifications"
       aria-labelledby="specifications-title"
-      className="scroll-mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+      className="scroll-mt-6"
     >
-      <h2
-        id="specifications-title"
-        className="border-b border-slate-200 px-5 py-5 text-xl font-semibold text-slate-900 sm:px-8"
-      >
+      <h2 id="specifications-title" className="sr-only">
         {t.specifications}
       </h2>
       {entries.length ? (
-        <dl className="divide-y divide-slate-100">
-          {entries.map(([label, value]) => (
-            <div
-              key={label}
-              className="grid gap-2 px-5 py-4 odd:bg-slate-50/60 sm:grid-cols-[minmax(140px,1fr)_2fr] sm:gap-6 sm:px-8"
-            >
-              <dt className="break-words text-sm font-medium text-slate-600">
-                {formatSpecificationLabel(label)}
-              </dt>
-              <dd className="min-w-0 whitespace-pre-wrap break-words text-sm leading-6 text-slate-900">
-                {formatSpecificationValue(value)}
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <RatingPlate
+          title={t.specifications}
+          rows={entries.map(([label, value]) => ({
+            label: formatSpecificationLabel(label),
+            value: formatSpecificationValue(value),
+          }))}
+        />
       ) : (
-        <p className="p-5 text-sm leading-6 text-slate-500 sm:px-8">
+        <p className="p-5 text-sm leading-6 text-fg-muted sm:px-8">
           {t.noSpecifications}
         </p>
       )}

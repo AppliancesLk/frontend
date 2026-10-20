@@ -1,3 +1,5 @@
+import { BrandLogo } from '../../../components/common/BrandLogo';
+import { Icon } from '../../../components/common/Icon';
 import { Spinner } from '../../../components/ui/Feedback';
 import { LoadingState } from '../../../components/ui/Feedback';
 import { Link, Navigate } from 'react-router-dom';
@@ -32,53 +34,70 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
     );
   if (user) return <Navigate to={destination} replace />;
   return (
-    <main className="min-h-[calc(100dvh-8rem)] bg-slate-50 px-4 py-10 sm:py-16">
-      <div className="mx-auto grid max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:grid-cols-2">
-        <aside className="hidden flex-col justify-between bg-slate-950 p-8 lg:flex text-white sm:p-12">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">
-              {translations.auth.brandTagline}
-            </p>
-            <h2 className="mt-6 text-3xl font-semibold leading-tight text-white">
-              {translations.auth.heroFirst}
+    <main className="auth-page">
+      <div className="auth-shell">
+        <aside className="auth-story">
+          <Link to={ROUTES.home} aria-label="Appliances.lk home">
+            <BrandLogo />
+          </Link>
+          <div className="auth-story-content">
+            <h2>
+              Good things.
               <br />
-              {translations.auth.heroSecond}
+              Every day.
             </h2>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
-              {translations.auth.heroDescription}
+            <p>
+              Your next upgrade. A device you can rely on. A little help when
+              you need it. All in one place.
             </p>
+            <div className="auth-brand-plate">
+              <div className="flex items-center justify-between border-b border-line-strong px-5 py-4">
+                <span className="font-display text-lg font-semibold">
+                  Appliances.lk
+                </span>
+                <Icon name="appliance" />
+              </div>
+              <dl>
+                <div>
+                  <dt>Made for</dt>
+                  <dd>Everyday living</dd>
+                </div>
+                <div>
+                  <dt>From</dt>
+                  <dd>Sri Lanka, with care</dd>
+                </div>
+                <div>
+                  <dt>Here for</dt>
+                  <dd>Your next chapter</dd>
+                </div>
+              </dl>
+            </div>
           </div>
-          <div className="mt-10 border-t border-slate-700 pt-6">
-            <p className="text-sm text-slate-300">
-              {translations.auth.browsing}
-            </p>
-            <Link
-              to={ROUTES.products}
-              className="mt-2 inline-block font-medium text-blue-300 hover:text-blue-200"
-            >
-              {translations.common.continueShopping}
-            </Link>
-          </div>
+          <Link
+            to={ROUTES.products}
+            className="hidden min-h-11 items-center gap-2 text-sm font-semibold text-fg-link md:flex"
+          >
+            <Icon name="arrow" className="h-4 w-4 rotate-180" />
+            Continue exploring
+          </Link>
         </aside>
-        <section className="p-6 sm:p-10 lg:p-12" aria-labelledby="auth-heading">
-          <p className="text-xs font-semibold uppercase tracking-widest text-blue-700">
-            {registering ? translations.auth.join : translations.auth.welcome}
-          </p>
-          <h1 id="auth-heading" className="ui-page-title mt-3">
+        <section className="auth-form-section" aria-labelledby="auth-heading">
+          <h1 id="auth-heading" className="ui-page-title">
             {registering
               ? translations.auth.registerTitle
               : translations.auth.loginTitle}
           </h1>
-          <p className="mt-3 text-sm leading-6 text-slate-500">
+          <p className="mt-3 text-sm leading-6 text-fg-muted">
             {registering
               ? translations.auth.registerDescription
               : translations.auth.loginDescription}
           </p>
-          <form onSubmit={submit} className="mt-8 space-y-5">
+          <form onSubmit={submit} className="mt-8 space-y-5" aria-busy={busy}>
             {error && (
               <div
                 role="alert"
-                className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                id="auth-error"
+                className="rounded-sm border border-danger/25 bg-danger-bg px-4 py-3 text-sm text-danger"
               >
                 {error}
               </div>
@@ -92,6 +111,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
               <input
                 id="username"
                 className="ui-field auth-input"
+                aria-describedby={error ? 'auth-error' : undefined}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
@@ -104,7 +124,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                 disabled={busy}
               />
               {registering && (
-                <p className="mt-1.5 text-xs text-slate-500">
+                <p className="mt-1.5 text-xs text-fg-muted">
                   {translations.auth.usernameHint}
                 </p>
               )}
@@ -118,6 +138,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                   id="email"
                   type="email"
                   className="ui-field auth-input"
+                  aria-describedby={error ? 'auth-error' : undefined}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
@@ -137,7 +158,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                   aria-controls="password"
                   aria-pressed={showPassword}
                   onClick={() => setShowPassword(!showPassword)}
-                  className="mb-2 text-xs font-semibold text-slate-600"
+                  className="-mr-2 mb-1 min-h-11 rounded-sm px-2 text-xs font-semibold text-fg-link"
                 >
                   {showPassword
                     ? translations.auth.hide
@@ -148,6 +169,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 className="ui-field auth-input"
+                aria-describedby={error ? 'auth-error' : undefined}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete={registering ? 'new-password' : 'current-password'}
@@ -157,7 +179,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                 disabled={busy}
               />
               {registering && (
-                <p className="mt-1.5 text-xs text-slate-500">
+                <p className="mt-1.5 text-xs text-fg-muted">
                   {translations.auth.passwordHint}
                 </p>
               )}
@@ -171,6 +193,7 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                   id="confirm"
                   type={showPassword ? 'text' : 'password'}
                   className="ui-field auth-input"
+                  aria-describedby={error ? 'auth-error' : undefined}
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
                   autoComplete="new-password"
@@ -184,20 +207,22 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
             <button disabled={busy} className="auth-primary w-full">
               {busy && <Spinner className="mr-2" />}
               {busy
-                ? translations.common.pleaseWait
+                ? registering
+                  ? 'Creating your account…'
+                  : 'Signing in…'
                 : registering
                   ? translations.auth.createAccount
                   : translations.auth.signIn}
             </button>
           </form>
-          <p className="mt-6 text-center text-sm text-slate-500">
+          <p className="mt-6 text-center text-sm text-fg-muted">
             {registering
               ? translations.auth.alreadyRegistered
               : translations.auth.newCustomer}
             <Link
               state={location.state}
               to={registering ? ROUTES.login : ROUTES.register}
-              className="font-semibold text-blue-700 hover:text-blue-800"
+              className="font-semibold text-fg-link hover:text-fg-link"
             >
               {registering
                 ? translations.auth.signIn

@@ -1,3 +1,4 @@
+import { translations } from './translations';
 import type { RepairStatus } from '../types/repair.types';
 
 /**
@@ -25,17 +26,5 @@ export function getValidNextStatuses(
  * Returns human-readable status labels
  */
 export function getStatusLabel(status: RepairStatus): string {
-  const labels: Record<RepairStatus, string> = {
-    PENDING: 'Pending Review',
-    APPROVED: 'Approved',
-    REJECTED: 'Rejected',
-    ASSIGNED: 'Assigned',
-    IN_PROGRESS: 'In Progress',
-    AWAITING_PARTS: 'Awaiting Parts',
-    READY_FOR_COLLECTION: 'Ready for Collection',
-    COMPLETED: 'Completed',
-    CANCELLED: 'Cancelled',
-  };
-
-  return labels[status] || status;
+  return translations.repairs.statuses[status] || status;
 }

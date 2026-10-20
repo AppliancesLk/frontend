@@ -27,10 +27,10 @@ export function OrderProgress({ status }: { status: OrderStatus }) {
             className={
               'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ' +
               (index < current
-                ? 'bg-green-50 text-green-700'
+                ? 'bg-success-bg text-success'
                 : index === current
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-100 text-slate-500')
+                  ? 'bg-primary text-primary-on'
+                  : 'bg-subtle text-fg-muted')
             }
           >
             {index < current ? (
@@ -42,7 +42,7 @@ export function OrderProgress({ status }: { status: OrderStatus }) {
           <span
             className={
               'text-xs font-medium leading-5 ' +
-              (index === current ? 'text-blue-700' : 'text-slate-600')
+              (index === current ? 'text-fg-link' : 'text-fg-secondary')
             }
           >
             {translations.orders.statuses[step]}

@@ -90,10 +90,10 @@ function SpecificationValue({
           </div>
         )}
         {draft.kind === 'empty' && (
-          <p className="self-end py-3 text-sm text-slate-500">{t.empty}</p>
+          <p className="self-end py-3 text-sm text-fg-muted">{t.empty}</p>
         )}
         {draft.kind === 'preserved' && (
-          <p className="self-end py-3 text-sm text-slate-500">
+          <p className="self-end py-3 text-sm text-fg-muted">
             {t.specificationDepth}
           </p>
         )}
@@ -105,19 +105,19 @@ function SpecificationValue({
         />
       )}
       {draft.kind === 'list' && (
-        <div className="space-y-3 border-l-2 border-slate-200 pl-3 sm:pl-5">
+        <div className="space-y-3 border-l-2 border-line pl-3 sm:pl-5">
           {draft.items.map((item, index) => (
             <div
               key={index}
-              className="rounded-lg border border-slate-200 bg-white p-3"
+              className="rounded-sm border border-line bg-surface p-3"
             >
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-xs font-medium text-slate-500">
+                <span className="text-xs font-medium text-fg-muted">
                   {t.listItem} {index + 1}
                 </span>
                 <button
                   type="button"
-                  className="text-sm font-medium text-red-600 hover:text-red-700"
+                  className="text-sm font-medium text-danger hover:text-danger"
                   aria-label={`${t.remove}: ${t.listItem} ${index + 1}`}
                   onClick={() =>
                     onChange({
@@ -174,7 +174,7 @@ export function SpecificationEntries({
       {entries.map((entry, index) => (
         <div
           key={index}
-          className="rounded-lg border border-slate-200 bg-slate-50 p-3 sm:p-4"
+          className="rounded-sm border border-line bg-page p-3 sm:p-4"
         >
           <div className="mb-4 flex items-end gap-3">
             <div className="min-w-0 flex-1">
@@ -199,7 +199,7 @@ export function SpecificationEntries({
             </div>
             <button
               type="button"
-              className="mb-2 text-sm font-medium text-red-600 hover:text-red-700"
+              className="mb-2 text-sm font-medium text-danger hover:text-danger"
               aria-label={`${t.remove}: ${entry.name || t.property}`}
               onClick={() =>
                 onChange(
