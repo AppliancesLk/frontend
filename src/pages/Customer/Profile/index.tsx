@@ -5,6 +5,7 @@ import { AccountDetails } from '../../../components/common/AccountDetails';
 import { ThemeToggle } from '../../../components/common/ThemeToggle';
 import { Icon } from '../../../components/common/Icon';
 import { ROUTES } from '../../../constants/routes';
+import { commerceText } from '../../../utils/commerceText';
 export default function ProfilePage() {
   const { user } = useAuth();
   const [section, setSection] = useState<'details' | 'preferences'>('details');
@@ -40,6 +41,10 @@ export default function ProfilePage() {
                 <Link className="account-section" to={ROUTES.orders}>
                   <Icon name="orders" />
                   Your orders
+                </Link>
+                <Link className="account-section" to={ROUTES.loyalty}>
+                  <Icon name="bag" />
+                  {commerceText.loyalty}
                 </Link>
                 <Link className="account-section" to={ROUTES.repairs}>
                   <Icon name="repair" />

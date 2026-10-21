@@ -1,4 +1,5 @@
-export type PaymentStatus = "PENDING" | "SUCCESS" | "FAILED" | "CANCELLED";
+import type { PaymentMethod } from './order.types';
+export type PaymentStatus = 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELLED';
 
 export interface Payment {
   id: string;
@@ -6,6 +7,7 @@ export interface Payment {
   amount: string;
   currency: string;
   status: PaymentStatus;
+  method: PaymentMethod;
   createdAt: string;
   updatedAt: string;
 }

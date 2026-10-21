@@ -132,6 +132,8 @@ function CheckoutContent({ email }: { email: string }) {
                   cart={page.cart}
                   summary={page.summary}
                   preview={page.latestSummary}
+                  credit={page.creditPreview}
+                  amountDue={page.amountDue}
                 />
               </div>
             </>
