@@ -16,6 +16,7 @@ process.env.MEDIA_UPLOAD_DIR ??= path.join(backendPath, 'uploads/media');
 process.env.PAYHERE_MERCHANT_ID = '1238776';
 process.env.PAYHERE_MERCHANT_SECRET = 'frontend-e2e-payhere-secret';
 process.env.PAYHERE_MODE = 'sandbox';
+process.env.PROMOTION_QUEUE_KEY = `frontend-e2e-${process.pid}`;
 const apiUrl = new URL(process.env.CART_BACKEND_URL || 'http://localhost:3001');
 backendRequire('reflect-metadata');
 (async () => {
@@ -40,10 +41,16 @@ backendRequire('reflect-metadata');
     res.json({ messages });
   });
   await app.listen(Number(apiUrl.port), apiUrl.hostname);
+  app
+    .get(
+      backendRequire('./dist/promotions/services/promotion-worker.service')
+        .PromotionWorker,
+    )
+    .start();
   app.enableShutdownHooks();
-})().catch(() => {
+})().catch((error) => {
   console.error(
-    'Unable to start the isolated Cart test backend. Build the backend and check its database configuration.',
+    `Unable to start the isolated Cart test backend (${error.code ?? error.name}). Build the backend and check its database configuration.`,
   );
   process.exitCode = 1;
 });
