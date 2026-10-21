@@ -27,6 +27,18 @@ backendRequire('reflect-metadata');
   const app = await NestFactory.create(AppModule, { logger: ['error'] });
   configureApp(app);
   backendRequire('./test/helpers/mock-email.cjs').mockEmail(app);
+  // This route exists only in this isolated test bootstrap, never in main.ts.
+  // All messages are mocked; only generated example.com fixture inboxes are exposed.
+  app.getHttpAdapter().get('/_test/mailbox', (req, res) => {
+    const email = String(req.query.email ?? '');
+    if (!/^[a-z0-9_+.-]+@example\.com$/i.test(email))
+      return res.status(400).json({ message: 'Fixture email required' });
+    const messages = backendRequire('./test/helpers/mock-email.cjs')
+      .getMessages(app)
+      .filter((message) => message.to === email)
+      .map(({ subject, text }) => ({ subject, text }));
+    res.json({ messages });
+  });
   await app.listen(Number(apiUrl.port), apiUrl.hostname);
   app.enableShutdownHooks();
 })().catch(() => {
