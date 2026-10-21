@@ -3,6 +3,7 @@ import HomePage from '../pages/Customer/Home';
 import LiveChatPage from '../pages/Customer/LiveChat';
 import AdminChatPage from '../pages/Admin/LiveChat';
 import BannersPage from '../pages/Admin/Banners';
+import ThemesPage from '../pages/Admin/Themes';
 import App from '../App';
 import CheckoutPage from '../pages/Customer/Checkout';
 import OrdersPage from '../pages/Customer/Orders';
@@ -94,6 +95,7 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.adminChat} element={<AdminChatPage />} />
         <Route path={ROUTES.admin} element={<DashboardPage />} />
         <Route path={ROUTES.adminBanners} element={<BannersPage />} />
+        <Route path={ROUTES.adminThemes} element={<ThemesPage />} />
         <Route path={ROUTES.adminProducts} element={<AdminProductsPage />} />
         <Route path={ROUTES.adminProductEdit} element={<ProductEditPage />} />
         <Route path={ROUTES.adminCategories} element={<CategoriesPage />} />

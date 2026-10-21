@@ -21,6 +21,7 @@ export const ROUTES = {
   repairDetail: '/repairs/:id',
   admin: '/admin',
   adminBanners: '/admin/banners',
+  adminThemes: '/admin/themes',
   adminProducts: '/admin/products',
   adminProductEdit: '/admin/products/:id/edit',
   adminCategories: '/admin/categories',
