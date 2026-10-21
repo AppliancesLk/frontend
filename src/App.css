@@ -1,5 +1,54 @@
 @reference "./index.css";
 @layer utilities {
+  /* Semantic buttons also use the existing on-primary text utility. */
+  .bg-danger,
+  .bg-success,
+  .ui-button-danger {
+    --on-primary: var(--text-inverse);
+  }
+  :root :focus-visible {
+    outline-color: var(--focus-ring);
+  }
+  .ui-field:focus,
+  .auth-input:focus {
+    border-color: var(--focus-ring);
+    --tw-ring-color: var(--focus-ring);
+  }
+  .ui-field[aria-invalid='true']:focus,
+  .ui-field:user-invalid:focus {
+    border-color: var(--danger-fg);
+    --tw-ring-color: var(--danger-fg);
+  }
+  .auth-secondary:not(:disabled),
+  .ui-button-secondary:not(:disabled) {
+    border-color: var(--brand-black);
+    background: var(--brand-black);
+    color: var(--brand-white);
+    &:hover {
+      background: var(--brand-dark);
+    }
+  }
+  .auth-secondary.text-danger:not(:disabled) {
+    border-color: var(--danger-fg);
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+  .workspace-sidebar .text-fg-disabled,
+  .workspace-sidebar .text-fg-muted {
+    color: var(--footer-text);
+  }
+  .workspace-sidebar > a:hover {
+    color: var(--footer-heading);
+  }
+  .workspace-link:hover {
+    background: var(--footer-border);
+    color: var(--footer-heading);
+  }
+  .workspace-link.is-active {
+    border-color: var(--footer-accent);
+    background: var(--footer-border);
+    color: var(--footer-accent);
+  }
   .ui-button:disabled,
   .auth-primary:disabled,
   .auth-secondary:disabled,
@@ -231,7 +280,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: var(--primary);
+    color: var(--text-link);
   }
   .brand-wordmark {
     font-family: var(--font-display-stack);
@@ -242,7 +291,7 @@
     white-space: nowrap;
   }
   .brand-domain {
-    color: var(--primary);
+    color: var(--brand-yellow);
   }
   .brand-spark {
     fill: var(--accent);
@@ -303,8 +352,8 @@
     color: var(--text-muted);
   }
   .search-field:focus-within {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+    border-color: var(--focus-ring);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 35%, transparent);
   }
   .search-field input {
     flex: 1;
@@ -435,7 +484,9 @@
     animation: cart-count 320ms ease-out;
   }
   .header-navigation {
-    border-top: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--footer-border);
+    background: var(--brand-black);
+    color: var(--footer-heading);
     max-height: 48px;
     transition: max-height 220ms ease;
   }
@@ -447,12 +498,13 @@
     min-height: 48px;
     align-items: center;
     gap: 8px;
-    color: var(--text-link);
+    color: var(--primary);
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
   }
   .category-popover {
+    color: var(--text-primary);
     left: 0;
     right: auto;
     width: 550px;
@@ -476,7 +528,7 @@
     display: flex;
     align-items: center;
     gap: 24px;
-    border-left: 1px solid var(--border-default);
+    border-left: 1px solid var(--footer-border);
     padding-left: 24px;
     white-space: nowrap;
   }
@@ -490,8 +542,12 @@
     font-size: 14px;
   }
   .service-nav-links a.active {
-    color: var(--text-link);
+    color: var(--primary);
     border-color: var(--primary);
+  }
+  .category-nav-links a:hover,
+  .service-nav-links a:hover {
+    color: var(--primary);
   }
   .is-collapsed .header-navigation {
     max-height: 0;
@@ -1242,7 +1298,7 @@
     color: var(--on-accent);
   }
   .ui-button-accent:hover {
-    background: color-mix(in srgb, var(--accent) 90%, var(--on-accent));
+    background: var(--primary-hover);
   }
   .product-card .ui-badge {
     padding-inline: 0;
@@ -1407,21 +1463,8 @@
   .workspace-sidebar > a {
     padding-inline: 0;
   }
-  .workspace-sidebar .text-fg-disabled,
-  .workspace-sidebar .text-fg-muted {
-    color: var(--footer-text);
-  }
   .workspace-link {
     color: var(--footer-text);
-  }
-  .workspace-link:hover {
-    background: var(--footer-border);
-    color: var(--footer-heading);
-  }
-  .workspace-link.is-active {
-    border-color: var(--footer-accent);
-    background: var(--footer-border);
-    color: var(--footer-heading);
   }
   @media (max-width: 767px) {
     .cart-line {
@@ -1607,6 +1650,48 @@
 }
 
 @layer components {
+  .campaign-hero-slide {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: clamp(20rem, 34vw, 28rem);
+    isolation: isolate;
+    background: var(--brand-black);
+  }
+  .campaign-hero-art {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+  .campaign-hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(17, 17, 17, 0.84),
+      rgba(17, 17, 17, 0.68) max(50%, 38rem),
+      rgba(17, 17, 17, 0.12)
+    );
+  }
+  .campaign-hero-copy {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 38rem;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+  }
+  @media (max-width: 767px) {
+    .campaign-hero-slide::after {
+      background: linear-gradient(
+        90deg,
+        rgba(17, 17, 17, 0.84),
+        rgba(17, 17, 17, 0.68)
+      );
+    }
+  }
   .campaign-art {
     filter: brightness(var(--campaign-brightness));
   }

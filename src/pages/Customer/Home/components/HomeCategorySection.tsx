@@ -87,20 +87,20 @@ export function HomeCategorySection({
           <Link
             key={category.categoryID}
             to={`${ROUTES.products}?category=${encodeURIComponent(category.categoryID)}`}
-            className="group w-40 shrink-0 rounded-md border border-line-subtle bg-surface p-5 transition-colors hover:border-primary sm:w-44"
+            className="group flex w-28 shrink-0 flex-col items-center gap-3 rounded-sm text-center sm:w-36"
           >
-            <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-sm bg-primary-subtle text-fg-link group-hover:bg-primary-subtle">
+            <span className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-full border border-line-subtle bg-primary-subtle text-fg-link shadow-sm transition-colors group-hover:border-primary group-focus-visible:border-primary">
               {category.imageUrl ? (
                 <ProductImage
                   src={category.imageUrl}
                   alt=""
-                  className="min-h-11 w-11"
+                  className="h-full w-full object-cover!"
                 />
               ) : (
-                <Icon name="grid" />
+                <Icon name="grid" className="h-10 w-10 sm:h-12 sm:w-12" />
               )}
             </span>
-            <span className="text-sm font-semibold text-fg">
+            <span className="w-full break-words text-sm font-semibold leading-5 text-fg">
               {formatCategoryName(category.name)}
             </span>
           </Link>
