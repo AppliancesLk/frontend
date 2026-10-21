@@ -71,10 +71,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
   async function signUp(input: RegisterInput) {
     generation.current++;
-    const authenticatedUser = await authService.register(input);
-    setUser(authenticatedUser);
+    const result = await authService.register(input);
+    setUser(null);
     setError(null);
-    return authenticatedUser;
+    return result;
   }
   async function signOut() {
     await authService.logout();

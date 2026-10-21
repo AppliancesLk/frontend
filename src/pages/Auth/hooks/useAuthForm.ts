@@ -31,9 +31,18 @@ export function useAuthForm(mode: 'login' | 'register') {
     }
     setBusy(true);
     try {
-      if (registering) await signUp({ username, email, password });
-      else await signIn({ username, password });
-      navigate(ROUTES.home, { replace: true });
+      if (registering) {
+        const result = await signUp({ username, email, password });
+        navigate(ROUTES.verifyEmail, {
+          replace: true,
+          state: { email: result.email, message: result.message },
+        });
+      } else {
+        const authenticated = await signIn({ username, password });
+        navigate(getAuthDestination(authenticated, requested), {
+          replace: true,
+        });
+      }
     } catch (err) {
       const message = axios.isAxiosError(err)
         ? err.response?.data?.message

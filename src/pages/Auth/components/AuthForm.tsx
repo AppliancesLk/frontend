@@ -6,6 +6,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useAuthForm } from '../hooks/useAuthForm';
 import { ROUTES } from '../../../constants/routes';
 import { translations } from '../../../utils/translations';
+import { accountText } from '../../../utils/accountText';
 
 export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   const {
@@ -215,6 +216,12 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                   : translations.auth.signIn}
             </button>
           </form>
+          {!registering && (
+            <div className="mt-5 flex flex-wrap justify-between gap-3 text-sm font-semibold text-fg-link">
+              <Link to={ROUTES.forgotPassword}>{accountText.forgot}</Link>
+              <Link to={ROUTES.verifyEmail}>{accountText.unverified}</Link>
+            </div>
+          )}
           <p className="mt-6 text-center text-sm text-fg-muted">
             {registering
               ? translations.auth.alreadyRegistered

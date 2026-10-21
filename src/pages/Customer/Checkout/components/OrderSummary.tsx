@@ -3,15 +3,20 @@ import type { CheckoutSummary } from '../../../../types/checkout.types';
 import { ProductImage } from '../../../../components/common/ProductImage';
 import { formatCurrency } from '../../../../utils/currency';
 import { translations } from '../../../../utils/translations';
+import { commerceText } from '../../../../utils/commerceText';
 const t = translations.checkout;
 export function OrderSummary({
   cart,
   summary,
   preview,
+  credit = '0.00',
+  amountDue,
 }: {
   cart: Cart;
   summary: CheckoutSummary | null;
   preview: CheckoutSummary | null;
+  credit?: string;
+  amountDue?: string;
 }) {
   const current = summary ?? preview;
   const items = current
@@ -79,6 +84,12 @@ export function OrderSummary({
               {formatCurrency(current?.subtotal ?? cart.subtotal)}
             </dd>
           </div>
+          {credit !== '0.00' && (
+            <div className="flex flex-wrap justify-between gap-3 text-sm text-success">
+              <dt>{commerceText.creditUsed}</dt>
+              <dd>−{formatCurrency(credit)}</dd>
+            </div>
+          )}
           <div className="flex flex-wrap items-baseline justify-between gap-3 border-t border-line pt-4">
             <dt className="font-semibold text-fg">
               {summary ? t.finalAmount : 'Items total'}
@@ -91,7 +102,10 @@ export function OrderSummary({
               }
             >
               {formatCurrency(
-                summary?.total ?? current?.subtotal ?? cart.subtotal,
+                amountDue ??
+                  summary?.total ??
+                  current?.subtotal ??
+                  cart.subtotal,
               )}
             </dd>
           </div>
