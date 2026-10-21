@@ -1650,6 +1650,48 @@
 }
 
 @layer components {
+  .campaign-hero-slide {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: clamp(20rem, 34vw, 28rem);
+    isolation: isolate;
+    background: var(--brand-black);
+  }
+  .campaign-hero-art {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+  .campaign-hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(17, 17, 17, 0.84),
+      rgba(17, 17, 17, 0.68) max(50%, 38rem),
+      rgba(17, 17, 17, 0.12)
+    );
+  }
+  .campaign-hero-copy {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 38rem;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+  }
+  @media (max-width: 767px) {
+    .campaign-hero-slide::after {
+      background: linear-gradient(
+        90deg,
+        rgba(17, 17, 17, 0.84),
+        rgba(17, 17, 17, 0.68)
+      );
+    }
+  }
   .campaign-art {
     filter: brightness(var(--campaign-brightness));
   }
