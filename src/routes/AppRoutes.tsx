@@ -16,6 +16,9 @@ import ProductsPage from '../pages/Products/ProductsPage';
 import ProductDetailsPage from '../pages/Customer/ProductDetails';
 import LoginPage from '../pages/Auth/Login';
 import RegisterPage from '../pages/Auth/Register';
+import AccountActionPage from '../pages/Auth/AccountAction';
+import LoyaltyPage from '../pages/Customer/Loyalty';
+import UsersPage from '../pages/Admin/Users';
 import ForbiddenPage from '../pages/Auth/Forbidden';
 import ProfilePage from '../pages/Customer/Profile';
 import AdminProductsPage from '../pages/Admin/Products';
@@ -38,14 +41,23 @@ import { USER_ROLES } from '../constants/roles';
 export const appRoutes = createRoutesFromElements(
   <Route element={<App />}>
     <Route element={<CustomerLayout />}>
-      <Route
-        path={ROUTES.home}
-        element={<HomePage />}
-      />
+      <Route path={ROUTES.home} element={<HomePage />} />
       <Route path={ROUTES.products} element={<ProductsPage />} />
       <Route path={ROUTES.productDetail} element={<ProductDetailsPage />} />
       <Route path={ROUTES.login} element={<LoginPage />} />
       <Route path={ROUTES.register} element={<RegisterPage />} />
+      <Route
+        path={ROUTES.verifyEmail}
+        element={<AccountActionPage key="verify" mode="verify" />}
+      />
+      <Route
+        path={ROUTES.forgotPassword}
+        element={<AccountActionPage key="forgot" mode="forgot" />}
+      />
+      <Route
+        path={ROUTES.resetPassword}
+        element={<AccountActionPage key="reset" mode="reset" />}
+      />
       <Route element={<ProtectedRoute />}>
         <Route path={ROUTES.account} element={<ProfilePage />} />
       </Route>
@@ -54,6 +66,7 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.cart} element={<CartPage />} />
         <Route path={ROUTES.checkout} element={<CheckoutPage />} />
         <Route path={ROUTES.orders} element={<OrdersPage />} />
+        <Route path={ROUTES.loyalty} element={<LoyaltyPage />} />
         <Route path={ROUTES.orderDetail} element={<OrderDetailsPage />} />
         <Route path={ROUTES.repairs} element={<RepairsPage />} />
         <Route path={ROUTES.repairRequest} element={<RepairRequestPage />} />
@@ -64,7 +77,10 @@ export const appRoutes = createRoutesFromElements(
       </Route>
       <Route element={<ProtectedRoute roles={[USER_ROLES.REPAIRER]} />}>
         <Route path={ROUTES.repairer} element={<RepairerDashboardPage />} />
-        <Route path={ROUTES.repairerRepairs} element={<RepairerRepairsPage />} />
+        <Route
+          path={ROUTES.repairerRepairs}
+          element={<RepairerRepairsPage />}
+        />
         <Route
           path={ROUTES.repairerRepairDetail}
           element={<RepairerRepairDetailsPage />}
@@ -83,6 +99,7 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.adminCategories} element={<CategoriesPage />} />
         <Route path={ROUTES.adminInventory} element={<InventoryPage />} />
         <Route path={ROUTES.adminOrders} element={<AdminOrdersPage />} />
+        <Route path={ROUTES.adminUsers} element={<UsersPage />} />
         <Route
           path={ROUTES.adminOrderDetail}
           element={<AdminOrderDetailsPage />}
