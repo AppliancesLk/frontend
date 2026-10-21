@@ -1,4 +1,5 @@
 const paths = {
+  mail: 'M3 5h18v14H3ZM3 6l9 7 9-7',
   copy: 'M9 9h12v12H9ZM5 15H3V3h12v2',
   menu: 'M4 6h16M4 12h16M4 18h16',
   close: 'm6 6 12 12M6 18 18 6',
