@@ -4,6 +4,7 @@ import { SiteFooter } from './SiteFooter';
 import { Icon, type IconName } from '../common/Icon';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../hooks/useAuth';
+import { SeasonalGreeting } from '../seasonal/SeasonalGreeting';
 export function CustomerLayout() {
   const { pathname } = useLocation();
   const { user } = useAuth();
@@ -47,6 +48,7 @@ export function CustomerLayout() {
       className={`store-layout flex min-h-screen flex-col bg-page ${hideTabs ? 'without-bottom-tabs' : 'with-bottom-tabs'}`}
     >
       <SiteHeader />
+      <SeasonalGreeting compact={pathname !== ROUTES.home} />
       <div
         id="main-content"
         tabIndex={-1}
