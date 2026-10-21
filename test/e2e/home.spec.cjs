@@ -210,20 +210,18 @@ test('homepage carousel, category navigation, search, and responsive layout', as
 }, info) => {
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.clock.install();
   await page.goto('/');
   await expect(
     page.getByRole('heading', { name: 'Everyday upgrades' }),
   ).toBeVisible();
-  await page
-    .getByRole('button', { name: 'Pause carousel', exact: true })
-    .click();
-  await page.getByRole('button', { name: 'Next slide', exact: true }).click();
+  await expect(page.locator('.campaign-hero').getByRole('button')).toHaveCount(0);
+  await page.clock.fastForward(3500);
   await expect(
     page.getByRole('heading', { name: 'Second promotion' }),
   ).toBeVisible();
-  await page
-    .getByRole('button', { name: 'Previous slide', exact: true })
-    .click();
+  await page.clock.fastForward(3500);
   await expect(
     page.getByRole('heading', { name: 'Everyday upgrades' }),
   ).toBeVisible();
