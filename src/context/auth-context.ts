@@ -3,6 +3,7 @@ import type {
   AuthUser,
   LoginInput,
   RegisterInput,
+  RegistrationResult,
   UserRole,
 } from '../types/auth.types';
 export interface AuthContextValue {
@@ -11,7 +12,7 @@ export interface AuthContextValue {
   error: string | null;
   refresh: () => Promise<void>;
   signIn: (input: LoginInput) => Promise<AuthUser>;
-  signUp: (input: RegisterInput) => Promise<AuthUser>;
+  signUp: (input: RegisterInput) => Promise<RegistrationResult>;
   signOut: () => Promise<void>;
   hasRole: (...roles: UserRole[]) => boolean;
 }

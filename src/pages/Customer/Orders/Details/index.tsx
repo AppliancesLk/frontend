@@ -23,6 +23,11 @@ function DetailsContent({ id }: { id: string }) {
         error={page.error}
         retry={page.refresh}
       />
+      {page.refreshError && (
+        <p role="status" className="ui-alert ui-tone-warning">
+          {page.refreshError}
+        </p>
+      )}
       {page.notFound && (
         <section className="rounded-md border border-line bg-surface p-8 text-center">
           <h2 className="text-xl font-semibold text-fg">{t.notFound}</h2>
@@ -32,8 +37,8 @@ function DetailsContent({ id }: { id: string }) {
           </Link>
         </section>
       )}
-      {!page.loading && !page.error && page.data[0] && (
-        <OrderDetails order={page.data[0]} />
+      {!page.loading && !page.error && !page.notFound && page.data[0] && (
+        <OrderDetails order={page.data[0]} refresh={page.refresh} />
       )}
     </OrdersShell>
   );

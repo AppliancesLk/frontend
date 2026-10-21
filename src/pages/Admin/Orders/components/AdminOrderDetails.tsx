@@ -11,6 +11,8 @@ import { translations } from '../../../../utils/translations';
 import { nextOrderStatuses } from '../helpers/admin-order.helpers';
 import type { useAdminOrdersPage } from '../hooks/useAdminOrdersPage';
 import { AdminOrderStatusBadge, PaymentBadge } from './AdminOrderBadges';
+import { commerceText as c } from '../../../../utils/commerceText';
+import { OrderTimeline } from '../../../../components/common/OrderTimeline';
 
 const t = translations.adminOrders;
 export function AdminOrderDetails({
@@ -21,6 +23,7 @@ export function AdminOrderDetails({
   page: ReturnType<typeof useAdminOrdersPage>;
 }) {
   const [confirmCancel, setConfirmCancel] = useState(false);
+  const [cashCollected, setCashCollected] = useState(false);
   const transitions = nextOrderStatuses(order.status);
   return (
     <div className="space-y-6">
@@ -94,7 +97,31 @@ export function AdminOrderDetails({
           </div>
         </dl>
       </section>
-      <OrderProgress status={order.status} />
+      <OrderProgress
+        status={order.status}
+        paymentMethod={order.paymentMethod}
+      />
+      <OrderTimeline history={order.history} />
+      <div className="ui-panel flex flex-wrap gap-6 p-5 text-sm">
+        <p>
+          {c.method}:{' '}
+          <strong>
+            {order.paymentMethod === 'CASH_ON_DELIVERY'
+              ? c.cod
+              : order.paymentMethod === 'LOYALTY'
+                ? c.loyalty
+                : c.payHere}
+          </strong>
+        </p>
+        <p>
+          {c.creditUsed}:{' '}
+          <strong>{formatCurrency(order.loyaltyRedeemed ?? '0.00')}</strong>
+        </p>
+        <p>
+          {c.earned}:{' '}
+          <strong>{formatCurrency(order.loyaltyEarned ?? '0.00')}</strong>
+        </p>
+      </div>
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <section className="rounded-md border border-line bg-surface ">
           <h2 className="border-b border-line p-5 text-xl font-semibold text-fg">
@@ -145,14 +172,34 @@ export function AdminOrderDetails({
             )}
             {transitions.length ? (
               <div className="mt-4 space-y-3">
+                {order.status === 'SHIPPED' &&
+                  order.paymentMethod === 'CASH_ON_DELIVERY' &&
+                  order.payment?.status !== 'SUCCESS' && (
+                    <label className="flex items-start gap-3 rounded-sm bg-warning-bg p-3 text-sm text-warning">
+                      <input
+                        type="checkbox"
+                        checked={cashCollected}
+                        onChange={(e) => setCashCollected(e.target.checked)}
+                        disabled={page.saving}
+                        className="mt-1 h-5 w-5 shrink-0 accent-primary"
+                      />
+                      {c.cashCollected}
+                    </label>
+                  )}
                 {transitions.map((status) => (
                   <button
                     key={status}
                     type="button"
-                    disabled={page.saving}
+                    disabled={
+                      page.saving ||
+                      (status === 'DELIVERED' &&
+                        order.paymentMethod === 'CASH_ON_DELIVERY' &&
+                        order.payment?.status !== 'SUCCESS' &&
+                        !cashCollected)
+                    }
                     onClick={() => {
                       if (status === 'CANCELLED') setConfirmCancel(true);
-                      else void page.updateStatus(status);
+                      else void page.updateStatus(status, cashCollected);
                     }}
                     className={
                       status === 'CANCELLED'
