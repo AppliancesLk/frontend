@@ -74,18 +74,9 @@ export default function ProductsPage() {
         <span aria-hidden="true">›</span>
         <span aria-current="page">{t.title}</span>
       </nav>
-      <header className="mb-10 pt-2">
-        <div className="relative z-10 max-w-xl">
-          <h1 className="ui-page-title text-fg">
-            {selectedCategory
-              ? formatCategoryName(selectedCategory.name)
-              : t.title}
-          </h1>
-          <p className="mt-3 max-w-lg text-sm leading-6 text-fg-secondary">
-            {t.description}
-          </p>
-        </div>
-      </header>
+      <h1 className="sr-only">
+        {selectedCategory ? formatCategoryName(selectedCategory.name) : t.title}
+      </h1>
       {page.loading && !data && <ProductGridSkeleton />}
       {page.error && (
         <div
