@@ -1,0 +1,52 @@
+name: Frontend Dev Deployment
+
+on:
+  push:
+    branches:
+      - dev   # Triggers only when you push or merge code into the dev branch
+  workflow_dispatch: # Allows you to trigger the pipeline manually from the GitHub UI
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    # Binds this job to the "development" environment secrets bucket you created
+    environment:
+      name: development
+
+    steps:
+      # 1. Pull down the frontend application code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Log in to Azure using your Service Principal credentials
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 3. Log in to your private Azure Container Registry (ACR)
+      - name: Log in to Azure Container Registry (ACR)
+        uses: azure/docker-login@v2
+        with:
+          login-server: ${{ secrets.ACR_REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      # 4. Build the React production Docker image and tag it with the unique git commit hash
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE_TAG=${{ secrets.ACR_REGISTRY }}/frontend-app:dev-${{ github.sha }}
+          docker build -t $IMAGE_TAG .
+          docker push $IMAGE_TAG
+          echo "IMAGE_URL=$IMAGE_TAG" >> $GITHUB_ENV
+
+      # 5. Overwrite the placeholder image in Azure Container Apps with your fresh React image
+      - name: Deploy to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
+          containerAppName: ${{ secrets.CONTAINER_APP_NAME }}
+          resourceGroup: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          imageToDeploy: ${{ env.IMAGE_URL }}
