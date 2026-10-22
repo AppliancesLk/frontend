@@ -3,7 +3,7 @@ name: Frontend Dev Deployment
 on:
   push:
     branches:
-      - dev   # Triggers only when you push or merge code into the dev branch
+      - develop   # Triggers only when you push or merge code into the dev branch
   workflow_dispatch: # Allows you to trigger the pipeline manually from the GitHub UI
 
 jobs:
