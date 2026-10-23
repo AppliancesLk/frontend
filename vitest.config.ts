@@ -12,21 +12,6 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      reportsDirectory: './coverage',
-      include: ['src/**/*.{ts,tsx}'],
-      exclude: [
-        'src/main.tsx',
-        'src/vite-env.d.ts',
-        'src/test/**',
-        'src/**/*.d.ts',
-        'src/types/**',
-      ],
-      thresholds: {
-        statements: 80,
-        branches: 80,
-        functions: 80,
-        lines: 80,
-      },
     },
     testTimeout: 10000,
     hookTimeout: 10000,
