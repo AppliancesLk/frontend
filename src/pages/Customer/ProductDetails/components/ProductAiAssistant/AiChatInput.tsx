@@ -16,7 +16,7 @@ export function AiChatInput({
   }
   return (
     <form
-      className="space-y-2 border-t border-line p-4"
+      className="ai-chat-input space-y-2 border-t border-line bg-raised px-5 py-4"
       onSubmit={(event) => {
         event.preventDefault();
         submit();
@@ -30,7 +30,7 @@ export function AiChatInput({
       </label>
       <textarea
         id="product-ai-question"
-        rows={2}
+        rows={1}
         maxLength={2000}
         value={value}
         disabled={disabled}
@@ -46,7 +46,7 @@ export function AiChatInput({
             submit();
           }
         }}
-        className="ui-field w-full resize-none rounded-sm border border-line px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:bg-subtle"
+        className="ui-field w-full resize-none rounded-lg border border-line px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:bg-subtle"
       />
       <div className="flex items-center justify-between gap-3">
         <span className="text-xs text-fg-muted">{value.length}/2000</span>

@@ -1349,34 +1349,37 @@
     right: 24px;
   }
   .ai-panel {
-    width: 420px;
-    height: min(680px, calc(100dvh - 152px));
+    width: min(730px, calc(100vw - 40px));
+    height: min(760px, calc(100dvh - 64px));
   }
   .ai-panel textarea {
-    min-height: 80px;
+    min-height: 48px;
   }
   .ai-output-panel {
     display: flex;
-    min-height: 220px;
-    max-height: 360px;
+    min-height: 0;
+    max-height: none;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid var(--color-line);
-    border-radius: 8px;
     background: var(--color-page);
-    transition: max-height 180ms ease, min-height 180ms ease;
-  }
-  .ai-output-panel-expanded {
-    min-height: min(420px, 55dvh);
-    max-height: min(560px, 68dvh);
+    flex: 1;
   }
   .ai-output-scroll {
     min-height: 0;
     flex: 1;
     overflow-y: auto;
   }
+  .ai-output-scroll .ai-message-assistant {
+    max-width: 92%;
+  }
+  .ai-output-scroll .ai-message-user {
+    max-width: 76%;
+  }
+  .ai-chat-input textarea {
+    min-height: 48px;
+  }
   .product-detail-page:has(.ai-panel) {
-    padding-right: 468px;
+    padding-right: 778px;
   }
   .product-detail-page:has(.ai-panel) .product-detail-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
