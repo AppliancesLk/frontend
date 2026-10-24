@@ -59,6 +59,9 @@ export const updateProduct = async (
   input: UpdateProductRequest,
 ): Promise<Product> =>
   (await apiClient.patch<Product>(`/products/${id}`, input)).data;
+export const deleteProduct = async (id: string): Promise<void> => {
+  await apiClient.delete(`/products/${encodeURIComponent(id)}`);
+};
 
 export interface ProductImageUploadResult { imageID: string; imageUrl: string }
 export const uploadProductImage = async (productID: string, file: File): Promise<ProductImageUploadResult> => {

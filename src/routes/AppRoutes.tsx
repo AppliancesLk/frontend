@@ -28,6 +28,7 @@ import AdminProductsPage from '../pages/Admin/Products';
 import CategoriesPage from '../pages/Admin/Categories';
 import InventoryPage from '../pages/Admin/Inventory';
 import DashboardPage from '../pages/Admin/Dashboard';
+import ReportsPage from '../pages/Admin/Reports';
 import AdminOrdersPage from '../pages/Admin/Orders';
 import AdminOrderDetailsPage from '../pages/Admin/Orders/Details';
 import AdminRepairsPage from '../pages/Admin/Repairs';
@@ -99,6 +100,7 @@ export const appRoutes = createRoutesFromElements(
         <Route path={ROUTES.adminBanners} element={<BannersPage />} />
         <Route path={ROUTES.adminThemes} element={<ThemesPage />} />
         <Route path={ROUTES.adminPromotions} element={<PromotionsPage />} />
+        <Route path={ROUTES.adminReports} element={<ReportsPage />} />
         <Route
           path={`${ROUTES.adminPromotions}/:id`}
           element={<PromotionEditorPage />}

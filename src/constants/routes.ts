@@ -23,6 +23,7 @@ export const ROUTES = {
   adminBanners: '/admin/banners',
   adminThemes: '/admin/themes',
   adminPromotions: '/admin/promotions',
+  adminReports: '/admin/reports',
   adminProducts: '/admin/products',
   adminProductEdit: '/admin/products/:id/edit',
   adminCategories: '/admin/categories',

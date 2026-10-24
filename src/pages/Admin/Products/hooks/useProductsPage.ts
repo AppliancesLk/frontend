@@ -4,6 +4,7 @@ import { useCatalog } from '../../../../hooks/useCatalog';
 import {
   createProduct,
   updateProduct,
+  deleteProduct,
 } from '../../../../services/productService';
 import type {
   Product,
@@ -73,6 +74,20 @@ export function useProductsPage() {
       setUpdating(null);
     }
   }
+  async function remove(product: Product) {
+    if (!window.confirm(`Delete “${product.name}” permanently? This cannot be undone.`)) return;
+    setUpdating(product.productID);
+    setError('');
+    try {
+      await deleteProduct(product.productID);
+      catalog.setProducts((current) => current.filter((item) => item.productID !== product.productID));
+      setSuccess('Product deleted successfully.');
+    } catch (err) {
+      setError(getApiError(err));
+    } finally {
+      setUpdating(null);
+    }
+  }
   const filtered = catalog.products.filter((product) =>
     `${product.name} ${product.SKU}`
       .toLowerCase()
@@ -92,5 +107,6 @@ export function useProductsPage() {
     filtered,
     submit,
     toggle,
+    remove,
   };
 }

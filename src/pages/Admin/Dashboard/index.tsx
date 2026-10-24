@@ -3,6 +3,7 @@ import { useCatalog } from '../../../hooks/useCatalog';
 import { CatalogFeedback } from '../../../components/feedback/CatalogFeedback';
 import { ROUTES } from '../../../constants/routes';
 import { translations } from '../../../utils/translations';
+import ReportsPage from '../Reports';
 const t = translations.admin;
 export default function DashboardPage() {
   const page = useCatalog();
@@ -102,6 +103,7 @@ export default function DashboardPage() {
               </Link>
             ))}
           </div>
+          <ReportsPage />
         </>
       )}
     </section>
