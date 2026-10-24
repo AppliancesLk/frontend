@@ -35,6 +35,7 @@ function AssistantPanel({
   const { user, loading } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [outputExpanded, setOutputExpanded] = useState(false);
   const chat = useProductAiAssistant(productId);
   const launcher = useRef<HTMLButtonElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -105,10 +106,6 @@ function AssistantPanel({
               >
                 {productName}
               </p>
-              <details className="mt-2 text-xs text-fg-muted">
-                <summary>About this assistant</summary>
-                <p className="mt-2 max-w-xs leading-5">{aiText.providerNote}</p>
-              </details>
             </div>
             <button
               type="button"
@@ -120,78 +117,98 @@ function AssistantPanel({
             </button>
           </header>
           <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4">
-            <p className="text-sm leading-6 text-fg-secondary">
-              {aiText.greeting}
-            </p>
-            {loading ? (
-              <LoadingState label={aiText.checking} compact={true} />
-            ) : !user ? (
-              <Link
-                to={ROUTES.login}
-                state={{ from: location.pathname + location.search }}
-                className={`mt-4 inline-block rounded-sm bg-primary px-4 py-3 text-sm font-medium text-primary-on ${focusStyle}`}
-              >
-                {aiText.signIn}
-              </Link>
-            ) : (
-              <>
-                {chat.messages.length === 0 && (
-                  <div className="mt-4 flex flex-col items-start gap-2">
-                    {aiText.prompts.map((prompt) => (
-                      <button
-                        key={prompt}
-                        type="button"
-                        onClick={() => void chat.send(prompt)}
-                        disabled={chat.sending}
-                        className={`rounded-sm border border-primary px-3 py-2 text-left text-xs text-fg-link hover:bg-primary-subtle  ${focusStyle}`}
-                      >
-                        {prompt}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                <div
-                  role="log"
-                  aria-label={aiText.conversation}
-                  aria-live="polite"
-                  aria-relevant="additions"
-                  className="mt-4 space-y-3"
+            <section
+              className={`ai-output-panel ${outputExpanded ? 'ai-output-panel-expanded' : ''}`}
+              aria-label={aiText.output}
+            >
+              <div className="flex items-center justify-between gap-3 border-b border-line bg-raised px-3 py-2">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-fg-secondary">
+                  {aiText.output}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setOutputExpanded((expanded) => !expanded)}
+                  className={`rounded px-2 py-1 text-xs font-medium text-fg-link hover:bg-subtle ${focusStyle}`}
+                  aria-expanded={outputExpanded}
                 >
-                  {chat.messages.map((message) => (
-                    <AiChatMessage key={message.id} message={message} />
-                  ))}
-                </div>
-                {chat.sending && (
-                  <LoadingState label={aiText.sending} compact={true} />
-                )}
-                {chat.error && (
-                  <div
-                    role="alert"
-                    className="mt-3 rounded-sm bg-danger-bg p-3 text-sm text-danger"
+                  {outputExpanded ? aiText.collapseOutput : aiText.expandOutput}
+                </button>
+              </div>
+              <div className="ai-output-scroll overscroll-contain p-3">
+                <p className="text-sm leading-6 text-fg-secondary">
+                  {aiText.greeting}
+                </p>
+                {loading ? (
+                  <LoadingState label={aiText.checking} compact={true} />
+                ) : !user ? (
+                  <Link
+                    to={ROUTES.login}
+                    state={{ from: location.pathname + location.search }}
+                    className={`mt-4 inline-block rounded-sm bg-primary px-4 py-3 text-sm font-medium text-primary-on ${focusStyle}`}
                   >
-                    <p>{chat.error}</p>
-                    <button
-                      type="button"
-                      onClick={chat.retry}
-                      className={`mt-2 rounded font-medium underline ${focusStyle}`}
+                    {aiText.signIn}
+                  </Link>
+                ) : (
+                  <>
+                    {chat.messages.length === 0 && (
+                      <div className="mt-4 flex flex-col items-start gap-2">
+                        {aiText.prompts.map((prompt) => (
+                          <button
+                            key={prompt}
+                            type="button"
+                            onClick={() => void chat.send(prompt)}
+                            disabled={chat.sending}
+                            className={`rounded-sm border border-primary px-3 py-2 text-left text-xs text-fg-link hover:bg-primary-subtle ${focusStyle}`}
+                          >
+                            {prompt}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    <div
+                      role="log"
+                      aria-label={aiText.conversation}
+                      aria-live="polite"
+                      aria-relevant="additions"
+                      className="mt-4 space-y-3"
                     >
-                      {aiText.retry}
-                    </button>
-                  </div>
+                      {chat.messages.map((message) => (
+                        <AiChatMessage key={message.id} message={message} />
+                      ))}
+                    </div>
+                    {chat.sending && (
+                      <LoadingState label={aiText.sending} compact={true} />
+                    )}
+                    {chat.error && (
+                      <div
+                        role="alert"
+                        className="mt-3 rounded-sm bg-danger-bg p-3 text-sm text-danger"
+                      >
+                        <p>{chat.error}</p>
+                        <button
+                          type="button"
+                          onClick={chat.retry}
+                          className={`mt-2 rounded font-medium underline ${focusStyle}`}
+                        >
+                          {aiText.retry}
+                        </button>
+                      </div>
+                    )}
+                    {chat.messages.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={chat.reset}
+                        disabled={chat.sending}
+                        className={`mt-3 rounded text-xs text-fg-link underline ${focusStyle}`}
+                      >
+                        {aiText.newChat}
+                      </button>
+                    )}
+                  </>
                 )}
-                {chat.messages.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={chat.reset}
-                    disabled={chat.sending}
-                    className={`mt-3 rounded text-xs text-fg-link underline  ${focusStyle}`}
-                  >
-                    {aiText.newChat}
-                  </button>
-                )}
-              </>
-            )}
-            <div ref={end} />
+                <div ref={end} />
+              </div>
+            </section>
           </div>
           {user && (
             <AiChatInput
@@ -199,9 +216,6 @@ function AssistantPanel({
               send={(value) => void chat.send(value)}
             />
           )}
-          <p className="px-4 pb-4 text-xs leading-5 text-fg-muted">
-            {aiText.note}
-          </p>
         </section>
       )}
       {!open && (

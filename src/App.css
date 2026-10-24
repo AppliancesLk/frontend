@@ -1355,6 +1355,26 @@
   .ai-panel textarea {
     min-height: 80px;
   }
+  .ai-output-panel {
+    display: flex;
+    min-height: 220px;
+    max-height: 360px;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background: var(--color-page);
+    transition: max-height 180ms ease, min-height 180ms ease;
+  }
+  .ai-output-panel-expanded {
+    min-height: min(420px, 55dvh);
+    max-height: min(560px, 68dvh);
+  }
+  .ai-output-scroll {
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+  }
   .product-detail-page:has(.ai-panel) {
     padding-right: 468px;
   }
