@@ -6,12 +6,6 @@
  */
 
 import { vi } from 'vitest';
-import type { Cart } from '../../types/cart.types';
-import type { Order, AdminOrder } from '../../types/order.types';
-import type { RepairTicket, AdminRepairTicket } from '../../types/repair.types';
-import type { CatalogResult } from '../../types/catalog.types';
-import type { Product } from '../../types/product.types';
-import type { AuthUser, RegistrationResult } from '../../types/auth.types';
 
 // ============= AUTH SERVICE MOCKS =============
 
