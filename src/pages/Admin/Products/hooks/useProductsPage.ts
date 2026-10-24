@@ -13,6 +13,7 @@ import { getApiError } from '../../../../utils/apiErrors';
 import { translations } from '../../../../utils/translations';
 import { emptyProductDraft } from '../types/product-form.types';
 import { buildProductInput } from '../helpers/product.helpers';
+import { uploadProductImage } from '../../../../services/productService';
 export function useProductsPage() {
   const catalog = useCatalog();
   const [draft, setDraft] = useState(emptyProductDraft);
@@ -39,7 +40,12 @@ export function useProductsPage() {
     setBusy(true);
     try {
       const product = await createProduct(input);
-      catalog.setProducts((current) => [product, ...current]);
+      let currentProduct = product;
+      for (const file of draft.pendingImages) {
+        const uploaded = await uploadProductImage(product.productID, file);
+        currentProduct = { ...currentProduct, images: [...currentProduct.images, uploaded.imageUrl] };
+      }
+      catalog.setProducts((current) => [currentProduct, ...current]);
       setDraft(emptyProductDraft);
       setSuccess(translations.admin.productCreated);
     } catch (err) {
