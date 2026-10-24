@@ -53,6 +53,16 @@ export const rejectRepair = async (
     )
   ).data;
 
+export const assignRepair = async (
+  id: string,
+  repairerId: string,
+): Promise<AdminRepairTicket> =>
+  (
+    await apiClient.patch<AdminRepairTicket>(`/repairs/admin/${id}/assign`, {
+      repairerId,
+    })
+  ).data;
+
 // Repairer repair functions
 export const getRepairerRepairs = async (
   signal?: AbortSignal,
