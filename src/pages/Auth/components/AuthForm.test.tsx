@@ -15,7 +15,7 @@
  * - TC-FE-AUTH-020: Should redirect authenticated users
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import AuthForm from './AuthForm';
 import {
