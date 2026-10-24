@@ -1,10 +1,18 @@
-name: Frontend Build
+name: Frontend Build and Deploy
 
 on:
+  push:
+    branches:
+      - develop
+
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,3 +38,25 @@ jobs:
         run: |
           docker push applianceslkdevacr.azurecr.io/frontend-app:${{ github.sha }}
           docker push applianceslkdevacr.azurecr.io/frontend-app:dev
+
+      - name: Login to Azure with OIDC
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy frontend to Azure Container Apps
+        run: |
+          az containerapp update \
+            --resource-group rg-appliances-dev \
+            --name appliances-web-dev \
+            --image applianceslkdevacr.azurecr.io/frontend-app:${{ github.sha }}
+
+      - name: Show deployed image
+        run: |
+          az containerapp show \
+            --resource-group rg-appliances-dev \
+            --name appliances-web-dev \
+            --query "properties.template.containers[0].image" \
+            --output tsv
