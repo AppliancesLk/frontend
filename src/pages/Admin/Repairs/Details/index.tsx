@@ -53,6 +53,8 @@ export default function AdminRepairDetailsPage() {
   }
 
   const isPending = page.repair.status === 'PENDING';
+  const canAssign =
+    page.repair.status === 'APPROVED' || page.repair.status === 'ASSIGNED';
 
   return (
     <>
@@ -185,6 +187,54 @@ export default function AdminRepairDetailsPage() {
             {page.repair.problemDescription}
           </p>
         </div>
+
+        {(canAssign || page.repair.assignedRepairer) && (
+          <div className="rounded-md border border-line bg-surface p-6">
+            <h2 className="text-lg font-semibold text-fg">Repairer assignment</h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+              <div>
+                <label htmlFor="repairer-assignment" className="auth-label">
+                  Assigned repairer
+                </label>
+                {canAssign ? (
+                  <select
+                    id="repairer-assignment"
+                    className="ui-field"
+                    defaultValue={page.repair.assignedRepairerId ?? ''}
+                    disabled={page.processing || page.repairers.length === 0}
+                    onChange={(event) => void page.assignRepair(event.target.value)}
+                  >
+                    <option value="">Select an active repairer</option>
+                    {page.repairers.map((repairer) => (
+                      <option key={repairer.id} value={repairer.id}>
+                        {repairer.username} ({repairer.email})
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <p className="text-sm text-fg">
+                    {page.repair.assignedRepairer?.username ?? 'Not assigned'}
+                  </p>
+                )}
+              </div>
+              {page.repair.assignedRepairer && (
+                <p className="text-sm text-fg-muted">
+                  {page.repair.assignedRepairer.email}
+                </p>
+              )}
+            </div>
+            {canAssign && page.repairers.length === 0 && (
+              <p className="mt-3 text-sm text-warning">
+                No active repairer accounts are available.
+              </p>
+            )}
+            {page.actionError && (
+              <p role="alert" className="mt-3 text-sm text-danger">
+                {page.actionError}
+              </p>
+            )}
+          </div>
+        )}
 
         {isPending && (
           <div className="flex flex-col gap-3 sm:flex-row">

@@ -5,6 +5,8 @@ import type { AdminRepairTicket } from '../../../../../types/repair.types';
 import { getApiError } from '../../../../../utils/apiErrors';
 import { translations } from '../../../../../utils/translations';
 import { ROUTES } from '../../../../../constants/routes';
+import { getAdminUsers } from '../../../../../services/userService';
+import type { AdminUser } from '../../../../../types/user.types';
 
 const t = translations.adminRepairs;
 
@@ -14,6 +16,7 @@ export function useAdminRepairDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [repair, setRepair] = useState<AdminRepairTicket | null>(null);
+  const [repairers, setRepairers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [action, setAction] = useState<Action>(null);
@@ -32,9 +35,16 @@ export function useAdminRepairDetails() {
     setError('');
 
     try {
-      const result = await repairService.getAdminRepair(id, controller.signal);
+      const [result, users] = await Promise.all([
+        repairService.getAdminRepair(id, controller.signal),
+        getAdminUsers(
+          { page: 1, search: '', role: 'REPAIRER', status: 'active' },
+          controller.signal,
+        ),
+      ]);
       if (!controller.signal.aborted && alive.current) {
         setRepair(result);
+        setRepairers(users.items);
       }
     } catch (err: unknown) {
       if (!controller.signal.aborted && alive.current) {
@@ -104,8 +114,28 @@ export function useAdminRepairDetails() {
     }
   }, [id, processing, rejectionReason]);
 
+  const assignRepair = useCallback(
+    async (repairerId: string) => {
+      if (!id || processing || !repairerId) return;
+      setProcessing(true);
+      setActionError('');
+      try {
+        const updated = await repairService.assignRepair(id, repairerId);
+        if (alive.current) setRepair(updated);
+      } catch (err: unknown) {
+        if (alive.current) {
+          setActionError(getApiError(err, 'Unable to assign this repairer.'));
+        }
+      } finally {
+        if (alive.current) setProcessing(false);
+      }
+    },
+    [id, processing],
+  );
+
   return {
     repair,
+    repairers,
     loading,
     error,
     action,
@@ -116,6 +146,7 @@ export function useAdminRepairDetails() {
     setRejectionReason,
     approveRepair,
     rejectRepair,
+    assignRepair,
     refresh,
     goBack: () => navigate(ROUTES.adminRepairs),
   };
