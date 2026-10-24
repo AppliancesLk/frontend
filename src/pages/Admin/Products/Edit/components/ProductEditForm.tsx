@@ -54,6 +54,7 @@ export function ProductEditForm({
           <ProductFields
             onUploadState={page.setUploading}
             editing
+              productID={product.productID}
             draft={draft}
             categories={options}
             onChange={(field, value) =>

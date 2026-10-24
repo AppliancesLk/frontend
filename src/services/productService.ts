@@ -60,6 +60,16 @@ export const updateProduct = async (
 ): Promise<Product> =>
   (await apiClient.patch<Product>(`/products/${id}`, input)).data;
 
+export interface ProductImageUploadResult { imageID: string; imageUrl: string }
+export const uploadProductImage = async (productID: string, file: File): Promise<ProductImageUploadResult> => {
+  const body = new FormData();
+  body.append('image', file);
+  return (await apiClient.post<ProductImageUploadResult>(`/products/${encodeURIComponent(productID)}/images`, body, { headers: { 'Content-Type': undefined } })).data;
+};
+export const deleteProductImage = async (productID: string, imageID: string): Promise<void> => {
+  await apiClient.delete(`/products/${encodeURIComponent(productID)}/images/${encodeURIComponent(imageID)}`);
+};
+
 export const getAdminProducts = async (): Promise<Product[]> =>
   (await apiClient.get<Product[]>('/products/admin/all')).data;
 

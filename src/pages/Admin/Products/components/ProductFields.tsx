@@ -9,12 +9,16 @@ export function ProductFields({
   onChange,
   editing = false,
   onUploadState,
+  productID,
+  onPendingFilesChange,
 }: {
   draft: ProductFieldsDraft;
   categories: Category[];
   onChange: (field: keyof ProductFieldsDraft, value: string) => void;
   editing?: boolean;
   onUploadState?: (busy: boolean) => void;
+  productID?: string;
+  onPendingFilesChange?: (files: File[]) => void;
 }) {
   return (
     <>
@@ -111,6 +115,8 @@ export function ProductFields({
             .filter(Boolean)}
           onChange={(images) => onChange('imageUrls', images.join('\n'))}
           onBusyChange={onUploadState}
+          productID={productID}
+          onPendingFilesChange={onPendingFilesChange}
         />
         <textarea
           id="imageUrls"

@@ -33,6 +33,9 @@ export function ProductForm({
               onChange={(field, value) =>
                 page.setDraft({ ...page.draft, [field]: value })
               }
+              onPendingFilesChange={(files) =>
+                page.setDraft({ ...page.draft, pendingImages: files })
+              }
             />
             <div>
               <label htmlFor="stockQty" className="auth-label">

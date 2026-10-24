@@ -13,6 +13,7 @@ export interface ProductFieldsDraft {
 export interface ProductDraft extends ProductFieldsDraft {
   stockQty: string;
   specifications: string;
+  pendingImages: File[];
 }
 export const emptyProductDraft: ProductDraft = {
   description:'',features:'',boxContents:'',warranty:'',
@@ -26,5 +27,6 @@ export const emptyProductDraft: ProductDraft = {
   categoryID: '',
   stockQty: '0',
   imageUrls: '',
+  pendingImages: [],
   specifications: '',
 };
