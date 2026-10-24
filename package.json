@@ -34,7 +34,11 @@
     "test:ui:chat": "playwright test --config playwright.ui-chat.config.cjs",
     "test:themes": "node --test test/themes.test.cjs",
     "test:themes:e2e": "playwright test --config playwright.themes.config.cjs",
-    "test:promotions:e2e": "playwright test --config playwright.promotions.config.cjs"
+    "test:promotions:e2e": "playwright test --config playwright.promotions.config.cjs",
+    "test:e2e": "playwright test --config playwright.journeys.config.cjs",
+    "test:e2e:ui": "playwright test --config playwright.journeys.config.cjs --ui",
+    "test:e2e:headed": "playwright test --config playwright.journeys.config.cjs --headed",
+    "test:e2e:report": "playwright show-report e2e/test-results/playwright-report"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
