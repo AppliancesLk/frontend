@@ -22,6 +22,7 @@ const links: { path: string; label: string; icon: IconName }[] = [
   { path: ROUTES.admin, label: translations.auth.dashboard, icon: 'grid' },
   { path: ROUTES.adminThemes, label: seasonalText.title, icon: 'grid' },
   { path: ROUTES.adminPromotions, label: promotionText.title, icon: 'mail' },
+  { path: ROUTES.adminReports, label: 'Reports', icon: 'orders' },
   { path: ROUTES.adminUsers, label: accountText.usersTitle, icon: 'user' },
   {
     path: ROUTES.adminProducts,

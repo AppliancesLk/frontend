@@ -11,7 +11,7 @@ export function ProductForm({
   page: ReturnType<typeof useProductsPage>;
 }) {
   return (
-    <section className="rounded-md border border-line bg-surface p-5  sm:p-6">
+    <section className="bg-surface">
       <h2 className="mb-5 text-xl font-semibold text-fg">{t.addProduct}</h2>
       {page.categories.length === 0 ? (
         <p className="text-sm text-fg-secondary">
