@@ -1,89 +1,32 @@
-
-name: Frontend Dev Deployment
+name: Frontend Build
 
 on:
-  push:
-    branches:
-      - develop
   workflow_dispatch:
 
-permissions:
-  contents: read
-
-concurrency:
-  group: frontend-dev-deployment
-  cancel-in-progress: false
-
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
-    environment:
-      name: development
-
-    env:
-      RESOURCE_GROUP: rg-university-dev
-      CONTAINER_APP_NAME: applk-web-khgkmid772gog-dev
-      ACR_REGISTRY: ${{ secrets.ACR_REGISTRY }}
-
     steps:
-      # 1. Checkout frontend source code
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Authenticate with Azure
-      - name: Log in to Azure
-        uses: azure/login@v2
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v4
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      # 3. Authenticate Docker with ACR
-      - name: Log in to Azure Container Registry
-        uses: azure/docker-login@v2
-        with:
-          login-server: ${{ secrets.ACR_REGISTRY }}
+          registry: applianceslkdevacr.azurecr.io
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      # 4. Build and push frontend Docker image
-      - name: Build and Push Docker Image
+      - name: Build frontend image
         run: |
-          IMAGE_URL="${ACR_REGISTRY}/frontend-app:dev-${GITHUB_SHA}"
+          docker build \
+            --build-arg VITE_API_URL=/api \
+            -t applianceslkdevacr.azurecr.io/frontend-app:${{ github.sha }} \
+            -t applianceslkdevacr.azurecr.io/frontend-app:dev \
+            .
 
-          docker build -t "$IMAGE_URL" .
-          docker push "$IMAGE_URL"
-
-          echo "IMAGE_URL=$IMAGE_URL" >> "$GITHUB_ENV"
-
-      # 5. Configure registry authentication
-      # for the EXISTING Azure Container App
-      - name: Configure Container App Registry
-        env:
-          ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-          ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+      - name: Push frontend image
         run: |
-          az containerapp registry set \
-            --name "$CONTAINER_APP_NAME" \
-            --resource-group "$RESOURCE_GROUP" \
-            --server "$ACR_REGISTRY" \
-            --username "$ACR_USERNAME" \
-            --password "$ACR_PASSWORD" \
-            --output none
-
-      # 6. Deploy new image to EXISTING Container App
-      - name: Deploy to Azure Container Apps
-        run: |
-          az containerapp update \
-            --name "$CONTAINER_APP_NAME" \
-            --resource-group "$RESOURCE_GROUP" \
-            --image "$IMAGE_URL" \
-            --output none
-
-      # 7. Display deployment status
-      - name: Verify Deployment
-        run: |
-          az containerapp show \
-            --name "$CONTAINER_APP_NAME" \
-            --resource-group "$RESOURCE_GROUP" \
-            --query "{name:name,state:properties.provisioningState,latestRevision:properties.latestRevisionName,readyRevision:properties.latestReadyRevisionName}" \
-            -o json
+          docker push applianceslkdevacr.azurecr.io/frontend-app:${{ github.sha }}
+          docker push applianceslkdevacr.azurecr.io/frontend-app:dev
