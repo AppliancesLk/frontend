@@ -44,7 +44,7 @@ describe('ProtectedRoute', () => {
   // TC-FE-AUTH-002
   it('should redirect unauthenticated users to login', () => {
     // Arrange & Act
-    const { container } = renderWithProviders(<ProtectedRoute />, {
+    renderWithProviders(<ProtectedRoute />, {
       authContext: defaultAuthContext,
       routes: [
         { path: '/protected', element: <ProtectedRoute><div>Protected Content</div></ProtectedRoute> },
@@ -181,7 +181,7 @@ describe('ProtectedRoute', () => {
     // Arrange & Act
     // This test verifies that the ProtectedRoute passes the current location
     // as state to the login redirect (for post-login navigation)
-    const { container } = renderWithProviders(<ProtectedRoute />, {
+    renderWithProviders(<ProtectedRoute />, {
       authContext: defaultAuthContext,
       routes: [
         { path: '/protected/resource', element: <ProtectedRoute><div>Protected</div></ProtectedRoute> },

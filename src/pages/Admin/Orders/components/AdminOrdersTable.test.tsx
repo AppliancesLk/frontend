@@ -15,7 +15,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AdminOrdersTable } from './AdminOrdersTable';
 import { createMockAdminOrder } from '../../../../test/factories';
