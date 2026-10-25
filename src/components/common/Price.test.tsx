@@ -58,7 +58,7 @@ describe('Price', () => {
     render(<Price value={199.5} />);
 
     const priceText = screen.getByText('LKR').parentElement?.textContent;
-    expect(priceText).toContain('199.50') || expect(priceText).toContain('199.5');
+    expect(priceText?.includes('199.50') || priceText?.includes('199.5')).toBe(true);
   });
 
   it('should handle zero value', () => {
