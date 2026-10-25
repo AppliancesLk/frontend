@@ -38,5 +38,5 @@ e2e/.auth/
 # Vitest
 .vitest/
 
-#claude
-./claude/
+# Local AI/editor settings
+.claude/
