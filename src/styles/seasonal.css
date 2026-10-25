@@ -1,0 +1,506 @@
+/* Seasonal decorations never override the shared site color tokens. */
+.season-logo-mark {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+.brand-logo .season-logo-ornament {
+  position: absolute;
+  width: 35px;
+  height: 29px;
+  left: -5px;
+  top: -13px;
+  pointer-events: none;
+  overflow: visible;
+}
+.brand-logo .season-logo-avurudu {
+  left: 16px;
+  top: -12px;
+  width: 27px;
+  height: 26px;
+}
+.brand-logo .season-logo-easter {
+  top: -13px;
+  left: 3px;
+  width: 29px;
+  height: 28px;
+}
+.season-greeting {
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  contain: paint;
+  background: var(--bg-footer);
+  color: var(--footer-heading);
+  border-bottom: 1px solid var(--footer-border);
+}
+.season-greeting-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1360px;
+  margin-inline: auto;
+  min-height: 234px;
+  padding: 28px 40px 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.season-greeting-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  min-width: 0;
+  flex: 1;
+}
+.season-occasion {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand-yellow);
+  font-size: 12px;
+  font-weight: 600;
+}
+.season-occasion::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+}
+.season-greeting-title {
+  margin-top: 10px;
+  font: 600 clamp(24px, 2.7vw, 38px)/1.18 var(--font-display-stack);
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.season-greeting-message {
+  margin-top: 12px;
+  max-width: 580px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--footer-text);
+  overflow-wrap: anywhere;
+}
+.season-scene {
+  position: relative;
+  width: 360px;
+  height: 210px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+.season-scene-orbit {
+  position: absolute;
+  width: 165px;
+  height: 165px;
+  top: 26px;
+  right: 70px;
+  border: 1px solid var(--footer-border);
+  border-radius: 50%;
+}
+.season-scene-orbit::after {
+  content: '';
+  position: absolute;
+  inset: -18px;
+  border: 1px solid var(--footer-border);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+.season-greeting-art {
+  position: absolute;
+  width: 300px;
+  height: 180px;
+  bottom: 0;
+  right: 15px;
+}
+.season-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.season-particle {
+  position: absolute;
+  top: -12px;
+  border-radius: 50%;
+  background: #fff9e9;
+  opacity: 0.5;
+  animation: season-fall 10s linear infinite;
+}
+.season-petals .season-particle {
+  border-radius: 70% 10% 70% 10%;
+  background: var(--brand-yellow);
+  opacity: 0.45;
+}
+.season-sleigh {
+  position: absolute;
+  width: 170px;
+  height: 80px;
+  top: -1px;
+  left: 0;
+  animation: season-sleigh 24s linear infinite;
+  animation-delay: -3s;
+}
+.season-sleigh-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.season-reindeer {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: season-reindeer 1.8s ease-in-out infinite;
+}
+.season-santa-wave {
+  transform-origin: 80px 39px;
+  animation: season-wave 2.4s ease-in-out infinite;
+}
+.season-lamp {
+  position: absolute;
+  bottom: 8px;
+  left: 14px;
+  height: 108px;
+  width: 67px;
+}
+.season-flame {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: season-flame 3.2s ease-in-out infinite;
+}
+.season-sun-rays {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: season-sun 40s linear infinite;
+}
+.season-leaves-left,
+.season-leaves-right {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: season-leaves 7s ease-in-out infinite;
+}
+.season-leaves-right {
+  animation-delay: -3s;
+  animation-direction: reverse;
+}
+.season-bats {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: season-bats 8s ease-in-out infinite;
+}
+.season-pumpkin-smile {
+  animation: season-pumpkin 5s ease-in-out infinite;
+}
+.season-mist {
+  position: absolute;
+  width: 320px;
+  height: 60px;
+  left: 10px;
+  bottom: 5px;
+  animation: season-mist 14s ease-in-out infinite;
+}
+.season-bunny {
+  position: absolute;
+  width: 75px;
+  height: 105px;
+  left: 24px;
+  bottom: 6px;
+  transform-origin: center bottom;
+  animation: season-bunny 9s ease-in-out infinite;
+}
+.season-bunny-ears {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: season-ears 9s ease-in-out infinite;
+}
+.season-animated {
+  animation-play-state: paused;
+}
+.season-greeting[data-motion='running'] .season-animated {
+  animation-play-state: running;
+}
+.season-greeting[data-motion='disabled'] .season-animated {
+  animation: none;
+}
+.season-greeting[data-motion='disabled'] .season-sleigh {
+  transform: translate3d(115px, 0, 0);
+}
+.season-greeting[data-motion='disabled'] .season-particles {
+  display: none;
+}
+.season-motion-toggle {
+  position: absolute;
+  z-index: 3;
+  right: max(24px, calc((100% - 1280px) / 2));
+  bottom: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid var(--footer-border);
+  border-radius: 99px;
+  background: var(--bg-footer);
+  color: var(--footer-text);
+  font-size: 11px;
+  cursor: pointer;
+}
+.season-motion-toggle:hover {
+  color: var(--footer-heading);
+  border-color: var(--footer-muted);
+}
+.season-motion-toggle:focus-visible {
+  outline: 2px solid var(--brand-yellow);
+  outline-offset: 2px;
+}
+.season-preview {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.season-preview-header {
+  padding: 28px 24px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+}
+.season-preview .season-greeting-inner {
+  min-height: 310px;
+  padding: 24px 24px 160px;
+  gap: 0;
+}
+.season-preview .season-greeting-title {
+  font-size: 28px;
+}
+.season-preview .season-greeting-message {
+  font-size: 13px;
+}
+.season-preview .season-scene {
+  position: absolute;
+  z-index: 0;
+  right: 16px;
+  bottom: 18px;
+  width: 300px;
+  height: 150px;
+  transform: scale(0.78);
+  transform-origin: right bottom;
+}
+.season-preview .season-motion-toggle {
+  right: 12px;
+}
+.season-greeting-compact .season-greeting-inner {
+  min-height: 170px;
+  padding-block: 22px 36px;
+}
+.season-greeting-compact .season-greeting-title {
+  font-size: 26px;
+}
+.season-greeting-compact .season-scene {
+  width: 280px;
+  height: 135px;
+  transform: scale(0.7);
+  transform-origin: right center;
+}
+.season-choice-art {
+  width: 100%;
+  height: 104px;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+}
+.season-choice-art[data-season] {
+  background: var(--bg-footer);
+}
+.season-choice-art svg {
+  height: 100%;
+  width: 100%;
+}
+@keyframes season-fall {
+  from {
+    transform: translate3d(-10px, -12px, 0);
+  }
+  to {
+    transform: translate3d(25px, 360px, 0);
+  }
+}
+@keyframes season-sleigh {
+  0% {
+    transform: translate3d(-190px, 4px, 0);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  28% {
+    opacity: 1;
+  }
+  34%,
+  100% {
+    transform: translate3d(380px, -14px, 0);
+    opacity: 0;
+  }
+}
+@keyframes season-reindeer {
+  50% {
+    transform: translate3d(0, -3px, 0) rotate(-2deg);
+  }
+}
+@keyframes season-wave {
+  25%,
+  65% {
+    transform: rotate(-14deg);
+  }
+  45%,
+  85% {
+    transform: rotate(6deg);
+  }
+}
+@keyframes season-sun {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes season-leaves {
+  50% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes season-flame {
+  50% {
+    transform: scale(0.9, 1.08) rotate(3deg);
+    opacity: 0.8;
+  }
+}
+@keyframes season-bats {
+  25% {
+    transform: translate3d(7px, -5px, 0) rotate(3deg);
+  }
+  75% {
+    transform: translate3d(-5px, 3px, 0) rotate(-2deg);
+  }
+}
+@keyframes season-pumpkin {
+  50% {
+    fill: #f6d084;
+  }
+}
+@keyframes season-mist {
+  50% {
+    transform: translate3d(-18px, -3px, 0);
+    opacity: 0.4;
+  }
+}
+@keyframes season-bunny {
+  40%,
+  50%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  45% {
+    transform: translate3d(0, -8px, 0) rotate(-2deg);
+  }
+}
+@keyframes season-ears {
+  40%,
+  55%,
+  100% {
+    transform: rotate(0);
+  }
+  46% {
+    transform: rotate(7deg);
+  }
+}
+@media (max-width: 767px) {
+  .brand-logo .season-logo-easter {
+    top: -7px;
+    width: 22px;
+    height: 21px;
+    left: 6px;
+  }
+  .season-greeting-inner {
+    min-height: 310px;
+    padding: 24px 20px 135px;
+    align-items: flex-start;
+  }
+  .season-greeting-copy {
+    max-width: 100%;
+  }
+  .season-greeting-title {
+    font-size: 27px;
+  }
+  .season-greeting-message {
+    font-size: 13px;
+    max-width: 100%;
+  }
+  .season-scene {
+    position: absolute;
+    right: 15px;
+    bottom: 20px;
+    width: 300px;
+    height: 150px;
+    transform: scale(0.7);
+    transform-origin: right bottom;
+  }
+  .season-motion-toggle {
+    right: auto;
+    left: 20px;
+    bottom: 15px;
+    min-height: 44px;
+  }
+  .season-particle:nth-child(n + 9) {
+    display: none;
+  }
+  .season-preview .season-greeting-inner {
+    padding: 24px 20px 150px;
+  }
+  .season-preview .season-motion-toggle {
+    left: 12px;
+    right: auto;
+    min-height: 36px;
+    bottom: 8px;
+  }
+}
+@media (max-width: 767px) {
+  .season-greeting-compact .season-greeting-inner {
+    min-height: 180px;
+    padding: 20px 20px 60px;
+  }
+  .season-greeting-compact .season-greeting-title {
+    font-size: 23px;
+  }
+  .season-greeting-compact .season-greeting-copy {
+    max-width: 100%;
+  }
+  .season-greeting-compact .season-scene {
+    width: 200px;
+    height: 90px;
+    right: 10px;
+    bottom: 0;
+    transform: scale(0.4);
+    transform-origin: right bottom;
+  }
+  .season-greeting-compact .season-motion-toggle {
+    min-height: 36px;
+    bottom: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .season-animated {
+    animation: none !important;
+  }
+  .season-greeting .season-sleigh {
+    transform: translate3d(115px, 0, 0);
+  }
+  .season-particles {
+    display: none;
+  }
+}
+@media print {
+  .season-greeting {
+    display: none;
+  }
+  .season-logo-ornament {
+    display: none;
+  }
+}

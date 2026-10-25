@@ -1,0 +1,56 @@
+const { createRequire } = require('node:module');
+const fs = require('node:fs');
+const path = require('node:path');
+const { pathToFileURL } = require('node:url');
+const backendPath =
+  process.env.CART_BACKEND_DIR || path.resolve(__dirname, '../../../backend');
+const backendRequire = createRequire(path.join(backendPath, 'package.json'));
+const envFile = path.join(backendPath, '.env');
+if (fs.existsSync(envFile)) {
+  const parsed = backendRequire('dotenv').parse(fs.readFileSync(envFile));
+  for (const [key, value] of Object.entries(parsed)) process.env[key] ??= value;
+}
+process.env.FRONTEND_URL =
+  process.env.CART_FRONTEND_URL || 'http://localhost:5174';
+process.env.MEDIA_UPLOAD_DIR ??= path.join(backendPath, 'uploads/media');
+process.env.PAYHERE_MERCHANT_ID = '1238776';
+process.env.PAYHERE_MERCHANT_SECRET = 'frontend-e2e-payhere-secret';
+process.env.PAYHERE_MODE = 'sandbox';
+process.env.PROMOTION_QUEUE_KEY = `frontend-e2e-${process.pid}`;
+const apiUrl = new URL(process.env.CART_BACKEND_URL || 'http://localhost:3001');
+backendRequire('reflect-metadata');
+(async () => {
+  const { NestFactory } = await import(
+    pathToFileURL(backendRequire.resolve('@nestjs/core')).href
+  );
+  const { AppModule } = backendRequire('./dist/app.module');
+  const { configureApp } = backendRequire('./dist/app.setup');
+  const app = await NestFactory.create(AppModule, { logger: ['error'] });
+  configureApp(app);
+  backendRequire('./test/helpers/mock-email.cjs').mockEmail(app);
+  // This route exists only in this isolated test bootstrap, never in main.ts.
+  // All messages are mocked; only generated example.com fixture inboxes are exposed.
+  app.getHttpAdapter().get('/_test/mailbox', (req, res) => {
+    const email = String(req.query.email ?? '');
+    if (!/^[a-z0-9_+.-]+@example\.com$/i.test(email))
+      return res.status(400).json({ message: 'Fixture email required' });
+    const messages = backendRequire('./test/helpers/mock-email.cjs')
+      .getMessages(app)
+      .filter((message) => message.to === email)
+      .map(({ subject, text }) => ({ subject, text }));
+    res.json({ messages });
+  });
+  await app.listen(Number(apiUrl.port), apiUrl.hostname);
+  app
+    .get(
+      backendRequire('./dist/promotions/services/promotion-worker.service')
+        .PromotionWorker,
+    )
+    .start();
+  app.enableShutdownHooks();
+})().catch((error) => {
+  console.error(
+    `Unable to start the isolated Cart test backend (${error.code ?? error.name}). Build the backend and check its database configuration.`,
+  );
+  process.exitCode = 1;
+});

@@ -1,0 +1,27 @@
+export const aiText = {
+  title: 'Product assistant',
+  open: 'Ask about this product',
+  close: 'Close product assistant',
+  greeting:
+    'Hi! I can help you understand this product, compare it with other products, or find similar options.',
+  prompts: [
+    'What are the key specifications?',
+    'Is this currently in stock?',
+    'Show me a cheaper alternative.',
+    'Compare this with another product.',
+  ],
+  label: 'Your product question',
+  placeholder: 'Ask about specifications, stock, or alternatives…',
+  send: 'Send',
+  sending: 'Checking product information…',
+  error: 'The product assistant is temporarily unavailable. Please try again.',
+  retry: 'Try again',
+  newChat: 'New chat',
+  signIn: 'Sign in to ask a product question',
+  checking: 'Checking your session…',
+  note: 'Answers may be inaccurate. Check key details before buying. Don’t share personal information.',
+  providerNote: 'Uses Appliances.lk catalog data. Questions are sent to Google Gemini.',
+  you: 'You',
+  assistant: 'Appliances.lk assistant',
+  conversation: 'Product conversation',
+} as const;
