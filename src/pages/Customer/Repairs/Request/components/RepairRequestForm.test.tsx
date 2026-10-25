@@ -20,15 +20,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RepairRequestForm } from './RepairRequestForm';
 import type { RepairRequestDraft, RepairRequestErrors } from '../types/repair-request.types';
+import type { RepairTicket } from '../../../../../types/repair.types';
+import type { useRepairRequest } from '../hooks/useRepairRequest';
 
-function createMockPage(overrides: Partial<{
-  draft: RepairRequestDraft;
-  errors: RepairRequestErrors;
-  error: string | null;
-  submitting: boolean;
-  change: (field: keyof RepairRequestDraft, value: string) => void;
-  submit: (event: React.FormEvent) => Promise<void>;
-}> = {}) {
+type RepairRequestPage = ReturnType<typeof useRepairRequest>;
+
+function createMockPage(overrides: Partial<RepairRequestPage> = {}): RepairRequestPage {
   const defaultDraft: RepairRequestDraft = {
     deviceType: '',
     brand: '',
@@ -40,9 +37,10 @@ function createMockPage(overrides: Partial<{
 
   return {
     draft: defaultDraft,
-    errors: {},
-    error: null,
+    errors: {} as RepairRequestErrors,
+    error: '',
     submitting: false,
+    createdTicket: null as RepairTicket | null,
     change: vi.fn(),
     submit: vi.fn().mockResolvedValue(undefined),
     ...overrides,
@@ -56,7 +54,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     expect(screen.getByLabelText(/device type/i)).toBeInTheDocument();
@@ -72,7 +70,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     const serialNumberLabel = screen.getByText(/serial number/i).closest('label');
@@ -88,7 +86,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert - hints contain descriptive text
     // Check that hint elements exist (they have specific IDs)
@@ -108,7 +106,7 @@ describe('RepairRequestForm', () => {
     });
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     expect(screen.getByText('Device type is required')).toBeInTheDocument();
@@ -124,7 +122,7 @@ describe('RepairRequestForm', () => {
     const user = userEvent.setup();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
     const deviceTypeInput = screen.getByLabelText(/device type/i);
     await user.type(deviceTypeInput, 'R');
 
@@ -140,7 +138,7 @@ describe('RepairRequestForm', () => {
     const user = userEvent.setup();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
     const submitButton = screen.getByRole('button', { name: /submit/i });
     await user.click(submitButton);
 
@@ -154,7 +152,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage({ submitting: true });
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     expect(screen.getByLabelText(/device type/i)).toBeDisabled();
@@ -171,7 +169,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage({ submitting: true });
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     const submitButton = screen.getByRole('button');
@@ -194,7 +192,7 @@ describe('RepairRequestForm', () => {
     });
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert - character count is displayed
     expect(screen.getByText(/34 \/ 2000 characters/)).toBeInTheDocument();
@@ -208,7 +206,7 @@ describe('RepairRequestForm', () => {
     });
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     const errorAlert = screen.getByRole('alert');
@@ -225,7 +223,7 @@ describe('RepairRequestForm', () => {
     });
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     const deviceTypeInput = screen.getByLabelText(/device type/i);
@@ -241,7 +239,7 @@ describe('RepairRequestForm', () => {
     });
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     const deviceTypeInput = screen.getByLabelText(/device type/i);
@@ -254,7 +252,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     expect(screen.getByText('1')).toBeInTheDocument();
@@ -266,7 +264,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert - check for section headings
     const headings = screen.getAllByRole('heading', { level: 2 });
@@ -278,7 +276,7 @@ describe('RepairRequestForm', () => {
     const page = createMockPage();
 
     // Act
-    render(<RepairRequestForm page={page as any} />);
+    render(<RepairRequestForm page={page} />);
 
     // Assert
     const textarea = document.getElementById('repair-problemDescription');
