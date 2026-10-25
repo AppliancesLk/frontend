@@ -77,7 +77,6 @@ describe('ImageUploader', () => {
 
   // TC-FE-IMGUP-005
   it('should show error when exceeding max images', async () => {
-    const user = userEvent.setup();
     const onChange = vi.fn();
 
     // 2 existing images, max is 2, so trying to upload another should fail
