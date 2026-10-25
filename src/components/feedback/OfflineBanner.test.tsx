@@ -13,7 +13,6 @@ import { render, screen, act } from '@testing-library/react';
 import { OfflineBanner } from './OfflineBanner';
 
 describe('OfflineBanner', () => {
-  const originalNavigator = window.navigator;
   let onlineGetter: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
