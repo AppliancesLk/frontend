@@ -26,3 +26,14 @@ dist-ssr
 # Browser test artifacts
 /playwright-report
 /test-results
+
+# Test coverage
+/coverage/
+coverage/
+
+# E2E auth/session state if created
+playwright/.auth/
+e2e/.auth/
+
+# Vitest
+.vitest/
