@@ -18,8 +18,6 @@ export const aiText = {
   retry: 'Try again',
   newChat: 'New chat',
   output: 'Assistant output',
-  expandOutput: 'Expand output',
-  collapseOutput: 'Collapse output',
   signIn: 'Sign in to ask a product question',
   checking: 'Checking your session…',
   note: 'Answers may be inaccurate. Check key details before buying. Don’t share personal information.',
