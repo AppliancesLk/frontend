@@ -11,6 +11,7 @@
  * - TC-FE-IMGUP-006: Allows removing images
  * - TC-FE-IMGUP-007: Uploads images when productID provided
  * - TC-FE-IMGUP-008: Queues images as pending when no productID
+ * - TC-FE-IMGUP-009: Uploads generic images when uploadImage provided
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -165,6 +166,32 @@ describe('ImageUploader', () => {
     });
 
     // Should not call upload service without productID
+    expect(mockUploadProductImage).not.toHaveBeenCalled();
+  });
+
+  // TC-FE-IMGUP-009
+  it('should upload generic images when uploadImage is provided', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const uploadImage = vi.fn().mockResolvedValue('/media/images/category.jpg');
+
+    render(
+      <ImageUploader
+        value={[]}
+        onChange={onChange}
+        uploadImage={uploadImage}
+      />,
+    );
+
+    const input = screen.getByLabelText(/choose image/i);
+    const file = new File(['test'], 'category.jpg', { type: 'image/jpeg' });
+
+    await user.upload(input, file);
+
+    await waitFor(() => {
+      expect(uploadImage).toHaveBeenCalledWith(file);
+      expect(onChange).toHaveBeenCalledWith(['/media/images/category.jpg']);
+    });
     expect(mockUploadProductImage).not.toHaveBeenCalled();
   });
 
