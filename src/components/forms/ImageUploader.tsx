@@ -4,10 +4,11 @@ import { ProductImage } from '../common/ProductImage';
 import { translations } from '../../utils/translations';
 const t = translations.experience;
 
-export function ImageUploader({ value, onChange, max = 10, onBusyChange, productID, onPendingFilesChange }: {
+export function ImageUploader({ value, onChange, max = 10, onBusyChange, productID, onPendingFilesChange, uploadImage }: {
   value: string[]; onChange: (value: string[]) => void; max?: number;
   onBusyChange?: (busy: boolean) => void; productID?: string;
   onPendingFilesChange?: (files: File[]) => void;
+  uploadImage?: (file: File) => Promise<string>;
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -20,10 +21,17 @@ export function ImageUploader({ value, onChange, max = 10, onBusyChange, product
     if (files.length + value.length + pending.length > max || files.some((file) => file.size > 5 * 1024 * 1024 || !['image/jpeg', 'image/png', 'image/webp'].includes(file.type))) {
       setError(t.uploadError); return;
     }
-    if (!productID) { const next = [...pending, ...files]; setPending(next); onPendingFilesChange?.(next); return; }
+    if (!productID && !uploadImage) { const next = [...pending, ...files]; setPending(next); onPendingFilesChange?.(next); return; }
     setBusy(true); onBusyChange?.(true);
     const results = [...value];
-    try { for (const file of files) results.push((await uploadProductImage(productID, file)).imageUrl); onChange(results); }
+    try {
+      for (const file of files) {
+        results.push(uploadImage
+          ? await uploadImage(file)
+          : (await uploadProductImage(productID!, file)).imageUrl);
+      }
+      onChange(results);
+    }
     catch { setError(t.uploadError); }
     finally { setBusy(false); onBusyChange?.(false); }
   }

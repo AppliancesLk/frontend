@@ -2,6 +2,7 @@ import { Spinner } from '../../../../components/ui/Feedback';
 import type { useCategoriesPage } from '../hooks/useCategoriesPage';
 import { translations } from '../../../../utils/translations';
 import { ImageUploader } from '../../../../components/forms/ImageUploader';
+import { uploadImage } from '../../../../services/mediaService';
 const t = translations.admin;
 export function CategoryForm({
   page,
@@ -71,6 +72,7 @@ export function CategoryForm({
               value={page.imageUrl ? [page.imageUrl] : []}
               onChange={(images) => page.setImageUrl(images[0] ?? '')}
               onBusyChange={page.setUploading}
+              uploadImage={uploadImage}
             />
           </div>
           {page.editing && (
